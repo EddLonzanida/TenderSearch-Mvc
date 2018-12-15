@@ -1,0 +1,172 @@
+﻿@model LayoutViewModelBase<EmployeeLayoutContentsCreateEditViewModel>
+
+@Html.HiddenFor(model => model.ContentViewModel.Item.DisplayName)
+@Html.HiddenFor(model => model.ContentViewModel.Item.CompanyId)
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            @Html.LabelFor(model => model.ContentViewModel.Item.EmployeeNumber, htmlAttributes: new { @class = "control-label " + Model.ContentViewModel.LabelCss })
+            <div class="@Model.ContentViewModel.FieldCss">
+                @Html.EditorFor(model => model.ContentViewModel.Item.EmployeeNumber, new { htmlAttributes = new { @class = "form-control eml-form-control" } })
+                @Html.ValidationMessageFor(model => model.ContentViewModel.Item.EmployeeNumber, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ContentViewModel.Item.FirstName, htmlAttributes: new { @class = "control-label " + Model.ContentViewModel.LabelCss })
+            <div class="@Model.ContentViewModel.FieldCss">
+                @Html.EditorFor(model => model.ContentViewModel.Item.FirstName, new { htmlAttributes = new { @class = "form-control eml-form-control" } })
+                @Html.ValidationMessageFor(model => model.ContentViewModel.Item.FirstName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ContentViewModel.Item.LastName, htmlAttributes: new { @class = "control-label " + Model.ContentViewModel.LabelCss })
+            <div class="@Model.ContentViewModel.FieldCss">
+                @Html.EditorFor(model => model.ContentViewModel.Item.LastName, new { htmlAttributes = new { @class = "form-control eml-form-control" } })
+                @Html.ValidationMessageFor(model => model.ContentViewModel.Item.LastName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ContentViewModel.Item.MiddleName, htmlAttributes: new { @class = "control-label " + Model.ContentViewModel.LabelCss })
+            <div class="@Model.ContentViewModel.FieldCss">
+                @Html.EditorFor(model => model.ContentViewModel.Item.MiddleName, new { htmlAttributes = new { @class = "form-control eml-form-control" } })
+                @Html.ValidationMessageFor(model => model.ContentViewModel.Item.MiddleName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        @*<div class="form-group">
+                @Html.LabelFor(model => model.ContentViewModel.Item.DisplayName, htmlAttributes: new { @class = "control-label " + Model.ContentViewModel.LabelCss })
+                <div class="@Model.ContentViewModel.FieldCss">
+                    @Html.EditorFor(model => model.ContentViewModel.Item.DisplayName, new { htmlAttributes = new { @class = "form-control eml-form-control" } })
+                    @Html.ValidationMessageFor(model => model.ContentViewModel.Item.DisplayName, "", new { @class = "text-danger" })
+                </div>
+            </div>*@
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ContentViewModel.Item.BirthDate, htmlAttributes: new { @class = "control-label " + Model.ContentViewModel.LabelCss })
+            <div class="@Model.ContentViewModel.FieldCss">
+                @Html.EditorFor(model => model.ContentViewModel.Item.BirthDate, new { htmlAttributes = new { @class = "form-control eml-form-control" } })
+                @Html.ValidationMessageFor(model => model.ContentViewModel.Item.BirthDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ContentViewModel.Item.Gender, htmlAttributes: new { @class = "control-label " + Model.ContentViewModel.LabelCss })
+            <div class="@Model.ContentViewModel.FieldCss">
+                @Html.DropDownListFor(model => model.ContentViewModel.Item.Gender,
+                    Model.ContentViewModel.GetGenders(),
+                    htmlAttributes: new { @class = "form-control eml-form-control" })
+                @Html.ValidationMessageFor(model => model.ContentViewModel.Item.Gender, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ContentViewModel.Item.CivilStatus, htmlAttributes: new { @class = "control-label " + Model.ContentViewModel.LabelCss })
+            <div class="@Model.ContentViewModel.FieldCss">
+                @Html.DropDownListFor(model => model.ContentViewModel.Item.CivilStatus,
+                    Model.ContentViewModel.GetMaritalStatus(),
+                    htmlAttributes: new { @class = "form-control eml-form-control" })
+                @Html.ValidationMessageFor(model => model.ContentViewModel.Item.CivilStatus, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ContentViewModel.Item.SssNumber, htmlAttributes: new { @class = "control-label " + Model.ContentViewModel.LabelCss })
+            <div class="@Model.ContentViewModel.FieldCss">
+                @Html.EditorFor(model => model.ContentViewModel.Item.SssNumber, new { htmlAttributes = new { @class = "form-control eml-form-control" } })
+                @Html.ValidationMessageFor(model => model.ContentViewModel.Item.SssNumber, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ContentViewModel.Item.TinNumber, htmlAttributes: new { @class = "control-label " + Model.ContentViewModel.LabelCss })
+            <div class="@Model.ContentViewModel.FieldCss">
+                @Html.EditorFor(model => model.ContentViewModel.Item.TinNumber, new { htmlAttributes = new { @class = "form-control eml-form-control" } })
+                @Html.ValidationMessageFor(model => model.ContentViewModel.Item.TinNumber, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            @Html.LabelFor(model => model.ContentViewModel.Item.PassportNumber, htmlAttributes: new { @class = "control-label " + Model.ContentViewModel.LabelCss })
+            <div class="@Model.ContentViewModel.FieldCss">
+                @Html.EditorFor(model => model.ContentViewModel.Item.PassportNumber, new { htmlAttributes = new { @class = "form-control eml-form-control" } })
+                @Html.ValidationMessageFor(model => model.ContentViewModel.Item.PassportNumber, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        @*<div class="form-group">
+                @Html.LabelFor(model => model.ContentViewModel.Item.DepartmentName, htmlAttributes: new { @class = "control-label " + Model.ContentViewModel.LabelCss })
+                <div class="@Model.ContentViewModel.FieldCss">
+                    @Html.EditorFor(model => model.ContentViewModel.Item.DepartmentName, new { htmlAttributes = new { @class = "form-control eml-form-control" } })
+                    @Html.ValidationMessageFor(model => model.ContentViewModel.Item.DepartmentName, "", new { @class = "text-danger" })
+                </div>
+            </div>*@
+        <div class="form-group">
+            @Html.LabelFor(model => model.ContentViewModel.Item.DepartmentName, htmlAttributes: new { @class = "control-label " + Model.ContentViewModel.LabelCss })
+            <div class="@Model.ContentViewModel.FieldCss">
+                @Html.DropDownListFor(model => model.ContentViewModel.Item.DepartmentName,
+                    Model.ContentViewModel.GetDepartments(),
+                    htmlAttributes: new { @class = "form-control eml-form-control" })
+                @Html.ValidationMessageFor(model => model.ContentViewModel.Item.DepartmentName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ContentViewModel.Item.RankTypeId, htmlAttributes: new { @class = "control-label " + Model.ContentViewModel.LabelCss })
+            <div class="@Model.ContentViewModel.FieldCss">
+                @Html.DropDownListFor(model => model.ContentViewModel.Item.RankTypeId,
+                    Model.ContentViewModel.GetRankTypes(),
+                    htmlAttributes: new { @class = "form-control eml-form-control" })
+                @Html.ValidationMessageFor(model => model.ContentViewModel.Item.RankTypeId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ContentViewModel.Item.CategoryTypeId, htmlAttributes: new { @class = "control-label " + Model.ContentViewModel.LabelCss })
+            <div class="@Model.ContentViewModel.FieldCss">
+                @Html.DropDownListFor(model => model.ContentViewModel.Item.CategoryTypeId,
+                    Model.ContentViewModel.GetCategoryTypes(),
+                    htmlAttributes: new { @class = "form-control eml-form-control" })
+                @Html.ValidationMessageFor(model => model.ContentViewModel.Item.CategoryTypeId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ContentViewModel.Item.StatusTypeId, htmlAttributes: new { @class = "control-label " + Model.ContentViewModel.LabelCss })
+            <div class="@Model.ContentViewModel.FieldCss">
+                @Html.DropDownListFor(model => model.ContentViewModel.Item.StatusTypeId,
+                    Model.ContentViewModel.GetStatusTypes(),
+                    htmlAttributes: new { @class = "form-control eml-form-control" })
+                @Html.ValidationMessageFor(model => model.ContentViewModel.Item.StatusTypeId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ContentViewModel.Item.MembershipDate, htmlAttributes: new { @class = "control-label " + Model.ContentViewModel.LabelCss })
+            <div class="@Model.ContentViewModel.FieldCss">
+                @Html.EditorFor(model => model.ContentViewModel.Item.MembershipDate, new { htmlAttributes = new { @class = "form-control eml-form-control" } })
+                @Html.ValidationMessageFor(model => model.ContentViewModel.Item.MembershipDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ContentViewModel.Item.HiredDate, htmlAttributes: new { @class = "control-label " + Model.ContentViewModel.LabelCss })
+            <div class="@Model.ContentViewModel.FieldCss">
+                @Html.EditorFor(model => model.ContentViewModel.Item.HiredDate, new { htmlAttributes = new { @class = "form-control eml-form-control" } })
+                @Html.ValidationMessageFor(model => model.ContentViewModel.Item.HiredDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ContentViewModel.Item.EmploymentEndDate, htmlAttributes: new { @class = "control-label " + Model.ContentViewModel.LabelCss })
+            <div class="@Model.ContentViewModel.FieldCss">
+                @Html.EditorFor(model => model.ContentViewModel.Item.EmploymentEndDate, new { htmlAttributes = new { @class = "form-control eml-form-control" } })
+                @Html.ValidationMessageFor(model => model.ContentViewModel.Item.EmploymentEndDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+</div>

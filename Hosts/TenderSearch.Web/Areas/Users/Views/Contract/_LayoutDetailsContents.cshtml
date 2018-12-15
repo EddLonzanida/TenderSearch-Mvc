@@ -1,0 +1,51 @@
+﻿@model LayoutViewModelBase<LayoutContentsDetailsDeleteViewModel<int, Contract>>
+
+<dl class="dl-horizontal">
+    <dt>
+        @Html.DisplayNameFor(model => model.ContentViewModel.Item.Company.Name)
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.ContentViewModel.Item.Company.Name)
+    </dd>
+
+    <dt>
+        @Html.DisplayNameFor(model => model.ContentViewModel.Item.ContractType)
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.ContentViewModel.Item.ContractType)
+    </dd>
+
+    <dt>
+        @Html.DisplayNameFor(model => model.ContentViewModel.Item.DateSigned)
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.ContentViewModel.Item.DateSigned)
+    </dd>
+
+    <dt>
+        @Html.DisplayNameFor(model => model.ContentViewModel.Item.EndDate)
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.ContentViewModel.Item.EndDate)
+    </dd>
+
+    <dt>
+        @Html.DisplayNameFor(model => model.ContentViewModel.Item.RenewalDate)
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.ContentViewModel.Item.RenewalDate)
+    </dd>
+
+    <dt>
+        @Html.DisplayNameFor(model => model.ContentViewModel.Item.Price)
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.ContentViewModel.Item.Price)
+    </dd>
+</dl>

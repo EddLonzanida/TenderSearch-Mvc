@@ -1,0 +1,26 @@
+﻿@if (Request.IsAuthenticated)
+{
+    using (Html.BeginForm("LogOff", "Account", new { area = "" }, FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <ul id="loginPartialLinks" class="nav navbar-nav navbar-right">
+            <li class="@Html.IsActiveAction("Manage")">
+                <a href="@Url.Action("ChangePassword", "Manage", routeValues: new { area = "", returnUrl = @Request.Url.AbsoluteUri })"
+                   data-eml-link="@Url.Action("ChangePassword", "Manage", routeValues: new { area = "", returnUrl = @Request.Url.AbsoluteUri })"
+                   title="Manage">
+                    <i class="fa fa-user"></i>
+                    &nbsp;@User.Identity.GetUserName()
+                </a>
+            </li>
+            <li><a href="javascript:document.getElementById('logoutForm').submit()" data-eml-link="javascript:document.getElementById('logoutForm').submit()"><i class="fa fa-lock"></i> &nbsp;Log off</a></li>
+        </ul>
+    }
+}
+else
+{
+    <ul class="nav navbar-nav navbar-right">
+        <li class="@Html.IsActiveAction("Register")">@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+        <li class="@Html.IsActiveAction("Login")">@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+    </ul>
+}

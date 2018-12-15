@@ -1,0 +1,98 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    @Html.Partial("_Favicon")
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - TenderSearch</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+
+
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+               @Html.Partial("_NavbarHeader")
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li class="menu-item dropdown">
+                        <a href="#" data-toggle="dropdown" class="dropdown-toggle">Administration <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li class="divider"></li>
+                            <li>@Html.ActionLink("Client Information", "Index", "Client")</li>
+                            <li class="divider"></li>
+                            <li class="dropdown-submenu">
+                                @Html.ActionLink("Table Maintenance", "Index", "TableMaintenance")
+                                <ul class="dropdown-menu">
+                                    <li>@Html.ActionLink("Module", "GoTo", "TableMaintenance", new { @Id = "Module" }, null) </li>
+                                    <li class="divider"></li>
+                                    <li>@Html.ActionLink("Discipline", "GoTo", "TableMaintenance", new { @Id = "Discipline" }, null) </li>
+                                    <li class="divider"></li>
+                                    <li>@Html.ActionLink("StaffType", "GoTo", "TableMaintenance", new { @Id = "StaffType" }, null) </li>
+                                    <li class="divider"></li>
+                                    <li>@Html.ActionLink("ContractType", "GoTo", "TableMaintenance", new { @Id = "ContractType" }, null) </li>
+                                    <li class="divider"></li>
+                                    <li>@Html.ActionLink("Equipment", "GoTo", "TableMaintenance", new { @Id = "Equipment" }, null) </li>
+                                    <li class="divider"></li>
+                                    <li>@Html.ActionLink("Expense", "GoTo", "TableMaintenance", new { @Id = "Expense" }, null) </li>
+                                    <li class="divider"></li>
+                                    <li>@Html.ActionLink("Subcontractor", "GoTo", "TableMaintenance", new { @Id = "Subcontractor" }, null) </li>
+                                </ul>
+                            </li>
+                            <li class="divider"></li>
+                            <li>@Html.ActionLink("Rate Sheets", "Index", "MasterRateSheetMain")</li>
+                            <li class="divider"></li>
+                            <li>@Html.ActionLink("Std. Cost Sheets", "Index", "MasterStdCostMain")</li>
+                            <li class="divider"></li>
+                            <li>@Html.ActionLink("Proposal Initiation", "Index", "Proposal")</li>
+                        </ul>
+                    </li>
+
+                    @*<li class ="menu-item dropdown">
+                            @Html.ActionLink("Setup", "Index", "Home")
+                            <ul class="dropdown-menu">
+                                <li class="divider"></li>
+                            </ul>
+                        </li >*@
+
+
+                    <li class="menu-item dropdown">
+                        <a href="#" data-toggle="dropdown" class="dropdown-toggle">
+                            Setup
+                            <b class="caret"></b>
+                        </a>
+                        <span class="sr-only">Setup</span>
+                        @*@Html.ActionLink("Setup ▼", "Index", "Home", new { @class = "dropdown-toggle", @data_toggle = "dropdown" })*@
+                        <ul class="dropdown-menu">
+                            <li class="divider"></li>
+                            <li>@Html.ActionLink("Module Selection ", "Index", "Home")</li>
+                            <li class="divider"></li>
+                            <li>@Html.ActionLink("Discipline Selection  ", "Index", "Home")</li>
+                        </ul>
+                    </li>
+
+                    <li>@Html.ActionLink("Proposals", "Index", "ProposalList")</li>
+                    <li>@Html.ActionLink("Projects", "Index", "Home")</li>
+                    <li>@Html.ActionLink("Dashboard", "Index", "Home")</li>
+                </ul>
+                @*@Html.Partial("_LoginPartial")*@
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+
+        @RenderBody()
+
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - TenderSearch</p>
+        </footer>
+    </div>
+    @Scripts.Render("~/bundles/client")
+    @*@Scripts.Render("~/bundles/bootstrap")*@
+    @RenderSection("scripts", required: false)
+</body>
+</html>

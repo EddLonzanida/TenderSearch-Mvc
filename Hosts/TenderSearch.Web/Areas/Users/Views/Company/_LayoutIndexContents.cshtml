@@ -1,0 +1,43 @@
+﻿@model LayoutViewModelBase<LayoutContentsIndexViewModel<int, Company>>
+
+<thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ContentViewModel.PagedListViewModel.PagedList.First().Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ContentViewModel.PagedListViewModel.PagedList.First().Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ContentViewModel.PagedListViewModel.PagedList.First().Website)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ContentViewModel.PagedListViewModel.PagedList.First().AbnCan)
+        </th>
+        <th>
+            @Html.Partial("_CreateItemButtonAjax", Model.ContentViewModel.CreateItemButtonViewModel)
+        </th>
+    </tr>
+</thead>
+<tbody id="@Model.ContentViewModel.PagedListViewModel.TargetTableBody">
+    @foreach (var item in Model.ContentViewModel.PagedListViewModel.PagedList)
+    {
+        <tr>
+            <td nowrap>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Website)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AbnCan)
+            </td>
+            <td>
+                @Html.Partial("_EditDetailsDelete", Model.ContentViewModel.GenerateEditDetailsDeleteLinks(Html, item.Name, item.Id, Model.ContentViewModel, Model.ReturnUrl, " | "))
+            </td>
+        </tr>
+    }
+</tbody>

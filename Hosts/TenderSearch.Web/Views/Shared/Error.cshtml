@@ -1,0 +1,18 @@
+﻿@model ErrorViewModel
+
+<h1 class="text-danger">Error.</h1>
+@{
+    if (!Model.HasErrorMessage)
+    {
+        <h2 class="text-danger">An error occurred while processing your request.</h2>
+        <h5 class="text-danger">@Model.HandleErrorInfo</h5>
+    }
+    else
+    {
+        <h2 class="text-danger">@Html.Raw(Model.ErrorMessage)</h2>
+        @*<h5 class="text-danger">@ViewBag.InnerException</h5>*@
+    }
+}
+
+
+

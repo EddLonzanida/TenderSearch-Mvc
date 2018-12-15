@@ -1,0 +1,11 @@
+﻿@{
+    ViewBag.ParentId = ViewData["ParentId"];
+    ViewBag.SendEmailCaption = ViewData["SendEmailCaption"];
+    ViewBag.ReturnUrl = ViewData["ReturnUrl"];
+    
+}
+
+<a href="@Url.Action( "SelectEmailRecipients",null, new { @parentId = @ViewBag.ParentId, @returnUrl = @ViewBag.ReturnUrl })"
+   class="btn btn-primary" data-target="#emailItemModal" data-eml-emaillink='true'>
+    <i class="fa fa-envelope animated rubberBand bounce"></i>&nbsp;@ViewBag.SendEmailCaption&nbsp;<i class="fa fa-angle-double-right"></i>
+</a>

@@ -1,0 +1,17 @@
+﻿<h2>@Model.Title1&nbsp;<strong class="animated bounceInRight"><em>@Model.ContentViewModel.Title2</em></strong></h2>
+
+<div>
+    <h4 class="animated bounce">@Model.ContentViewModel.Title3</h4>
+    <hr />
+    @Html.Partial(Model.ContentViewModel.LayoutDetailsContentName as string)
+</div>
+<p>
+    @if (Model.ContentViewModel.AllowEdit)
+    {
+        @Html.ActionLink("Edit", "Edit", new { @id = Model.ContentViewModel.Item.Id, @returnUrl = @Model.ReturnUrl })
+        <span>|</span>
+    }
+
+    @Html.ActionLink("Back to List", "Goto", new { @returnUrl = @Model.ReturnUrl })
+</p>
+

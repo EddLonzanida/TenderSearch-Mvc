@@ -1,0 +1,19 @@
+﻿@model EditDetailsDeleteViewModel
+
+<div style="white-space: nowrap; width: 100%; text-align: center;">
+    @{
+        if (Model.MvcHtmlStrings.Any())
+        {
+            var lastModelMvcHtmlStrings = Model.MvcHtmlStrings.Last();
+
+            foreach (var mvcHtmlString in Model.MvcHtmlStrings)
+            {
+                @mvcHtmlString
+                if (!mvcHtmlString.Equals(lastModelMvcHtmlStrings))
+                {
+                    @Model.Separator
+                }
+            }
+        }
+    }
+</div>

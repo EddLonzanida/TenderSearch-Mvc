@@ -1,0 +1,82 @@
+﻿@model LayoutViewModelBase<LayoutContentsIndexViewModel<int, Dependent>>
+
+<thead>
+    <tr>
+
+        <th>
+            @Html.DisplayNameFor(model => model.ContentViewModel.PagedListViewModel.PagedList.First().LastName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ContentViewModel.PagedListViewModel.PagedList.First().FirstName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ContentViewModel.PagedListViewModel.PagedList.First().MiddleName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ContentViewModel.PagedListViewModel.PagedList.First().DisplayName)
+        </th>
+        @if (!Model.ContentViewModel.HasParent)
+        {
+            <th>
+                @Html.DisplayNameFor(model => model.ContentViewModel.PagedListViewModel.PagedList.First().Employee.DisplayName)
+            </th>
+        }
+        <th>
+            @Html.DisplayNameFor(model => model.ContentViewModel.PagedListViewModel.PagedList.First().Relationship)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ContentViewModel.PagedListViewModel.PagedList.First().BirthDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ContentViewModel.PagedListViewModel.PagedList.First().Gender)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ContentViewModel.PagedListViewModel.PagedList.First().CivilStatus)
+        </th>
+        <th>
+            @Html.Partial("_CreateItemButtonAjax", Model.ContentViewModel.CreateItemButtonViewModel)
+        </th>
+    </tr>
+</thead>
+<tbody id="@Model.ContentViewModel.PagedListViewModel.TargetTableBody">
+    @foreach (var item in Model.ContentViewModel.PagedListViewModel.PagedList)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MiddleName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DisplayName)
+            </td>
+
+            @if (!Model.ContentViewModel.HasParent)
+            {
+                <td>
+                    @Html.DisplayFor(modelItem => item.Employee.DisplayName)
+                </td>
+            }
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Relationship)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BirthDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Gender)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CivilStatus)
+            </td>
+            <td>
+                @Html.Partial("_EditDetailsDelete", Model.ContentViewModel.GenerateEditDetailsDeleteLinks(Html, item.DisplayName, item.Id, Model.ContentViewModel, Model.ReturnUrl, " | "))
+            </td>
+        </tr>
+    }
+</tbody>

@@ -1,0 +1,5 @@
+﻿@model LayoutViewModelBase<AspNetUserRoleLayoutContentsCreateEditViewModel>
+
+@Html.HiddenFor(model => model.ContentViewModel.Item.UserName)
+
+@Html.Partial("_LayoutCreateContents")

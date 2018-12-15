@@ -1,0 +1,33 @@
+﻿@using (Html.BeginForm(null,
+                        null,
+                        new
+                        {
+                            @returnUrl = Model.ReturnUrl
+                        },
+                        FormMethod.Post,
+                        new { data_eml_copyconfirmation = "true" }))
+{
+    @Html.AntiForgeryToken()
+
+    @Html.HiddenFor(model => Model.Id)
+
+    <div class="modal-body">
+        <div class="form-horizontal">
+            @Html.Partial("_LayoutCopyContentsAjax")
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <div class="form-group">
+            <div class="col-md-offset-3 col-md-9">
+                <span id="busyindicatorCopy" style="display: none;">
+                    @Html.Partial("_BusyIndicatorSmall")
+                </span>
+               @* <input type="submit" id="copyYes" value="Copy" class="btn btn-default" />*@
+                @Html.Partial("_CopyButton")
+                
+            </div>
+        </div>
+    </div>
+}
+

@@ -1,0 +1,10 @@
+﻿@model CreateItemButtonViewModel
+
+<a href="@Url.Action(Model.CreateActionName, Model.ControllerName,
+             new {parentId = Model.ParentId, returnUrl = Model.ReturnUrl, param= Model.Param })"
+   class="@Model.Css"
+   data-target="#createItemModal"
+   data-eml-ajaxcreate="@Model.AllowAjaxCreate.ToString().ToLower()"
+   data-eml-createname="@Model.Title1">
+    <i class="fa fa-plus-circle"></i>&nbsp;@Model.Caption
+</a>

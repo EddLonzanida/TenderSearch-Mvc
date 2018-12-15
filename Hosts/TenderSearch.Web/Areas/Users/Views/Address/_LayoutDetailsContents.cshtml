@@ -1,0 +1,76 @@
+﻿@model LayoutViewModelBase<LayoutContentsDetailsDeleteViewModel<int, Address>>
+
+<dl class="dl-horizontal">
+    <dt>
+        @Html.DisplayNameFor(model => model.ContentViewModel.Item.Barangay.Name)
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.ContentViewModel.Item.Barangay.Name)
+    </dd>
+
+    <dt>
+        @Html.DisplayNameFor(model => model.ContentViewModel.Item.StreetAddress)
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.ContentViewModel.Item.StreetAddress)
+    </dd>
+
+    <dt>
+        @Html.DisplayNameFor(model => model.ContentViewModel.Item.OwnerId)
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.ContentViewModel.Item.OwnerId)
+    </dd>
+
+    <dt>
+        @Html.DisplayNameFor(model => model.ContentViewModel.Item.OwnerType)
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.ContentViewModel.Item.OwnerType)
+    </dd>
+
+    <dt>
+        @Html.DisplayNameFor(model => model.ContentViewModel.Item.AddressType)
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.ContentViewModel.Item.AddressType)
+    </dd>
+
+    <dt>
+        @Html.DisplayNameFor(model => model.ContentViewModel.Item.PhoneNumber)
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.ContentViewModel.Item.PhoneNumber)
+    </dd>
+
+    <dt>
+        @Html.DisplayNameFor(model => model.ContentViewModel.Item.IsActive)
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.ContentViewModel.Item.IsActive)
+    </dd>
+
+    <dt>
+        @Html.DisplayNameFor(model => model.ContentViewModel.Item.DateDeleted)
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.ContentViewModel.Item.DateDeleted)
+    </dd>
+
+    <dt>
+        @Html.DisplayNameFor(model => model.ContentViewModel.Item.DeletionReason)
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.ContentViewModel.Item.DeletionReason)
+    </dd>
+
+</dl>

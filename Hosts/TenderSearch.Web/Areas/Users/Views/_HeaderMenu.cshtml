@@ -1,0 +1,13 @@
+﻿<li class="menu-item dropdown">
+    <a href="#" data-toggle="dropdown" class="dropdown-toggle">Controllers <b class="caret"></b></a>
+    <ul class="dropdown-menu">
+        @foreach (MenuItem menuItem in Model.GetMainMenus().Children)
+        {
+            <li class="@Html.IsActiveController(menuItem.ControllerName)">@Html.ActionLink(menuItem.ControllerName, "Index", menuItem.ControllerName, new { area = menuItem.AreaName }, null) </li>
+        }
+    </ul>
+</li>
+
+<li class="@Html.IsActiveController("Company")">@Html.ActionLink("Company", "Index", "Company", new { area = MvcArea.Users }, null) </li>
+<li class="@Html.IsActiveController("Contract")">@Html.ActionLink("Contracts", "Index", "Contract", new { area = MvcArea.Users }, null) </li>
+<li class="@Html.IsActiveController("Employee")">@Html.ActionLink("Employees", "Index", "Employee", new { area = MvcArea.Users }, null) </li>

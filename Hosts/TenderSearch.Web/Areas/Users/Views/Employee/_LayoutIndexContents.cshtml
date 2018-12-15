@@ -1,0 +1,52 @@
+﻿@model LayoutViewModelBase<LayoutContentsIndexViewModel<int, Employee>>
+
+<thead>
+    <tr>
+        @* <th>@Html.DisplayNameFor(model => model.ContentViewModel.PagedListViewModel.PagedList.First().GroupArea.Name)</th>*@
+        <th>@Html.DisplayNameFor(model => model.ContentViewModel.PagedListViewModel.PagedList.First().EmployeeNumber)</th>
+        @*<th>@Html.DisplayNameFor(model => model.ContentViewModel.PagedListViewModel.PagedList.First().FirstName)</th>
+            <th>@Html.DisplayNameFor(model => model.ContentViewModel.PagedListViewModel.PagedList.First().LastName)</th>
+            <th>@Html.DisplayNameFor(model => model.ContentViewModel.PagedListViewModel.PagedList.First().MiddleName)</th>*@
+        <th>@Html.DisplayNameFor(model => model.ContentViewModel.PagedListViewModel.PagedList.First().DisplayName)</th>
+        @*<th>@Html.DisplayNameFor(model => model.ContentViewModel.PagedListViewModel.PagedList.First().BirthDate)</th>*@
+        <th>@Html.DisplayNameFor(model => model.ContentViewModel.PagedListViewModel.PagedList.First().Gender)</th>
+        @*<th>@Html.DisplayNameFor(model => model.ContentViewModel.PagedListViewModel.PagedList.First().CivilStatus)</th>*@
+        @*<th>@Html.DisplayNameFor(model => model.ContentViewModel.PagedListViewModel.PagedList.First().SssNumber)</th>
+            <th>@Html.DisplayNameFor(model => model.ContentViewModel.PagedListViewModel.PagedList.First().TinNumber)</th>
+            <th>@Html.DisplayNameFor(model => model.ContentViewModel.PagedListViewModel.PagedList.First().PassportNumber)</th>*@
+        <th>@Html.DisplayNameFor(model => model.ContentViewModel.PagedListViewModel.PagedList.First().DepartmentName)</th>
+        @*<th>@Html.DisplayNameFor(model => model.ContentViewModel.PagedListViewModel.PagedList.First().MembershipDate)</th>
+            <th>@Html.DisplayNameFor(model => model.ContentViewModel.PagedListViewModel.PagedList.First().HiredDate)</th>
+            <th>@Html.DisplayNameFor(model => model.ContentViewModel.PagedListViewModel.PagedList.First().EmploymentEndDate)</th>*@
+        <th>
+            @Html.Partial("_CreateItemButtonAjax", Model.ContentViewModel.CreateItemButtonViewModel)
+        </th>
+    </tr>
+</thead>
+<tbody id="@Model.ContentViewModel.PagedListViewModel.TargetTableBody" class="text-nowrap">
+    @foreach (var item in Model.ContentViewModel.PagedListViewModel.PagedList)
+    {
+        <tr>
+            @* <td>@Html.DisplayFor(modelItem => item.GroupArea.Name)</td>*@
+            <td>@Html.DisplayFor(modelItem => item.EmployeeNumber)</td>
+            @*<td>@Html.DisplayFor(modelItem => item.FirstName)</td>
+                <td>@Html.DisplayFor(modelItem => item.LastName)</td>
+                <td>@Html.DisplayFor(modelItem => item.MiddleName)</td>*@
+            <td>@Html.DisplayFor(modelItem => item.DisplayName)</td>
+            @*<td>@Html.DisplayFor(modelItem => item.BirthDate)</td>*@
+            <td>@Html.DisplayFor(modelItem => item.Gender)</td>
+            @*<td>@Html.DisplayFor(modelItem => item.CivilStatus)</td>
+                <td>@Html.DisplayFor(modelItem => item.SssNumber)</td>
+                <td>@Html.DisplayFor(modelItem => item.TinNumber)</td>
+                <td>@Html.DisplayFor(modelItem => item.PassportNumber)</td>*@
+            <td>@Html.DisplayFor(modelItem => item.DepartmentName)</td>
+            @*<td>@Html.DisplayFor(modelItem => item.MembershipDate)</td>
+                <td>@Html.DisplayFor(modelItem => item.HiredDate)</td>
+                <td>@Html.DisplayFor(modelItem => item.EmploymentEndDate)</td>*@
+            <td>
+                @Html.Partial("_EditDetailsDelete", Model.ContentViewModel.GenerateEditDetailsDeleteLinks(Html, item.DisplayName, item.Id, Model.ContentViewModel, Model.ReturnUrl, " | "))
+            </td>
+        </tr>
+    }
+
+</tbody>

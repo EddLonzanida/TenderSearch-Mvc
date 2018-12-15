@@ -1,0 +1,36 @@
+﻿@model VerifyCodeViewModel
+
+
+@Html.Partial("_Logo")
+
+<h2>@Model.Title1</h2>
+
+@using (Html.BeginForm("VerifyCode", "Account", new { returnUrl = Model.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" })) {
+    @Html.AntiForgeryToken()
+    @Html.Hidden("provider", Model.VerifyCodeModel.Provider)
+    @Html.Hidden("rememberMe", Model.VerifyCodeModel.RememberMe)
+    <h4>Enter verification code</h4>
+    <hr />
+    @Html.ValidationSummary("", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(m => m.VerifyCodeModel.Code, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.VerifyCodeModel.Code, new { @class = "form-control eml-form-control", @autofocus = "autofocus" })
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            @Html.Bootstrap().CheckBoxFor(model => model.VerifyCodeModel.RememberBrowser)
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" class="btn btn-default" value="Submit" />
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+

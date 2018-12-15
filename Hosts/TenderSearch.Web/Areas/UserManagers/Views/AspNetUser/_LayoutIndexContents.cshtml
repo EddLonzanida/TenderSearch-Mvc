@@ -1,0 +1,54 @@
+﻿@model LayoutViewModelBase<LayoutContentsIndexViewModel<string, AspNetUser>>
+
+<thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ContentViewModel.PagedListViewModel.PagedList.First().UserName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ContentViewModel.PagedListViewModel.PagedList.First().Email)
+        </th>
+        <th>
+            Role
+        </th>
+        <th>
+        </th>
+    </tr>
+</thead>
+<tbody id="@Model.ContentViewModel.PagedListViewModel.TargetTableBody">
+    @foreach (var item in Model.ContentViewModel.PagedListViewModel.PagedList)
+    {
+        <tr>
+            @if (item.HasRole)
+            {
+                <td nowrap>
+                    @Html.DisplayTextFor(modelItem => item.UserName)
+                </td>
+                <td nowrap>
+                    @Html.DisplayTextFor(modelItem => item.Email)
+                </td>
+                <td nowrap>
+                    @item.RolesAsText
+                </td>
+            }
+            else
+            {
+                <td nowrap class="text-danger">
+                    @Html.DisplayFor(modelItem => item.UserName)
+                </td>
+                <td nowrap class="text-danger">
+                    @Html.DisplayTextFor(modelItem => item.Email)
+                </td>
+                <td nowrap align="center">
+                    @Html.ActionLink("Add Role", ActionNames.IndexWithParent, new { @parentId = item.Id, @returnUrl = Model.ReturnUrl, @controller = ControllerNames.AspNetUserRole }, htmlAttributes: new { @class = "btn btn-xs btn-danger" })
+                </td>
+            }
+                <td>
+                    @if (item.HasRole)
+                    {
+                        @Html.Partial("_EditDetailsDelete", Model.ContentViewModel.GenerateEditDetailsDeleteLinks(Html, item.UserName, item.Id, Model.ContentViewModel, Model.ReturnUrl, " | "))
+                    }
+                </td>
+        </tr>
+    }
+</tbody>

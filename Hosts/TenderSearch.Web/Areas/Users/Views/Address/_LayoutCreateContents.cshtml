@@ -1,0 +1,216 @@
+﻿@model LayoutViewModelBase<AddressLayoutContentsCreateEditViewModel>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.ContentViewModel.Item.StreetAddress, htmlAttributes: new { @class = "control-label " + Model.ContentViewModel.LabelCss })
+    <div class="@Model.ContentViewModel.FieldCss">
+        @Html.EditorFor(model => model.ContentViewModel.Item.StreetAddress, new
+        {
+            htmlAttributes = new
+            {
+                @data_bind = "textInput: streetAddress",
+                @class = "form-control eml-form-control", rows = "2"
+            }
+        })
+        @Html.ValidationMessageFor(model => model.ContentViewModel.Item.StreetAddress, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.ContentViewModel.Item.BarangayId, htmlAttributes: new { @class = "control-label " + Model.ContentViewModel.LabelCss })
+    <div class="@Model.ContentViewModel.FieldCss" data-bind="with: barangaySuggestionsViewModel">
+        <div data-bind="with: selectedItem">
+            @Html.EditorFor(model => model.ContentViewModel.Item.BarangayId,
+                new
+                {
+                    htmlAttributes = new
+                    {
+                        @data_bind = "value: id",
+                        @class = "form-control eml-form-control hidden"
+                    }
+                })
+
+            <input class="form-control text-box single-line eml-form-control"
+                   data-val="true"
+                   data-val-required="The Barangay field is required."
+                   id="ContentViewModel_Item_BarangayId"
+                   name="ContentViewModel.Item.BarangayId"
+                   type="text"
+                   data-bind="textInput: barangayName, autocomplete: { source: function (request, response){$parent.fetchSuggestions(request, response);}, select: $parent.onItemSelected }">
+        </div>
+        @Html.ValidationMessageFor(model => model.ContentViewModel.Item.BarangayId, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group" data-bind="with: barangaySuggestionsViewModel">
+    <label class="control-label col-md-4">Municipality</label>
+    <div class="col-md-8" data-bind="with: selectedItem">
+        <input class="form-control text-box single-line eml-form-control" type="text" readonly value="Municipality" data-bind="value: cityMunicipalityName">
+    </div>
+</div>
+
+<div class="form-group" data-bind="with: barangaySuggestionsViewModel">
+    <label class="control-label col-md-4">Province</label>
+    <div class="col-md-8" data-bind="with: selectedItem">
+        <input class="form-control text-box single-line eml-form-control" type="text" readonly data-bind="value: provinceName">
+    </div>
+</div>
+
+<div class="form-group" data-bind="with: barangaySuggestionsViewModel">
+    <label class="control-label col-md-4">Region</label>
+    <div class="col-md-8" data-bind="with: selectedItem">
+        <input class="form-control text-box single-line eml-form-control" type="text" readonly data-bind="value: regionName">
+    </div>
+</div>
+
+@if (Model.ContentViewModel.CanShowOwner())
+{
+    <div class="form-group">
+        @Html.LabelFor(model => model.ContentViewModel.Item.OwnerId, htmlAttributes: new { @class = "control-label " + Model.ContentViewModel.LabelCss })
+        <div class="@Model.ContentViewModel.FieldCss" data-bind="with: personSuggestionsViewModel">
+            <div data-bind="with: selectedItem">
+                @Html.EditorFor(model => model.ContentViewModel.Item.OwnerId,
+                    new
+                    {
+                        htmlAttributes = new
+                        {
+                            @data_bind = "value: id",
+                            @class = "form-control eml-form-control hidden"
+                        }
+                    })
+
+                <input class="form-control text-box single-line eml-form-control"
+                       data-val="true"
+                       data-val-required="The Owner Name field is required."
+                       id="ContentViewModel_Item_OwnerId"
+                       name="ContentViewModel.Item.OwnerId"
+                       type="text"
+                       aria-describedby="ContentViewModel_Item_OwnerId-error"
+                       data-bind="textInput: displayName, autocomplete: { source: function (request, response){$parent.fetchSuggestions(request, response);}, select: $parent.onItemSelected }">
+            </div>
+            @Html.ValidationMessageFor(model => model.ContentViewModel.Item.OwnerId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.ContentViewModel.Item.OwnerType, htmlAttributes: new { @class = "control-label " + Model.ContentViewModel.LabelCss })
+        <div class="@Model.ContentViewModel.FieldCss">
+            @Html.DropDownListFor(model => model.ContentViewModel.Item.OwnerType,
+                Model.ContentViewModel.GetOwnerTypes(),
+                htmlAttributes: new {@class = "form-control eml-form-control"})
+            @Html.ValidationMessageFor(model => model.ContentViewModel.Item.OwnerType, "", new { @class = "text-danger" })
+        </div>
+    </div>
+}
+else
+{
+    @Html.HiddenFor(model => model.ContentViewModel.Item.OwnerType)
+    @Html.HiddenFor(model => model.ContentViewModel.Item.OwnerId)
+}
+
+<div class="form-group">
+    @Html.LabelFor(model => model.ContentViewModel.Item.AddressType, htmlAttributes: new { @class = "control-label " + Model.ContentViewModel.LabelCss })
+    <div class="@Model.ContentViewModel.FieldCss">
+        @Html.DropDownListFor(model => model.ContentViewModel.Item.AddressType,
+            Model.ContentViewModel.GetAddressTypes(),
+            htmlAttributes: new { @class = "form-control eml-form-control" })
+        @Html.ValidationMessageFor(model => model.ContentViewModel.Item.AddressType, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.ContentViewModel.Item.PhoneNumber, htmlAttributes: new { @class = "control-label " + Model.ContentViewModel.LabelCss })
+    <div class="@Model.ContentViewModel.FieldCss">
+        @Html.EditorFor(model => model.ContentViewModel.Item.PhoneNumber, new { htmlAttributes = new { @class = "form-control eml-form-control" } })
+        @Html.ValidationMessageFor(model => model.ContentViewModel.Item.PhoneNumber, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+@if (Model.AllowKnockoutJs)
+{
+
+    <div class="col-md-12">
+        <!-- ko ifnot: hasError -->
+        <div class="alert alert-info" role="alert">
+            <strong>Complete Address:</strong><br>
+            <span data-bind="text: completeAddress()"></span>
+        </div>
+        <!-- /ko -->
+        <!-- ko if: hasError -->
+        <div class="alert alert-danger" role="alert">
+            <div data-bind="template: { name: 'hasError-template' }"></div>
+        </div>
+        <!-- /ko -->
+    </div>
+
+    <span id="baseUrl" style="display: none;">@($"{Request?.Url?.Scheme}://{Request?.Url?.Authority}{Url.Content("~")}")</span>
+    <span id="initialDataForBarangay" style="display: none;">@Html.Raw(JsonConvert.SerializeObject(Model.ContentViewModel.InitialBarangaySuggestion))</span>
+    <span id="initialDataForPerson" style="display: none;">@Html.Raw(JsonConvert.SerializeObject(Model.ContentViewModel.InitialPersonSuggestion))</span>
+    <span id="initialStreetAddress" style="display: none;">@Html.Raw(Model.ContentViewModel.InitialStreetAddress)</span>
+
+    @Scripts.Render("~/bundles/knockout/address-viewmodel")
+
+    <script type="text/javascript">
+
+        function initialize() {
+            var option = {
+                baseUrl: $("#baseUrl").html(),
+                initialDataForBarangay: $("#initialDataForBarangay").html(),
+                initialDataForPerson: $("#initialDataForPerson").html(),
+                initialStreetAddress: $("#initialStreetAddress").html()
+            };
+
+            var viewModel = new AddressViewModel(option);
+            var $layoutCreateEditContentForAddress = $("#LayoutCreateEditContent")[0];
+
+            ko.cleanNode($layoutCreateEditContentForAddress);
+            ko.applyBindings(viewModel, $layoutCreateEditContentForAddress);
+
+            console.warn("Address Initialized..");
+        }
+
+    </script>
+    if (Request.IsAjaxRequest())
+    {
+        <script type="text/javascript">
+            $(document).ready(initialize);
+        </script>
+    }
+    else
+    {
+        <script type="text/javascript">
+            function AddressKo() {
+
+                var retryCounter = 0;
+                var retryLimit = 2;
+
+                window.onload = function () {
+
+                    var timerId = setInterval(function () {
+
+                        retryCounter++;
+
+                        if (retryCounter > retryLimit) {
+
+                            clearTimeout(timerId);
+                            console.warn("CLIENT NOT Found1!");
+
+                            return;
+                        }
+
+                        console.warn("Waiting for CLIENT..");
+
+                        if (CLIENT) {
+
+                            initialize();
+                            clearTimeout(timerId);
+
+                            console.warn("CLIENT Found2!");
+                        }
+                    }, 200);
+                };
+            }
+
+            AddressKo();
+        </script>
+    }
+}

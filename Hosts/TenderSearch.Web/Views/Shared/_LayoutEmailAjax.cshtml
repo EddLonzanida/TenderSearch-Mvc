@@ -1,0 +1,32 @@
+﻿@{
+    if (Model.LayoutEmailContents == null) { ViewBag.LayoutEmailContents = "_LayoutEmailContents"; }
+}
+@using (Html.BeginForm(null,
+                        null,
+                        new
+                        {
+                            @returnUrl = ViewBag.ReturnUrl
+                        },
+                        FormMethod.Post,
+                        new { data_eml_emailconfirmation = "true" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="modal-body">
+        <div class="form-horizontal">
+            @Html.Partial(@ViewBag.LayoutEmailContents as string, Model, new ViewDataDictionary { { "ProposalId", ViewBag.ProposalId } })
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <span id="busyindicatorEmail" style="display: none;">
+                    @Html.Partial("_BusyIndicatorSmall")
+                </span>
+                <button class="btn btn-default" type="submit" data-bind="enable: CanSend">
+                    <i class="fa fa-paper-plane animated rubberBand bounce">&nbsp;</i> Send
+                </button>
+            </div>
+        </div>
+    </div>
+
+}

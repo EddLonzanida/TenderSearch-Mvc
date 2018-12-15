@@ -1,0 +1,86 @@
+﻿@model LayoutViewModelBase<ContractLayoutContentsIndexViewModel>
+
+<thead>
+    <tr>
+        @if (!Model.ContentViewModel.HasParent)
+        {
+            <th>
+                @Html.DisplayNameFor(model => model.ContentViewModel.PagedListViewModel.PagedList.First().CompanyId)
+            </th>
+        }
+        <th>
+            @Html.DisplayNameFor(model => model.ContentViewModel.PagedListViewModel.PagedList.First().ContractType)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ContentViewModel.PagedListViewModel.PagedList.First().DateSigned)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ContentViewModel.PagedListViewModel.PagedList.First().RenewalDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ContentViewModel.PagedListViewModel.PagedList.First().EndDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ContentViewModel.PagedListViewModel.PagedList.First().Price)
+        </th>
+        <th>
+            @Html.Partial("_CreateItemButtonAjax", Model.ContentViewModel.CreateItemButtonViewModel)
+        </th>
+    </tr>
+</thead>
+<tbody id="@Model.ContentViewModel.PagedListViewModel.TargetTableBody">
+    @foreach (var item in Model.ContentViewModel.PagedListViewModel.PagedList)
+    {
+        <tr>
+            @if (!Model.ContentViewModel.HasParent)
+            {
+                <td nowrap>
+                    @item.Company.Name
+                </td>
+            }
+            <td nowrap>
+                @Html.DisplayFor(modelItem => item.ContractType)
+            </td>
+            <td nowrap align="right">
+                @Html.DisplayFor(modelItem => item.DateSigned)
+            </td>
+            <td nowrap align="right">
+                @Html.DisplayFor(modelItem => item.RenewalDate)
+            </td>
+            <td nowrap align="right">
+                @{
+                    var expirationCountDown = Model.ContentViewModel.GetExpirationCountDown(item);
+                    if (expirationCountDown.HasValue)
+                    {
+                        if (expirationCountDown.Value <= 0)
+                        {
+                            <div>
+                                <span class="text-danger">
+                                    <i class="fa fa-info-circle"></i>
+                                    Expired!
+                                </span>
+                            </div>
+                        }
+                        else
+                        {
+                            <div>
+                                <span class="text-info">
+                                    <i class="fa fa-info-circle"></i>
+                                    Expires soon!
+                                </span>
+                            </div>
+
+                        }
+                    }
+                }
+                @Html.DisplayFor(modelItem => item.EndDate)
+            </td>
+            <td nowrap align="right">
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.Partial("_EditDetailsDelete", Model.ContentViewModel.GenerateEditDetailsDeleteLinks(Html, item.ContractType, item.Id, Model.ContentViewModel, Model.ReturnUrl, " | "))
+            </td>
+        </tr>
+    }
+</tbody>

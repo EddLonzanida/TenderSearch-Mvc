@@ -1,0 +1,30 @@
+﻿<form method="get" action="@Url.Action(Model.ContentViewModel.IndexActionName, Model.ContentViewModel.ControllerName , new { @parentId = Model.ContentViewModel.GetParentId(), @returnUrl = Model.ReturnUrl })"
+      data-eml-ajax="true"
+      data-eml-targettablebody="#@Model.ContentViewModel.PagedListViewModel.TargetTableBody"
+      class="navbar-form navbar-right"
+      role="search">
+    <div class="input-group">
+        <input name="searchTerm" id="searchTerm" type="text" placeholder="Search by name..."
+               class="form-control "
+               data-eml-autocomplete="@Url.Action(Model.ContentViewModel.SuggestionsActionName, Model.ContentViewModel.ControllerName, new { parentId = Model.ContentViewModel.GetParentId(), param = Model.ContentViewModel.Param })">
+        <span class="input-group-btn">
+            <i id="searchClear" class="fa fa-times-circle animated rubberBand bounce" aria-hidden="true" style="display: none;"></i>
+            <button type="submit" class="btn btn-primary" title="Search by Name" id="searchButton">
+                <i class="fa fa-search-plus" data-eml-searchbutton="true"></i>
+            </button>
+        </span>
+    </div>
+</form>
+<script type="text/javascript">
+    setTimeout(function () {
+        $("#searchTerm").keyup(function () {
+            $("#searchClear").toggle(Boolean($(this).val()));
+        });
+        $("#searchClear").toggle(Boolean($("#searchTerm").val()));
+        $("#searchClear").click(function () {
+            $("#searchTerm").val("");
+            $(this).hide();
+            $("#searchButton").click();
+        });
+    }, 800);
+</script>

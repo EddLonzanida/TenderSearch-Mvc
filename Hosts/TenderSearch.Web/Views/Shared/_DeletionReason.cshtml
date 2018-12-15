@@ -1,0 +1,24 @@
+﻿
+@if (Model.ContentViewModel.IsSoftDeleteItem)
+{
+    var vm = Model.ContentViewModel.Item as EntityBaseSoftDeleteInt;
+
+<div class="form-group  ">
+    <div style="float:left;">
+        @Html.LabelFor(model => vm.DeletionReason, htmlAttributes: new { @class = "deletion-reason control-label  " })
+    </div>
+
+    @Html.EditorFor(model => vm.DeletionReason, new { htmlAttributes = new
+       {
+           @class = "form-control comments",
+           data_val = "true",
+           data_val_maxlength = "Deletion Reason must be a string or array type with a maximum length of '256'.",
+           data_val_maxlength_max ="256" ,
+           data_val_required = "Deletion Reason is required.",
+           id="DeletionReason" ,
+           name="DeletionReason"
+       }})
+    <span class="field-validation-valid text-danger" data-valmsg-for="DeletionReason" data-valmsg-replace="true"></span>
+    @*@Html.ValidationMessageFor(model => vm.DeletionReason, "", new { @class = "text-danger" })*@
+</div>
+}

@@ -1,0 +1,10 @@
+﻿@model ConfirmEmailViewModel
+
+@Html.Partial("_Logo")
+
+<h2>@Model.Title1</h2>
+<div>
+    <p>
+        Thank you for confirming your email. Please @Html.ActionLink("Click here to Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })
+    </p>
+</div>

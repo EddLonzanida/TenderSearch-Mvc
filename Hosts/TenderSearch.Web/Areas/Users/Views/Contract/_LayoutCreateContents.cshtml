@@ -1,0 +1,78 @@
+﻿@model LayoutViewModelBase<ContractLayoutContentsCreateEditViewModel>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.ContentViewModel.Item.CompanyId, htmlAttributes: new { @class = "control-label " + Model.ContentViewModel.LabelCss })
+    <div class="@Model.ContentViewModel.FieldCss">
+        @if (!Model.ContentViewModel.HasParent)
+        {
+            @Html.DropDownListFor(model => Model.ContentViewModel.Item.CompanyId, Model.ContentViewModel.GetCompanies(), htmlAttributes: new { @class = "form-control eml-form-control" })
+
+            @Html.ValidationMessageFor(model => Model.ContentViewModel.Item.CompanyId, "", new { @class = "text-danger" })
+        }
+        else
+        {
+            @Html.HiddenFor(model => model.ContentViewModel.Item.CompanyId)
+            @Html.HiddenFor(model => model.ContentViewModel.Item.Company.Website)
+            @Html.HiddenFor(model => model.ContentViewModel.Item.Company.AbnCan)
+            @Html.HiddenFor(model => model.ContentViewModel.Item.Company.Id)
+            @Html.EditorFor(model => model.ContentViewModel.Item.Company.Name,
+                                           new
+                                           {
+                                               htmlAttributes = new
+                                               {
+                                                   @class = "form-control eml-form-control",
+                                                   @readonly = true
+                                               }
+                                           })
+        }
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.ContentViewModel.Item.ContractType, htmlAttributes: new { @class = "control-label " + Model.ContentViewModel.LabelCss })
+    <div class="@Model.ContentViewModel.FieldCss">
+        @Html.DropDownListFor(model => model.ContentViewModel.Item.ContractType,
+            Model.ContentViewModel.GetContractTypes(),
+            htmlAttributes: new { @class = "form-control eml-form-control" })
+        @Html.ValidationMessageFor(model => model.ContentViewModel.Item.ContractType, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.ContentViewModel.Item.DateSigned, htmlAttributes: new { @class = "control-label " + Model.ContentViewModel.LabelCss })
+    <div class="@Model.ContentViewModel.FieldCss">
+        @Html.EditorFor(model => Model.ContentViewModel.Item.DateSigned, new { htmlAttributes = new { @class = "form-control eml-form-control" } })
+        @Html.ValidationMessageFor(model => model.ContentViewModel.Item.DateSigned, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.ContentViewModel.Item.RenewalDate, htmlAttributes: new { @class = "control-label " + Model.ContentViewModel.LabelCss })
+    <div class="@Model.ContentViewModel.FieldCss">
+        @Html.EditorFor(model => model.ContentViewModel.Item.RenewalDate, new { htmlAttributes = new { @class = "form-control eml-form-control" } })
+        @Html.ValidationMessageFor(model => model.ContentViewModel.Item.RenewalDate, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.ContentViewModel.Item.EndDate, htmlAttributes: new { @class = "control-label " + Model.ContentViewModel.LabelCss })
+    <div class="@Model.ContentViewModel.FieldCss">
+        @Html.EditorFor(model => model.ContentViewModel.Item.EndDate, new { htmlAttributes = new { @class = "form-control eml-form-control" } })
+        @Html.ValidationMessageFor(model => model.ContentViewModel.Item.EndDate, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.ContentViewModel.Item.Price, htmlAttributes: new { @class = "control-label " + Model.ContentViewModel.LabelCss })
+    <div class="@Model.ContentViewModel.FieldCss">
+        @Html.EditorFor(model => model.ContentViewModel.Item.Price, new { htmlAttributes = new { @class = "form-control eml-form-control" } })
+        @Html.ValidationMessageFor(model => model.ContentViewModel.Item.Price, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="alert alert-info" role="alert">
+    <p>
+        <strong>Note: </strong>A valid contract should not overlap with dates from other contracts.
+    </p>
+</div>
+

@@ -1,0 +1,55 @@
+﻿@model LayoutViewModelBase<LayoutContentsIndexViewModel<int, Lookup>>
+
+<thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ContentViewModel.PagedListViewModel.PagedList.First().Group)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ContentViewModel.PagedListViewModel.PagedList.First().SubGroup)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ContentViewModel.PagedListViewModel.PagedList.First().Value)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ContentViewModel.PagedListViewModel.PagedList.First().Text)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ContentViewModel.PagedListViewModel.PagedList.First().DateDeleted)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ContentViewModel.PagedListViewModel.PagedList.First().DeletionReason)
+        </th>
+        <th>
+            @Html.Partial("_CreateItemButtonAjax", Model.ContentViewModel.CreateItemButtonViewModel)
+        </th>
+    </tr>
+</thead>
+<tbody id="@Model.ContentViewModel.PagedListViewModel.TargetTableBody">
+    @foreach (var item in Model.ContentViewModel.PagedListViewModel.PagedList)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Group)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SubGroup)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Value)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Text)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateDeleted)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DeletionReason)
+            </td>
+            <td>
+                @Html.Partial("_EditDetailsDelete", Model.ContentViewModel.GenerateEditDetailsDeleteLinks(Html, item.Text, item.Id, Model.ContentViewModel, Model.ReturnUrl, " | "))
+            </td>
+        </tr>
+    }
+</tbody>

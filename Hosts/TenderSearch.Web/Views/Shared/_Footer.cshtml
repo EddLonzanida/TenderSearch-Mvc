@@ -1,0 +1,18 @@
+﻿@model FooterViewModel
+
+<footer>
+    <br/>
+    <hr style="margin-top: 0;"/>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="md-left sm-center">
+                <p class="animated fadeInDown">&copy; @DateTime.Now.Year - @Model.ApplicationName</p>
+            </div>
+        </div>
+        <div class="col-md-6 app-version">
+            <div class="md-right sm-center">
+                <p class="animated fadeInDown">@Model.ApplicationVersion</p>
+            </div>
+        </div>
+    </div>
+</footer>

@@ -1,0 +1,10 @@
+﻿@using (Html.BeginForm("DownloadReport",
+                        null,
+                        null,
+                        FormMethod.Post,
+                        new { data_eml_downloadreportconfirmation = "true" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.Hidden("reportItemId", -1)
+    @Html.Hidden("reportKey", -1)
+}

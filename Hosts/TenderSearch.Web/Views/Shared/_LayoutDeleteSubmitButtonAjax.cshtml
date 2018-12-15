@@ -1,0 +1,12 @@
+﻿@using (Html.BeginForm(null, null, new { @returnUrl = Model.ReturnUrl }, FormMethod.Post, new { data_eml_deleteconfirmation = "true" }))
+{
+    @Html.AntiForgeryToken()
+
+    @Html.Partial("_DeletionReason")
+
+    <span id="busyindicatorDelete" style="display: none;">
+        @Html.Partial("_BusyIndicatorSmall")
+    </span>
+    @Html.Partial("_DeleteButton")
+    <button type="button" class="btn btn-primary" data-dismiss="modal" id="cancel-delete">No, do not delete. </button>
+}

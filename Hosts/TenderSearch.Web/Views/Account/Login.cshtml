@@ -1,0 +1,78 @@
+﻿@using Eml.HtmlHelpers.Checkbox
+
+@model LoginViewModel
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            @Html.Partial("_Logo")
+            <h2>@Model.Title1</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-8">
+            <section id="loginForm">
+                @using (Html.BeginForm("Login", "Account", new { returnUrl = Model.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <h4>Use a username to log in. </h4>
+                    <p class="text-danger">
+                        <i class="fa fa-info-circle">&nbsp;</i>
+                        <strong>Edd</strong>(as Admins), <strong>Francis</strong>(as UserManagers), <strong>Joseph</strong>(Users)
+                    </p>
+                    <p class="text-danger">
+                        <i class="fa fa-info-circle">&nbsp;</i>
+                        Password: <strong>Denim_123</strong>
+                    </p>
+                    <hr />
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger animated fadeInRight " })
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.LoginModel.UserName, new { @class = "col-md-2 control-label" })
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(m => m.LoginModel.UserName, new { @class = "form-control", @autofocus = "autofocus" })
+                            @Html.ValidationMessageFor(m => m.LoginModel.UserName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.LoginModel.Password, new { @class = "col-md-2 control-label" })
+                        <div class="col-md-10">
+                            @Html.PasswordFor(m => m.LoginModel.Password, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.LoginModel.Password, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            @Html.Bootstrap().CheckBoxFor(m => m.LoginModel.RememberMe)
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <button type="submit" class="btn btn-default">
+                                <i class="fa fa-unlock-alt"></i>&nbsp;Log in
+                            </button>
+                        </div>
+                    </div>
+                    <p>
+                        @Html.ActionLink("Register as a new user", "Register") &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;@Html.ActionLink("Forgot your password?", "ForgotPassword")
+                    </p>
+                }
+            </section>
+        </div>
+        @*<div class="col-md-4">
+                    <section id="socialLoginForm">
+                        _ExternalLoginsListPartial
+                        @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
+                    </section>
+            </div>*@
+    </div>
+</div>
+
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function (event) {
+        setTimeout(function () {
+            document.getElementById("LoginModel_RememberMe").checked = true;
+        }, 800);
+    });
+</script>

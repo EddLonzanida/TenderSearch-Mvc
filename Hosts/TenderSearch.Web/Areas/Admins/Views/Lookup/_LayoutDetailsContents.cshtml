@@ -1,0 +1,36 @@
+﻿@model LayoutViewModelBase<LayoutContentsDetailsDeleteViewModel<int, Lookup>>
+
+<dl class="dl-horizontal">
+    <dt>
+        @Html.DisplayNameFor(model => model.ContentViewModel.Item.Group)
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.ContentViewModel.Item.Group)
+    </dd>
+
+    <dt>
+        @Html.DisplayNameFor(model => model.ContentViewModel.Item.SubGroup)
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.ContentViewModel.Item.SubGroup)
+    </dd>
+
+    <dt>
+        @Html.DisplayNameFor(model => model.ContentViewModel.Item.Value)
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.ContentViewModel.Item.Value)
+    </dd>
+
+    <dt>
+        @Html.DisplayNameFor(model => model.ContentViewModel.Item.Text)
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.ContentViewModel.Item.Text)
+    </dd>
+
+</dl>

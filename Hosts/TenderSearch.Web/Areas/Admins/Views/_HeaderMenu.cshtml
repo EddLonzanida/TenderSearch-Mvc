@@ -1,0 +1,31 @@
+﻿@using TenderSearch.Contracts.Infrastructure
+@using Eml.ControllerBase.Mvc
+
+<li class="menu-item dropdown">
+    <a href="#" data-toggle="dropdown" class="dropdown-toggle">Controllers <b class="caret"></b></a>
+    <ul class="dropdown-menu">
+        @foreach (MenuItem menuItem in Model.GetMainMenus().Children)
+        {
+            <li class="@Html.IsActiveController(menuItem.ControllerName)">@Html.ActionLink(menuItem.ControllerName, "Index", menuItem.ControllerName, new { area = menuItem.AreaName }, null) </li>
+        }
+    </ul>
+</li>
+
+<li class="menu-item dropdown">
+    <a href="#" data-toggle="dropdown" class="dropdown-toggle">Administration <b class="caret"></b></a>
+    <ul class="dropdown-menu">
+        <li class="divider"></li>
+        <li class="dropdown-submenu">
+            <a href="#">Table Maintenance</a>
+            <ul class="dropdown-menu">
+                <li class="dropdown-submenu">
+                    <a href="#">Lookup Tables</a>
+                    <ul class="dropdown-menu">
+                        <li class="divider"></li>
+                        <li>@Html.ActionLink("Lookup", ActionNames.Index, "Lookup", new { area = MvcArea.Admins }, null) </li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</li>

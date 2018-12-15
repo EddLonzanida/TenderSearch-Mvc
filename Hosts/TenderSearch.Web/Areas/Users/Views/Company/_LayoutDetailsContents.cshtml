@@ -1,0 +1,35 @@
+﻿@model LayoutViewModelBase<LayoutContentsCreateEditViewModel<int, Company>>
+
+<dl class="dl-horizontal">
+    <dt>
+        @Html.DisplayNameFor(model => model.ContentViewModel.Item.Name)
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.ContentViewModel.Item.Name)
+    </dd>
+
+    <dt>
+        @Html.DisplayNameFor(model => model.ContentViewModel.Item.Description)
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.ContentViewModel.Item.Description)
+    </dd>
+
+    <dt>
+        @Html.DisplayNameFor(model => model.ContentViewModel.Item.Website)
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.ContentViewModel.Item.Website)
+    </dd>
+
+    <dt>
+        @Html.DisplayNameFor(model => model.ContentViewModel.Item.AbnCan)
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.ContentViewModel.Item.AbnCan)
+    </dd>
+</dl>

@@ -1,0 +1,10 @@
+﻿@{
+    ViewBag.Caption = ViewData["Caption"];
+}
+<div class="checkbox">
+    <label>
+        <input type="checkbox" value="" data-bind="disable: SelectAllNotAllowed, checked: SelectAll">
+        <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+        @ViewBag.Caption 
+    </label>
+</div>

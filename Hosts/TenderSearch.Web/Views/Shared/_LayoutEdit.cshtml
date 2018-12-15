@@ -1,0 +1,34 @@
+﻿<h2>@Model.Title1 <strong class="animated bounceInRight"><em>@Model.ContentViewModel.Title2</em></strong></h2>
+
+@using (Html.BeginForm(null, null, new { @returnUrl = Model.ReturnUrl }, FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal" id="LayoutCreateEditContent">
+        <h4>@Model.ContentViewModel.Title3</h4>
+        <hr />
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.Partial(Model.ContentViewModel.LayoutEditContentName as string)
+        
+        <div class="form-group">
+            <div class="col-md-offset-6">
+                <div class="pull-right" style="padding-right: 15px;">
+                    @Html.Partial("_EditButton")
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div style="margin-top: 10px;">
+                    @Html.ActionLink("Back to List", "Goto", new { @returnUrl = Model.ReturnUrl })
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@if (Model.ContentViewModel.HasChildrenOutsideBeginForm)
+{
+    <div class="col-md-offset-2 col-md-10">
+        @Html.Partial(Model.ContentViewModel.ChildrenOutsideBeginFormName as string)
+    </div>
+}

@@ -1,0 +1,30 @@
+﻿<div class="pagedList"
+     data-eml-targettablebody="#@Model.ContentViewModel.PagedListViewModel.TargetTableBody"
+     data-eml-pagecontainer="#@Model.ContentViewModel.PagedListViewModel.PageContainer"
+     data-eml-rowcount="#@Model.ContentViewModel.PagedListViewModel.TotalItemCountAsTextName">
+
+    @if (Model.ContentViewModel.PagedListViewModel.CanShowPages)
+    {
+        @Html.PagedListPager(Model.ContentViewModel.PagedListViewModel.PagedList as IPagedList,
+            page => Url.Action(Model.ContentViewModel.IndexActionName,
+                    Model.ContentViewModel.ControllerName as string,
+                    new { @parentId = Model.ContentViewModel.GetParentId(), @searchTerm = Model.ContentViewModel.PagedListViewModel.SearchTerm as string, @page = page, @returnToParentListUrl = Model.ReturnUrl as string }),
+                    new PagedListRenderOptions
+                    {
+                        FunctionToDisplayEachPageNumber = Model.ContentViewModel.PagedListViewModel.FunctionToDisplayEachPageNumber,
+                        MaximumPageNumbersToDisplay = Model.ContentViewModel.PagedListViewModel.MaximumPageNumbersToDisplay
+                    })
+    }
+
+    <span id="busyindicatorPaging" style="display:none;">
+        @Html.Partial("_BusyIndicatorSmall")
+    </span>
+</div>
+
+@if (Model.ContentViewModel.PagedListViewModel.CanShowRecordCount)
+{
+    <p class="text-info">
+        &nbsp;<i class="fa fa-info-circle animated rubberBand bounce "></i>
+        <span id="@Model.ContentViewModel.PagedListViewModel.TotalItemCountAsTextName">@($"{Model.ContentViewModel.PagedListViewModel.TotalItemCountAsText} row(s) found.")</span>
+    </p>
+}

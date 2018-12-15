@@ -1,0 +1,49 @@
+﻿@model LayoutViewModelBase
+
+<!DOCTYPE html>
+<html>
+<head>
+    @Html.Partial("_PageHeader", Model.PageHeaderViewModel)
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                @Html.Partial("_NavbarHeader", Model.NavbarHeaderViewModel)
+            </div>
+            <div class="navbar-collapse collapse">
+                @Html.Partial("_NavbarMenu", Model.NavbarMenuViewModel)
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+
+        @Html.Partial("_Footer", Model.FooterViewModel)
+    </div>
+
+    @if (Request.IsAuthenticated)
+    {
+        @Html.Partial("_DeleteConfirmation")
+        @Html.Partial("_CreateItemModal")
+        @Html.Partial("_EditItemModal")
+        @*@Html.Partial("_CopyItemModal")*@
+        @Html.Partial("_ErrorMessageModal")
+        @*@Html.Partial("_UnlockItemModal")*@
+        @Html.Partial("_PleaseWaitModal")
+        @Html.Partial("_BusyIndicator")
+    }
+
+    @Scripts.Render("~/bundles/client")
+
+    @if (Model.AllowKnockoutJs)
+    {
+        @Scripts.Render("~/bundles/knockout")
+
+        @Html.Partial("_KoViewModelBaseForSearch", Model.FooterViewModel)
+    }
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>

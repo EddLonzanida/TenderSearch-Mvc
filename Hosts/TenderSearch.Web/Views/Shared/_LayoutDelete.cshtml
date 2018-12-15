@@ -1,0 +1,25 @@
+﻿<h2>@Model.Title1</h2>
+
+<h3>Are you sure you want to delete <strong><em>@Model.ContentViewModel.Title2</em></strong> ?</h3>
+<div>
+    <h4>@Model.ContentViewModel.Title3</h4>
+    <hr />
+
+    @Html.Partial(Model.ContentViewModel.LayoutDeleteContentName as string)
+
+    @using (Html.BeginForm(null, null, new { @returnUrl = Model.ReturnUrl }, FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+
+        @Html.Partial("_DeletionReason")
+
+        <div class="form-actions no-color">
+            <span id="busyindicatorDelete" style="display: none;">
+                @Html.Partial("_BusyIndicatorSmall")
+            </span>
+            @Html.Partial("_DeleteButton") |
+            @Html.ActionLink("Back to List", "Goto", new { @returnUrl = Model.ReturnUrl }, new { id = "cancel-delete" })
+        </div>
+        <br />
+    }
+</div>

@@ -1,0 +1,43 @@
+﻿@model LayoutViewModelBase<LayoutContentsIndexViewModel<string, AspNetUserRole>>
+
+<tr>
+
+    @if (!Model.ContentViewModel.HasParent)
+    {
+        <th>
+            @Html.DisplayNameFor(model => model.ContentViewModel.PagedListViewModel.PagedList.First().UserName)
+        </th>
+    }
+    @*<th>
+            @Html.DisplayNameFor(model => model.First().Email)
+        </th>*@
+    <th>
+        @Html.DisplayNameFor(model => model.ContentViewModel.PagedListViewModel.PagedList.First().RoleName)
+    </th>
+    <th>
+        @Html.Partial("_CreateItemButtonAjax", Model.ContentViewModel.CreateItemButtonViewModel)
+    </th>
+</tr>
+
+@foreach (var item in Model.ContentViewModel.PagedListViewModel.PagedList)
+{
+    <tr>
+
+        @if (!Model.ContentViewModel.HasParent)
+        {
+            <td nowrap>
+                @item.UserName
+            </td>
+        }
+        @*<td nowrap>
+                @Html.DisplayTextFor(modelItem => item.Email)
+            </td>*@
+        <td nowrap>
+            @Html.DisplayFor(modelItem => item.RoleName)
+        </td>
+        <td>
+            @Html.Partial("_EditDetailsDelete", Model.ContentViewModel.GenerateEditDetailsDeleteLinks(Html, item.RoleName, $"{Model.ContentViewModel.ParentId}|{item.Id}", Model.ContentViewModel, Model.ReturnUrl, " | "))
+        </td>
+    </tr>
+}
+

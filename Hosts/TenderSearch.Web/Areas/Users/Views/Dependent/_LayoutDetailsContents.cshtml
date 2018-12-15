@@ -1,0 +1,79 @@
+﻿@model LayoutViewModelBase<LayoutContentsDetailsDeleteViewModel<int, Dependent>>
+
+<dl class="dl-horizontal">
+    <dt>
+        @Html.DisplayNameFor(model => model.ContentViewModel.Item.LastName)
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.ContentViewModel.Item.LastName)
+    </dd>
+
+    <dt>
+        @Html.DisplayNameFor(model => model.ContentViewModel.Item.FirstName)
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.ContentViewModel.Item.FirstName)
+    </dd>
+
+    <dt>
+        @Html.DisplayNameFor(model => model.ContentViewModel.Item.MiddleName)
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.ContentViewModel.Item.MiddleName)
+    </dd>
+
+    <dt>
+        @Html.DisplayNameFor(model => model.ContentViewModel.Item.DisplayName)
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.ContentViewModel.Item.DisplayName)
+    </dd>
+
+    <dt>
+        @Html.DisplayNameFor(model => model.ContentViewModel.Item.Relationship)
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.ContentViewModel.Item.Relationship)
+    </dd>
+
+    @*@if (!Model.ContentViewModel.HasParent)
+    {
+        <dt>
+            @Html.DisplayNameFor(model => model.ContentViewModel.Item.Employee.DisplayName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ContentViewModel.Item.Employee.DisplayName)
+        </dd>
+    }*@
+
+    <dt>
+        @Html.DisplayNameFor(model => model.ContentViewModel.Item.BirthDate)
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.ContentViewModel.Item.BirthDate)
+    </dd>
+
+    <dt>
+        @Html.DisplayNameFor(model => model.ContentViewModel.Item.Gender)
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.ContentViewModel.Item.Gender)
+    </dd>
+
+    <dt>
+        @Html.DisplayNameFor(model => model.ContentViewModel.Item.CivilStatus)
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.ContentViewModel.Item.CivilStatus)
+    </dd>
+
+</dl>

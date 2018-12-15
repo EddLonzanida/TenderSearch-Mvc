@@ -1,0 +1,61 @@
+﻿@model LayoutViewModelBase<LayoutContentsIndexViewModel<int, Address>>
+
+<thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ContentViewModel.PagedListViewModel.PagedList.First().Barangay.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ContentViewModel.PagedListViewModel.PagedList.First().StreetAddress)
+        </th>
+        @if (!Model.ContentViewModel.HasParent)
+        {
+            <th>
+                @Html.DisplayNameFor(model => model.ContentViewModel.PagedListViewModel.PagedList.First().OwnerId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ContentViewModel.PagedListViewModel.PagedList.First().OwnerType)
+            </th>
+        }
+        <th>
+            @Html.DisplayNameFor(model => model.ContentViewModel.PagedListViewModel.PagedList.First().AddressType)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ContentViewModel.PagedListViewModel.PagedList.First().PhoneNumber)
+        </th>
+        <th>
+            @Html.Partial("_CreateItemButtonAjax", Model.ContentViewModel.CreateItemButtonViewModel)
+        </th>
+    </tr>
+</thead>
+<tbody id="@Model.ContentViewModel.PagedListViewModel.TargetTableBody">
+    @foreach (var item in Model.ContentViewModel.PagedListViewModel.PagedList)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Barangay.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StreetAddress)
+            </td>
+            @if (!Model.ContentViewModel.HasParent)
+            {
+                <td nowrap>
+                    @item.OwnerDisplayName
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OwnerType)
+                </td>
+            }
+            <td>
+                @Html.DisplayFor(modelItem => item.AddressType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PhoneNumber)
+            </td>
+            <td>
+                @Html.Partial("_EditDetailsDelete", Model.ContentViewModel.GenerateEditDetailsDeleteLinks(Html, $"{item.AddressType} Address", item.Id, Model.ContentViewModel, Model.ReturnUrl, " | "))
+            </td>
+        </tr>
+    }
+</tbody>

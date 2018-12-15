@@ -1,0 +1,29 @@
+﻿@{
+    ViewBag.Title = "Registration Complete";
+}
+
+@Html.Partial("_Logo")
+
+<h2>@ViewBag.Title</h2>
+<div class="row">
+    <div class="col-md-8">
+        <section>
+            <br />
+            <h4>Thank you for registering.</h4>
+            <hr />
+            <br />
+            <br />
+            <div class="form-group">
+                <span class="text-info"><i class="fa fa-info-circle">&nbsp;</i></span> Please contact your Administrator to activate account.
+            </div>
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+
+            <p>@Html.ActionLink("Click here to Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</p>
+        </section>
+
+    </div>
+</div>

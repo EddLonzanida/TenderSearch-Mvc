@@ -1,0 +1,12 @@
+﻿@model NavbarMenuViewModel
+
+<ul class="nav navbar-nav">
+    @if (Request.IsAuthenticated)
+    {
+        if (Model.HasRoles)
+        {
+            <li class="@Html.IsActiveController("Dashboard")">@Html.ActionLink("Dashboard", "Index", "Dashboard", new { area = "" }, null)</li>
+        }
+        @Html.Partial("../_HeaderMenu")
+    }
+</ul>

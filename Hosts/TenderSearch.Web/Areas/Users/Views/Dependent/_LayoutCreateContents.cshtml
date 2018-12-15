@@ -1,0 +1,211 @@
+﻿@using Eml.ControllerBase.Mvc.Infrastructures
+@model LayoutViewModelBase<DependentLayoutContentsCreateEditViewModel>
+
+@Html.HiddenFor(model => model.ContentViewModel.Item.DisplayName)
+
+@if (Model.ContentViewModel.CanShowEmployee())
+{
+    <div class="form-group">
+        @Html.LabelFor(model => model.ContentViewModel.Item.EmployeeId, htmlAttributes: new { @class = "control-label " + Model.ContentViewModel.LabelCss })
+        <div class="@Model.ContentViewModel.FieldCss" data-bind="with: personSuggestionsViewModel">
+            <div data-bind="with: selectedItem">
+                @Html.EditorFor(model => model.ContentViewModel.Item.EmployeeId,
+                    new
+                    {
+                        htmlAttributes = new
+                        {
+                            @data_bind = "value: id",
+                            @class = "form-control eml-form-control hidden"
+                        }
+                    })
+
+                <input class="form-control text-box single-line eml-form-control"
+                       data-val="true"
+                       data-val-required="The Employee Name field is required."
+                       id="ContentViewModel_Item_EmployeeId"
+                       name="ContentViewModel.Item.EmployeeId"
+                       type="text"
+                       aria-describedby="ContentViewModel_Item_EmployeeId-error"
+                       data-bind="textInput: displayName, autocomplete: { source: function (request, response){$parent.fetchSuggestions(request, response);}, select: $parent.onItemSelected }">
+            </div>
+            @Html.ValidationMessageFor(model => model.ContentViewModel.Item.EmployeeId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+}
+else
+{
+    <div class="form-group">
+        @Html.LabelFor(model => model.ContentViewModel.Item.EmployeeId, htmlAttributes: new { @class = "control-label " + Model.ContentViewModel.LabelCss })
+        <div class="@Model.ContentViewModel.FieldCss">
+
+            @Html.HiddenFor(model => model.ContentViewModel.Item.EmployeeId)
+            @Html.HiddenFor(model => model.ContentViewModel.Item.Employee.EmployeeNumber)
+            @Html.HiddenFor(model => model.ContentViewModel.Item.Employee.MembershipDate)
+            @Html.HiddenFor(model => model.ContentViewModel.Item.Employee.HiredDate)
+            @Html.HiddenFor(model => model.ContentViewModel.Item.Employee.LastName)
+            @Html.HiddenFor(model => model.ContentViewModel.Item.Employee.FirstName)
+            @Html.HiddenFor(model => model.ContentViewModel.Item.Employee.MiddleName)
+            @Html.HiddenFor(model => model.ContentViewModel.Item.Employee.BirthDate)
+            @Html.HiddenFor(model => model.ContentViewModel.Item.Employee.Gender)
+            @Html.HiddenFor(model => model.ContentViewModel.Item.Employee.CivilStatus)
+            @Html.EditorFor(model => model.ContentViewModel.Item.Employee.DisplayName,
+            new
+            {
+                htmlAttributes = new
+                {
+                    @class = "form-control eml-form-control",
+                    @readonly = true
+                }
+            })
+        </div>
+    </div>
+}
+
+<div class="form-group">
+    @Html.LabelFor(model => model.ContentViewModel.Item.Relationship, htmlAttributes: new { @class = "control-label " + Model.ContentViewModel.LabelCss })
+    <div class="@Model.ContentViewModel.FieldCss">
+        @Html.DropDownListFor(model => model.ContentViewModel.Item.Relationship,
+            Model.ContentViewModel.GetDependentTypes(),
+            htmlAttributes: new { @class = "form-control eml-form-control" })
+        @Html.ValidationMessageFor(model => model.ContentViewModel.Item.Relationship, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.ContentViewModel.Item.LastName, htmlAttributes: new { @class = "control-label " + Model.ContentViewModel.LabelCss })
+    <div class="@Model.ContentViewModel.FieldCss">
+        @Html.EditorFor(model => model.ContentViewModel.Item.LastName, new { htmlAttributes = new { @class = "form-control eml-form-control" } })
+        @Html.ValidationMessageFor(model => model.ContentViewModel.Item.LastName, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.ContentViewModel.Item.FirstName, htmlAttributes: new { @class = "control-label " + Model.ContentViewModel.LabelCss })
+    <div class="@Model.ContentViewModel.FieldCss">
+        @Html.EditorFor(model => model.ContentViewModel.Item.FirstName, new { htmlAttributes = new { @class = "form-control eml-form-control" } })
+        @Html.ValidationMessageFor(model => model.ContentViewModel.Item.FirstName, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.ContentViewModel.Item.MiddleName, htmlAttributes: new { @class = "control-label " + Model.ContentViewModel.LabelCss })
+    <div class="@Model.ContentViewModel.FieldCss">
+        @Html.EditorFor(model => model.ContentViewModel.Item.MiddleName, new { htmlAttributes = new { @class = "form-control eml-form-control" } })
+        @Html.ValidationMessageFor(model => model.ContentViewModel.Item.MiddleName, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+@*<div class="form-group">
+        @Html.LabelFor(model => model.ContentViewModel.Item.DisplayName, htmlAttributes: new { @class = "control-label " + Model.ContentViewModel.LabelCss })
+        <div class="@Model.ContentViewModel.FieldCss">
+            @Html.EditorFor(model => model.ContentViewModel.Item.DisplayName, new { htmlAttributes = new { @class = "form-control eml-form-control" } })
+            @Html.ValidationMessageFor(model => model.ContentViewModel.Item.DisplayName, "", new { @class = "text-danger" })
+        </div>
+    </div>*@
+
+<div class="form-group">
+    @Html.LabelFor(model => model.ContentViewModel.Item.BirthDate, htmlAttributes: new { @class = "control-label " + Model.ContentViewModel.LabelCss })
+    <div class="@Model.ContentViewModel.FieldCss">
+        @Html.EditorFor(model => model.ContentViewModel.Item.BirthDate, new { htmlAttributes = new { @class = "form-control eml-form-control" } })
+        @Html.ValidationMessageFor(model => model.ContentViewModel.Item.BirthDate, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.ContentViewModel.Item.Gender, htmlAttributes: new { @class = "control-label " + Model.ContentViewModel.LabelCss })
+    <div class="@Model.ContentViewModel.FieldCss">
+        @Html.DropDownListFor(model => model.ContentViewModel.Item.Gender,
+            Model.ContentViewModel.GetGenders(),
+            htmlAttributes: new { @class = "form-control eml-form-control" })
+        @Html.ValidationMessageFor(model => model.ContentViewModel.Item.Gender, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.ContentViewModel.Item.CivilStatus, htmlAttributes: new { @class = "control-label " + Model.ContentViewModel.LabelCss })
+    <div class="@Model.ContentViewModel.FieldCss">
+        @Html.DropDownListFor(model => model.ContentViewModel.Item.CivilStatus,
+            Model.ContentViewModel.GetMaritalStatus(),
+            htmlAttributes: new { @class = "form-control eml-form-control" })
+        @Html.ValidationMessageFor(model => model.ContentViewModel.Item.CivilStatus, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+@if (Model.AllowKnockoutJs)
+{
+    @Scripts.Render("~/bundles/knockout/dependent-viewmodel")
+
+    <!-- ko if: hasError -->
+    <div class="col-md-12">
+        <div class="alert alert-danger" role="alert">
+            <div data-bind="template: { name: 'hasError-template' }"></div>
+        </div>
+    </div>
+    <!-- /ko -->
+
+    <span id="baseUrl" style="display: none;">@($"{Request?.Url?.Scheme}://{Request?.Url?.Authority}{Url.Content("~")}")</span>
+    <span id="initialDataForPerson" style="display: none;">@Html.Raw(JsonConvert.SerializeObject(Model.ContentViewModel.InitialPersonSuggestion))</span>
+
+    <script type="text/javascript">
+
+        function initialize() {
+            var option = {
+                baseUrl: $("#baseUrl").html(),
+                initialDataForPerson: $("#initialDataForPerson").html()
+            };
+
+            var viewModel = new DependentViewModel(option);
+            var $layoutCreateEditContentForAddress = $("#LayoutCreateEditContent")[0];
+
+            ko.cleanNode($layoutCreateEditContentForAddress);
+            ko.applyBindings(viewModel, $layoutCreateEditContentForAddress);
+
+            console.warn("Address Initialized..");
+        }
+    </script>
+
+    if (Request.IsAjaxRequest())
+    {
+        <script type="text/javascript">
+            $(document).ready(initialize);
+        </script>
+    }
+    else
+    {
+        <script type="text/javascript">
+            function DependentKo() {
+
+                var retryCounter = 0;
+                var retryLimit = 2;
+
+                window.onload = function () {
+
+                    var timerId = setInterval(function () {
+
+                        retryCounter++;
+
+                        if (retryCounter > retryLimit) {
+
+                            clearTimeout(timerId);
+                            console.warn("CLIENT NOT Found1!");
+
+                            return;
+                        }
+
+                        console.warn("Waiting for CLIENT..");
+
+                        if (CLIENT) {
+
+                            initialize();
+                            clearTimeout(timerId);
+
+                            console.warn("CLIENT Found2!");
+                        }
+                    }, 200);
+                };
+            }
+
+            DependentKo();
+        </script>
+    }
+}
