@@ -271,7 +271,12 @@
     <Compile Include="App_Start\Startup.cs" />
     <Compile Include="Areas\Admins\AdminsAreaRegistration.cs" />
     <Compile Include="Areas\Admins\Controllers\BaseClasses\AdminHomeControllerBase.cs" />
+    <Compile Include="Areas\Admins\Controllers\HasAllOptionsController.cs" />
+    <Compile Include="Areas\Admins\Controllers\HasCustomActionForIndexController.cs" />
+    <Compile Include="Areas\Admins\Controllers\HasCustomDropDownController.cs" />
+    <Compile Include="Areas\Admins\Controllers\HasParentController.cs" />
     <Compile Include="Areas\Admins\Controllers\HomeController.cs" />
+    <Compile Include="Areas\Admins\Controllers\IsSoftDeleteController.cs" />
     <Compile Include="Areas\Admins\Controllers\LookupController.cs" />
     <Compile Include="Areas\UserManagers\Controllers\AspNetUserController.cs" />
     <Compile Include="Areas\UserManagers\Controllers\AspNetUserRoleController.cs" />
@@ -567,6 +572,31 @@
     <Content Include="Areas\Users\Views\Dependent\_LayoutDetailsContents.cshtml" />
     <Content Include="Areas\Users\Views\Dependent\_LayoutEditContents.cshtml" />
     <Content Include="Areas\Users\Views\Dependent\_LayoutIndexContents.cshtml" />
+    <Content Include="Areas\Admins\Views\HasAllOptions\Create.cshtml" />
+    <Content Include="Areas\Admins\Views\HasAllOptions\Delete.cshtml" />
+    <Content Include="Areas\Admins\Views\HasAllOptions\Details.cshtml" />
+    <Content Include="Areas\Admins\Views\HasAllOptions\Edit.cshtml" />
+    <Content Include="Areas\Admins\Views\HasAllOptions\Index.cshtml" />
+    <Content Include="Areas\Admins\Views\HasCustomActionForIndex\Create.cshtml" />
+    <Content Include="Areas\Admins\Views\HasCustomActionForIndex\Delete.cshtml" />
+    <Content Include="Areas\Admins\Views\HasCustomActionForIndex\Details.cshtml" />
+    <Content Include="Areas\Admins\Views\HasCustomActionForIndex\Edit.cshtml" />
+    <Content Include="Areas\Admins\Views\HasCustomActionForIndex\Index.cshtml" />
+    <Content Include="Areas\Admins\Views\HasCustomDropDown\Create.cshtml" />
+    <Content Include="Areas\Admins\Views\HasCustomDropDown\Delete.cshtml" />
+    <Content Include="Areas\Admins\Views\HasCustomDropDown\Details.cshtml" />
+    <Content Include="Areas\Admins\Views\HasCustomDropDown\Edit.cshtml" />
+    <Content Include="Areas\Admins\Views\HasCustomDropDown\Index.cshtml" />
+    <Content Include="Areas\Admins\Views\HasParent\Create.cshtml" />
+    <Content Include="Areas\Admins\Views\HasParent\Delete.cshtml" />
+    <Content Include="Areas\Admins\Views\HasParent\Details.cshtml" />
+    <Content Include="Areas\Admins\Views\HasParent\Edit.cshtml" />
+    <Content Include="Areas\Admins\Views\HasParent\Index.cshtml" />
+    <Content Include="Areas\Admins\Views\IsSoftDelete\Create.cshtml" />
+    <Content Include="Areas\Admins\Views\IsSoftDelete\Delete.cshtml" />
+    <Content Include="Areas\Admins\Views\IsSoftDelete\Details.cshtml" />
+    <Content Include="Areas\Admins\Views\IsSoftDelete\Edit.cshtml" />
+    <Content Include="Areas\Admins\Views\IsSoftDelete\Index.cshtml" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>

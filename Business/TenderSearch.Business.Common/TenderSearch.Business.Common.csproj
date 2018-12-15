@@ -77,6 +77,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>EntitySortableFieldEnums.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\HasAllOptions.cs" />
+    <Compile Include="Entities\HasCustomActionForIndex.cs" />
+    <Compile Include="Entities\HasCustomDropDown.cs" />
+    <Compile Include="Entities\HasParent.cs" />
+    <Compile Include="Entities\IsSoftDelete.cs" />
     <Compile Include="Entities\Lookup.cs" />
     <Compile Include="Entities\BaseClasses\AspIdentityEntityBase.cs" />
     <Compile Include="Entities\Barangay.cs" />
