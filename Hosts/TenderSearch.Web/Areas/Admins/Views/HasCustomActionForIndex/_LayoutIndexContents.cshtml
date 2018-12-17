@@ -1,0 +1,31 @@
+﻿@model LayoutViewModelBase<HasCustomActionForIndexLayoutContentsIndexViewModel>
+
+<thead>
+	<tr>
+		<th>
+            @Html.DisplayNameFor(model => model.ContentViewModel.PagedListViewModel.PagedList.First().Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ContentViewModel.PagedListViewModel.PagedList.First().Name)
+        </th>
+		<th>
+			@Html.Partial("_CreateItemButtonAjax", Model.ContentViewModel.CreateItemButtonViewModel)
+		</th>
+	</tr>
+</thead>
+<tbody id="@Model.ContentViewModel.PagedListViewModel.TargetTableBody">
+@foreach (var item in Model.ContentViewModel.PagedListViewModel.PagedList)
+{
+	<tr>
+		<td>
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+		<td>
+			@Html.Partial("_EditDetailsDelete", Model.ContentViewModel.GenerateEditDetailsDeleteLinks(Html, item.Name, item.Id, Model.ContentViewModel, Model.ReturnUrl, " | "))
+		</td>
+	</tr>
+}
+</tbody>

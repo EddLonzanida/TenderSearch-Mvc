@@ -1,129 +1,256 @@
-﻿using System;
+﻿using Eml.ControllerBase.Mvc.Infrastructures;
+using Eml.ControllerBase.Mvc.ViewModels;
+using Eml.DataRepository.Contracts;
+using Eml.Extensions;
+using Eml.Logger;
+using Eml.Mediator.Contracts;
+using System;
 using System.Collections.Generic;
-using System.Data;
+using System.ComponentModel.Composition;
 using System.Data.Entity;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
-using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using TenderSearch.Business.Common.Entities;
-using TenderSearch.Data;
+using TenderSearch.Contracts.Infrastructure;
+using TenderSearch.Web.Controllers.BaseClasses;
+using X.PagedList;
 
 namespace TenderSearch.Web.Areas.Admins.Controllers
 {
-    public class HasParentController : Controller
+    [RouteArea(MvcArea.Admins)]
+    [Authorize(Roles = Authorize.Admins)]
+    [Export]
+    [PartCreationPolicy(CreationPolicy.NonShared)]
+    public class HasParentController : CrudControllerWithParent<HasParent>
     {
-        private TenderSearchDb db = new TenderSearchDb();
+        private readonly IDataRepositorySoftDeleteInt<Employee> parentRepository;
 
-        // GET: Admins/HasParent
-        public async Task<ActionResult> Index()
+        [ImportingConstructor]
+        public HasParentController(IMediator mediator, IDataRepositorySoftDeleteInt<HasParent> repository, ILogger logger, IDataRepositorySoftDeleteInt<Employee> parentRepository)
+            : base(mediator, repository, logger)
         {
-            return View(await db.HasParents.ToListAsync());
+            this.parentRepository = parentRepository;
         }
 
-        // GET: Admins/HasParent/Details/5
-        public async Task<ActionResult> Details(int? id)
+        protected override async Task<IPagedList<HasParent>> GetItemsAsync(int parentId, int page, bool isDesc, int sortColumn, string search, string param)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            HasParent hasParent = await db.HasParents.FindAsync(id);
-            if (hasParent == null)
-            {
-                return HttpNotFound();
-            }
-            return View(hasParent);
-        }
+            search = search.Trim().ToLower();
 
-        // GET: Admins/HasParent/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
+            Expression<Func<HasParent, bool>> whereClause = r => search == "" || r.Name.ToLower().Contains(search);
 
-        // POST: Admins/HasParent/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,ParentId,Name,DateDeleted,DeletionReason")] HasParent hasParent)
-        {
-            if (ModelState.IsValid)
+            if (parentId != default)
             {
-                db.HasParents.Add(hasParent);
-                await db.SaveChangesAsync();
-                return RedirectToAction("Index");
+                whereClause = whereClause.And(r => r.ParentId == parentId);
             }
 
-            return View(hasParent);
+            var orderBy = GetOrderBy(sortColumn, isDesc);
+            var result = await repository.GetPagedListAsync(page, whereClause, orderBy);
+
+            return result;
         }
 
-        // GET: Admins/HasParent/Edit/5
-        public async Task<ActionResult> Edit(int? id)
+        protected override async Task<List<string>> GetSuggestionsAsync(int parentId, string search, string param)
         {
-            if (id == null)
+            search = search.Trim().ToLower();
+
+            Expression<Func<HasParent, bool>> whereClause = r => search == "" || r.Name.ToLower().Contains(search);
+
+            if (parentId != default)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                whereClause = whereClause.And(r => r.ParentId.Equals(parentId));
             }
-            HasParent hasParent = await db.HasParents.FindAsync(id);
-            if (hasParent == null)
-            {
-                return HttpNotFound();
-            }
-            return View(hasParent);
+
+            return await repository.GetAutoCompleteIntellisenseAsync(whereClause, r => r.Name);
         }
 
-        // POST: Admins/HasParent/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,ParentId,Name,DateDeleted,DeletionReason")] HasParent hasParent)
+        protected override async Task<UiMessage> IsDuplicateAsync(HasParent item, string routeAction)
         {
-            if (ModelState.IsValid)
+            var newValue = item.Name;
+
+            Expression<Func<HasParent, bool>> whereClause = r => !string.IsNullOrWhiteSpace(r.Name) && r.Name == newValue;
+
+            if (routeAction != DuplicateNameAction.Create)
             {
-                db.Entry(hasParent).State = EntityState.Modified;
-                await db.SaveChangesAsync();
-                return RedirectToAction("Index");
+                var itemId = item.Id;
+
+                whereClause = whereClause.And(r => r.Id != itemId);
             }
-            return View(hasParent);
+
+            if (item.ParentId != default)
+            {
+                var itemParentId = item.ParentId;
+
+                whereClause = whereClause.And(r => r.ParentId != itemParentId);
+            }
+
+            var hasDuplicates = await repository.HasDuplicatesAsync(whereClause);
+
+            if (!hasDuplicates) return await Task.FromResult(new UiMessage());
+
+            var cDuplicateMsg = $"Name: <strong>{item.Name}</strong>";
+
+            return await Task.FromResult(new UiMessage(new[] { cDuplicateMsg }));
         }
 
-        // GET: Admins/HasParent/Delete/5
-        public async Task<ActionResult> Delete(int? id)
+        protected override async Task<(string Title1, string Title2, string Title3)> GetTitle123Async(HasParent item, int parentId, eAction action)
         {
-            if (id == null)
+            var title1 = string.Empty;
+            var title2 = string.Empty;
+            var title3 = string.Empty;
+
+            switch (action)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                case eAction.Index:
+
+                    title1 = $"Setup {GetTypeName().ToSpaceDelimitedWords().Pluralize()}";
+                    title2 = await GetParentName(parentId);
+
+                    break;
+
+                case eAction.GetCreate:
+                case eAction.PostCreate:
+
+                    title1 = action.ToString().Replace("Get", string.Empty).Replace("Post", string.Empty);
+                    title2 = GetTypeName().ToSpaceDelimitedWords();
+
+                    if (!Request.IsAjaxRequest()) title3 = await GetParentName(parentId);
+
+                    break;
+
+                case eAction.GetEdit:
+                case eAction.PostEdit:
+
+                    title1 = action.ToString().Replace("Get", string.Empty).Replace("Post", string.Empty);
+                    title2 = item.Name;
+
+                    if (!Request.IsAjaxRequest()) title3 = await GetParentName(parentId);
+
+                    break;
+
+                case eAction.GetDelete:
+                case eAction.PostDelete:
+
+                    title1 = action.ToString().Replace("Get", string.Empty).Replace("Post", string.Empty);
+                    title2 = item.Name;
+
+                    if (!Request.IsAjaxRequest()) title3 = await GetParentName(parentId);
+
+                    break;
+
+                case eAction.Details:
+
+                    title1 = action.ToString().Replace("Get", string.Empty).Replace("Post", string.Empty);
+                    title2 = item.Name;
+
+                    if (!Request.IsAjaxRequest()) title3 = await GetParentName(parentId);
+
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(action), action, null);
             }
-            HasParent hasParent = await db.HasParents.FindAsync(id);
-            if (hasParent == null)
-            {
-                return HttpNotFound();
-            }
-            return View(hasParent);
+
+            var result = (title1, title2, title3);
+
+            return await Task.FromResult(result);
         }
 
-        // POST: Admins/HasParent/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> DeleteConfirmed(int id)
+        protected override Func<IQueryable<HasParent>, IOrderedQueryable<HasParent>> GetOrderBy(int sortColumn, bool isDesc)
         {
-            HasParent hasParent = await db.HasParents.FindAsync(id);
-            db.HasParents.Remove(hasParent);
-            await db.SaveChangesAsync();
-            return RedirectToAction("Index");
+            Func<IQueryable<HasParent>, IOrderedQueryable<HasParent>> orderBy = null;
+
+            var eSortColumn = (eHasParent)sortColumn;
+
+            if (isDesc)
+            {
+                switch (eSortColumn)
+                {
+                    case eHasParent.Name:
+
+                        orderBy = r => r.OrderByDescending(x => x.Name);
+                        break;
+
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+
+                return orderBy;
+            }
+
+            switch (eSortColumn)
+            {
+                case eHasParent.Name:
+
+                    orderBy = r => r.OrderBy(x => x.Name);
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            return orderBy;
         }
 
-        protected override void Dispose(bool disposing)
+        public override async Task<HasParent> CreateNewItemWithParent(int parentId, string param)
         {
-            if (disposing)
+            var parent = await parentRepository.GetAsync(parentId);
+            var item = new HasParent
             {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
+                //     OwnerDisplayName = parent.DisplayName,
+                //     OwnerId = parentId,
+                Employee = parent
+            };
+
+            return item;
         }
+
+        public override async Task BeforeCreateSave(HasParent item)
+        {
+            parentRepository.SetUnchanged(item?.Employee);
+
+            if (item != null)
+            {
+                item.Employee = null;
+            }
+
+            await Task.Delay(1);
+        }
+
+        public override async Task BeforeEditSave(HasParent item)
+        {
+            parentRepository.SetUnchanged(item?.Employee);
+
+            if (item != null)
+            {
+                item.Employee = null;
+            }
+
+            await Task.Delay(1);
+        }
+
+        public override async Task<string> GetParentName(int parentId)
+        {
+            if (!HasParent(parentId)) return string.Empty;
+
+            var parent = await parentRepository.GetAsync(parentId);
+
+            return parent.DisplayName;
+        }
+
+        public override int GetParentId(HasParent item)
+        {
+            return item.ParentId;
+        }
+
+        public override async Task<HasParent> FindItemAsync(int id, eAction action)
+        {
+            var item = await repository.GetAsync(r => r.Include(s => s.Employee), r => r.Id == id);
+
+            return item.ToList().FirstOrDefault();
+        }
+
+
     }
 }

@@ -38,7 +38,7 @@ namespace TenderSearch.DataMigration.Seeders
                         RenewalDate = DateTime.Parse("19/01/2018", new CultureInfo("en-AU", false)),
                         EndDate = DateTime.Parse("19/01/2019", new CultureInfo("en-AU", false)),
                         Price = 200,
-                        ContractType = "Standard contact"
+                        ContractType = "Standard contract"
                     }
                 );
 

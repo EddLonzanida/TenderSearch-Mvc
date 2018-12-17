@@ -1,129 +1,191 @@
-﻿using System;
+﻿using Eml.ControllerBase.Mvc.Extensions;
+using Eml.ControllerBase.Mvc.Infrastructures;
+using Eml.ControllerBase.Mvc.ViewModels;
+using Eml.DataRepository.Contracts;
+using Eml.Extensions;
+using Eml.Logger;
+using Eml.Mediator.Contracts;
+using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
+using System.ComponentModel.Composition;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
-using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using TenderSearch.Business.Common.Entities;
-using TenderSearch.Data;
+using TenderSearch.Contracts.Infrastructure;
+using TenderSearch.Web.Areas.Admins.ViewModels;
+using TenderSearch.Web.Controllers.BaseClasses;
+using X.PagedList;
+using SelectListItem = System.Web.Mvc.SelectListItem;
 
 namespace TenderSearch.Web.Areas.Admins.Controllers
 {
-    public class HasCustomDropDownController : Controller
+    [RouteArea(MvcArea.Admins)]
+    [Authorize(Roles = Authorize.Admins)]
+    [Export]
+    [PartCreationPolicy(CreationPolicy.NonShared)]
+    public class HasCustomDropDownController : CrudControllerForCreateEdit<HasCustomDropDown, HasCustomDropDownLayoutContentsCreateEditViewModel>
     {
-        private TenderSearchDb db = new TenderSearchDb();
-
-        // GET: Admins/HasCustomDropDown
-        public async Task<ActionResult> Index()
+        [ImportingConstructor]
+        public HasCustomDropDownController(IMediator mediator, IDataRepositorySoftDeleteInt<HasCustomDropDown> repository, ILogger logger)
+            : base(mediator, repository, logger)
         {
-            return View(await db.HasCustomDropDowns.ToListAsync());
         }
 
-        // GET: Admins/HasCustomDropDown/Details/5
-        public async Task<ActionResult> Details(int? id)
+        protected override async Task<IPagedList<HasCustomDropDown>> GetItemsAsync(int parentId, int page, bool isDesc, int sortColumn, string search, string param)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            HasCustomDropDown hasCustomDropDown = await db.HasCustomDropDowns.FindAsync(id);
-            if (hasCustomDropDown == null)
-            {
-                return HttpNotFound();
-            }
-            return View(hasCustomDropDown);
+            search = search.Trim().ToLower();
+
+            Expression<Func<HasCustomDropDown, bool>> whereClause = r => search == "" || r.Name.ToLower().Contains(search);
+
+            var orderBy = GetOrderBy(sortColumn, isDesc);
+            var result = await repository.GetPagedListAsync(page, whereClause, orderBy);
+
+            return result;
         }
 
-        // GET: Admins/HasCustomDropDown/Create
-        public ActionResult Create()
+        protected override async Task<List<string>> GetSuggestionsAsync(int parentId, string search, string param)
         {
-            return View();
+            search = search.Trim().ToLower();
+
+            Expression<Func<HasCustomDropDown, bool>> whereClause = r => search == "" || r.Name.ToLower().Contains(search);
+
+            return await repository.GetAutoCompleteIntellisenseAsync(whereClause, r => r.Name);
         }
 
-        // POST: Admins/HasCustomDropDown/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,Description,Name,DateDeleted,DeletionReason")] HasCustomDropDown hasCustomDropDown)
+        protected override async Task<UiMessage> IsDuplicateAsync(HasCustomDropDown item, string routeAction)
         {
-            if (ModelState.IsValid)
+            var newValue = item.Name;
+
+            Expression<Func<HasCustomDropDown, bool>> whereClause = r => !string.IsNullOrWhiteSpace(r.Name) && r.Name == newValue;
+
+            if (routeAction != DuplicateNameAction.Create)
             {
-                db.HasCustomDropDowns.Add(hasCustomDropDown);
-                await db.SaveChangesAsync();
-                return RedirectToAction("Index");
+                var itemId = item.Id;
+
+                whereClause = whereClause.And(r => r.Id != itemId);
             }
 
-            return View(hasCustomDropDown);
+            var hasDuplicates = await repository.HasDuplicatesAsync(whereClause);
+
+            if (!hasDuplicates) return await Task.FromResult(new UiMessage());
+
+            var cDuplicateMsg = $"Name: <strong>{item.Name}</strong>";
+
+            return await Task.FromResult(new UiMessage(new[] { cDuplicateMsg }));
         }
 
-        // GET: Admins/HasCustomDropDown/Edit/5
-        public async Task<ActionResult> Edit(int? id)
+        protected override async Task<(string Title1, string Title2, string Title3)> GetTitle123Async(HasCustomDropDown item, int parentId, eAction action)
         {
-            if (id == null)
+            var title1 = string.Empty;
+            var title2 = string.Empty;
+            var title3 = string.Empty;
+
+            switch (action)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                case eAction.Index:
+
+                    title1 = $"Setup {GetTypeName().ToSpaceDelimitedWords().Pluralize()}";
+
+                    break;
+
+                case eAction.GetCreate:
+                case eAction.PostCreate:
+
+                    title1 = action.ToString().Replace("Get", string.Empty).Replace("Post", string.Empty);
+                    title2 = GetTypeName().ToSpaceDelimitedWords();
+
+                    break;
+
+                case eAction.GetEdit:
+                case eAction.PostEdit:
+
+                    title1 = action.ToString().Replace("Get", string.Empty).Replace("Post", string.Empty);
+                    title2 = item.Name;
+
+                    break;
+
+                case eAction.GetDelete:
+                case eAction.PostDelete:
+
+                    title1 = action.ToString().Replace("Get", string.Empty).Replace("Post", string.Empty);
+                    title2 = item.Name;
+
+                    break;
+
+                case eAction.Details:
+
+                    title1 = action.ToString().Replace("Get", string.Empty).Replace("Post", string.Empty);
+                    title2 = item.Name;
+
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(action), action, null);
             }
-            HasCustomDropDown hasCustomDropDown = await db.HasCustomDropDowns.FindAsync(id);
-            if (hasCustomDropDown == null)
-            {
-                return HttpNotFound();
-            }
-            return View(hasCustomDropDown);
+
+            var result = (title1, title2, title3);
+
+            return await Task.FromResult(result);
         }
 
-        // POST: Admins/HasCustomDropDown/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,Description,Name,DateDeleted,DeletionReason")] HasCustomDropDown hasCustomDropDown)
+        protected override Func<IQueryable<HasCustomDropDown>, IOrderedQueryable<HasCustomDropDown>> GetOrderBy(int sortColumn, bool isDesc)
         {
-            if (ModelState.IsValid)
+            Func<IQueryable<HasCustomDropDown>, IOrderedQueryable<HasCustomDropDown>> orderBy = null;
+
+            var eSortColumn = (eHasCustomDropDown)sortColumn;
+
+            if (isDesc)
             {
-                db.Entry(hasCustomDropDown).State = EntityState.Modified;
-                await db.SaveChangesAsync();
-                return RedirectToAction("Index");
+                switch (eSortColumn)
+                {
+                    case eHasCustomDropDown.Name:
+
+                        orderBy = r => r.OrderByDescending(x => x.Name);
+                        break;
+
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+
+                return orderBy;
             }
-            return View(hasCustomDropDown);
+
+            switch (eSortColumn)
+            {
+                case eHasCustomDropDown.Name:
+
+                    orderBy = r => r.OrderBy(x => x.Name);
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            return orderBy;
         }
 
-        // GET: Admins/HasCustomDropDown/Delete/5
-        public async Task<ActionResult> Delete(int? id)
+        /// <summary>
+        /// Tip: override GenerateEditDetailsDeleteLinks and supply custom values for the 'param' parameter
+        /// </summary>
+        protected override HasCustomDropDownLayoutContentsCreateEditViewModel GetLayoutContentsViewModelForCreateEdit(HasCustomDropDown item, string title1, string title2, string title3, int pageSize, int labelClassColumnCount, int parentId, string param)
         {
-            if (id == null)
+            var contentsVm = new HasCustomDropDownLayoutContentsCreateEditViewModel(item, title1, title2, title3, pageSize, labelClassColumnCount, parentId, param)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            HasCustomDropDown hasCustomDropDown = await db.HasCustomDropDowns.FindAsync(id);
-            if (hasCustomDropDown == null)
-            {
-                return HttpNotFound();
-            }
-            return View(hasCustomDropDown);
+                GetCustomDropDown = GetCustomDropDown
+            };
+
+            return contentsVm;
         }
 
-        // POST: Admins/HasCustomDropDown/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> DeleteConfirmed(int id)
+        private IEnumerable<SelectListItem> GetCustomDropDown()
         {
-            HasCustomDropDown hasCustomDropDown = await db.HasCustomDropDowns.FindAsync(id);
-            db.HasCustomDropDowns.Remove(hasCustomDropDown);
-            await db.SaveChangesAsync();
-            return RedirectToAction("Index");
-        }
+            var items = new List<string> { "CustomDropDown1", "CustomDropDown2" };
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
+            var selectLists = items.ConvertAll(r => new Eml.Extensions.SelectListItem { Value = r, Text = r });
+
+            return selectLists.ToMvcSelectListItem();
         }
     }
 }

@@ -6,5 +6,6 @@ namespace TenderSearch.Business.Common.Entities
     {
         public int ParentId { get; set; }
         public string Description { get; set; }
+        public virtual Employee Employee { get; set; }
     }
 }

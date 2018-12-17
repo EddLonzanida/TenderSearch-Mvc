@@ -31,8 +31,6 @@ namespace TenderSearch.Data
 
         public DbSet<HasCustomDropDown> HasCustomDropDowns { get; set; }
 
-        public DbSet<HasCustomDropDownForEditCreate> HasCustomDropDownForEditCreates { get; set; }
-
         public DbSet<HasParent> HasParents { get; set; }
 
         public DbSet<IsSoftDelete> IsSoftDeletes { get; set; }

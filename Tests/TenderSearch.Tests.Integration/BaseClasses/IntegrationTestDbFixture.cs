@@ -29,6 +29,7 @@ namespace TenderSearch.Tests.Integration.BaseClasses
                 throw new NoNullAllowedException("dbMigration not found..");
             }
 
+            // Exclude SqlServerMigrations files before running this.  Seeders and SqlSeeders are mutually exclusive.
             dbMigration.Execute(DB_DIRECTORY);
         }
 

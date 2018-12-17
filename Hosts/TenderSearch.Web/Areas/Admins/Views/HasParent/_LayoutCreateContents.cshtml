@@ -1,0 +1,25 @@
+﻿@model LayoutViewModelBase<LayoutContentsCreateEditViewModel<int, HasParent>>
+
+		<div class="form-group">
+            @Html.LabelFor(model => model.ContentViewModel.Item.ParentId, htmlAttributes: new { @class = "control-label " + Model.ContentViewModel.LabelCss })
+            <div class="@Model.ContentViewModel.FieldCss">
+                @Html.EditorFor(model => model.ContentViewModel.Item.ParentId, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ContentViewModel.Item.ParentId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ContentViewModel.Item.Name, htmlAttributes: new { @class = "control-label " + Model.ContentViewModel.LabelCss })
+            <div class="@Model.ContentViewModel.FieldCss">
+                @Html.EditorFor(model => model.ContentViewModel.Item.Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ContentViewModel.Item.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ContentViewModel.Item.DateDeleted, htmlAttributes: new { @class = "control-label " + Model.ContentViewModel.LabelCss })
+            <div class="@Model.ContentViewModel.FieldCss">
+                @Html.EditorFor(model => model.ContentViewModel.Item.DateDeleted, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ContentViewModel.Item.DateDeleted, "", new { @class = "text-danger" })
+            </div>
+        </div>

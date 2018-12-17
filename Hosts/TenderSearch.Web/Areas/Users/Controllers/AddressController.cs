@@ -482,6 +482,9 @@ namespace TenderSearch.Web.Areas.Users.Controllers
             if (!HasParent(parentId)) return string.Empty;
 
             var param = GetParam();
+
+            if (string.IsNullOrWhiteSpace(param)) return string.Empty;
+
             var ownerType = (eAddressOwnerType)Enum.Parse(typeof(eAddressOwnerType), param);
 
             switch (ownerType)

@@ -1,129 +1,293 @@
-﻿using System;
+﻿using Eml.ControllerBase.Mvc.Extensions;
+using Eml.ControllerBase.Mvc.Infrastructures;
+using Eml.ControllerBase.Mvc.ViewModels;
+using Eml.DataRepository.Contracts;
+using Eml.Extensions;
+using Eml.Logger;
+using Eml.Mediator.Contracts;
+using System;
 using System.Collections.Generic;
-using System.Data;
+using System.ComponentModel.Composition;
 using System.Data.Entity;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
-using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using TenderSearch.Business.Common.Entities;
-using TenderSearch.Data;
+using TenderSearch.Contracts.Infrastructure;
+using TenderSearch.Web.Areas.Admins.ViewModels;
+using TenderSearch.Web.Controllers.BaseClasses;
+using X.PagedList;
+using SelectListItem = System.Web.Mvc.SelectListItem;
 
 namespace TenderSearch.Web.Areas.Admins.Controllers
 {
-    public class HasAllOptionsController : Controller
+    [RouteArea(MvcArea.Admins)]
+    [Authorize(Roles = Authorize.Admins)]
+    [Export]
+    [PartCreationPolicy(CreationPolicy.NonShared)]
+    public class HasAllOptionsController : CrudControllerForCreateEditIndexWithParent<HasAllOptions, HasAllOptionsLayoutContentsCreateEditViewModel, HasAllOptionsLayoutContentsIndexViewModel>
     {
-        private TenderSearchDb db = new TenderSearchDb();
+        private readonly IDataRepositorySoftDeleteInt<Employee> parentRepository;
 
-        // GET: Admins/HasAllOptions
-        public async Task<ActionResult> Index()
+        [ImportingConstructor]
+        public HasAllOptionsController(IMediator mediator, IDataRepositorySoftDeleteInt<HasAllOptions> repository, ILogger logger, IDataRepositorySoftDeleteInt<Employee> parentRepository)
+            : base(mediator, repository, logger)
         {
-            return View(await db.HasAllOptions.ToListAsync());
+            this.parentRepository = parentRepository;
         }
 
-        // GET: Admins/HasAllOptions/Details/5
-        public async Task<ActionResult> Details(int? id)
+        protected override async Task<IPagedList<HasAllOptions>> GetItemsAsync(int parentId, int page, bool isDesc, int sortColumn, string search, string param)
         {
-            if (id == null)
+            search = search.Trim().ToLower();
+
+            Expression<Func<HasAllOptions, bool>> whereClause = r => search == "" || r.Name.ToLower().Contains(search);
+
+            if (parentId != default)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                whereClause = whereClause.And(r => r.ParentId == parentId);
             }
-            HasAllOptions hasAllOptions = await db.HasAllOptions.FindAsync(id);
-            if (hasAllOptions == null)
-            {
-                return HttpNotFound();
-            }
-            return View(hasAllOptions);
+
+            var orderBy = GetOrderBy(sortColumn, isDesc);
+            var result = await repository.GetPagedListAsync(page, whereClause, orderBy);
+
+            return result;
         }
 
-        // GET: Admins/HasAllOptions/Create
-        public ActionResult Create()
+        protected override async Task<List<string>> GetSuggestionsAsync(int parentId, string search, string param)
         {
-            return View();
+            search = search.Trim().ToLower();
+
+            Expression<Func<HasAllOptions, bool>> whereClause = r => search == "" || r.Name.ToLower().Contains(search);
+
+            if (parentId != default)
+            {
+                whereClause = whereClause.And(r => r.ParentId.Equals(parentId));
+            }
+
+            return await repository.GetAutoCompleteIntellisenseAsync(whereClause, r => r.Name);
         }
 
-        // POST: Admins/HasAllOptions/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,ParentId,Description,Name,DateDeleted,DeletionReason")] HasAllOptions hasAllOptions)
+        protected override async Task<UiMessage> IsDuplicateAsync(HasAllOptions item, string routeAction)
         {
-            if (ModelState.IsValid)
+            var newValue = item.Name;
+
+            Expression<Func<HasAllOptions, bool>> whereClause = r => !string.IsNullOrWhiteSpace(r.Name) && r.Name == newValue;
+
+            if (routeAction != DuplicateNameAction.Create)
             {
-                db.HasAllOptions.Add(hasAllOptions);
-                await db.SaveChangesAsync();
-                return RedirectToAction("Index");
+                var itemId = item.Id;
+
+                whereClause = whereClause.And(r => r.Id != itemId);
             }
 
-            return View(hasAllOptions);
+            if (item.ParentId != default)
+            {
+                var itemParentId = item.ParentId;
+
+                whereClause = whereClause.And(r => r.ParentId != itemParentId);
+            }
+
+            var hasDuplicates = await repository.HasDuplicatesAsync(whereClause);
+
+            if (!hasDuplicates) return await Task.FromResult(new UiMessage());
+
+            var cDuplicateMsg = $"Name: <strong>{item.Name}</strong>";
+
+            return await Task.FromResult(new UiMessage(new[] { cDuplicateMsg }));
         }
 
-        // GET: Admins/HasAllOptions/Edit/5
-        public async Task<ActionResult> Edit(int? id)
+        protected override async Task<(string Title1, string Title2, string Title3)> GetTitle123Async(HasAllOptions item, int parentId, eAction action)
         {
-            if (id == null)
+            var title1 = string.Empty;
+            var title2 = string.Empty;
+            var title3 = string.Empty;
+
+            switch (action)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                case eAction.Index:
+
+                    title1 = $"Setup {GetTypeName().ToSpaceDelimitedWords().Pluralize()}";
+                    title2 = await GetParentName(parentId);
+
+                    break;
+
+                case eAction.GetCreate:
+                case eAction.PostCreate:
+
+                    title1 = action.ToString().Replace("Get", string.Empty).Replace("Post", string.Empty);
+                    title2 = GetTypeName().ToSpaceDelimitedWords();
+
+                    if (!Request.IsAjaxRequest()) title3 = await GetParentName(parentId);
+
+                    break;
+
+                case eAction.GetEdit:
+                case eAction.PostEdit:
+
+                    title1 = action.ToString().Replace("Get", string.Empty).Replace("Post", string.Empty);
+                    title2 = item.Name;
+
+                    if (!Request.IsAjaxRequest()) title3 = await GetParentName(parentId);
+
+                    break;
+
+                case eAction.GetDelete:
+                case eAction.PostDelete:
+
+                    title1 = action.ToString().Replace("Get", string.Empty).Replace("Post", string.Empty);
+                    title2 = item.Name;
+
+                    if (!Request.IsAjaxRequest()) title3 = await GetParentName(parentId);
+
+                    break;
+
+                case eAction.Details:
+
+                    title1 = action.ToString().Replace("Get", string.Empty).Replace("Post", string.Empty);
+                    title2 = item.Name;
+
+                    if (!Request.IsAjaxRequest()) title3 = await GetParentName(parentId);
+
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(action), action, null);
             }
-            HasAllOptions hasAllOptions = await db.HasAllOptions.FindAsync(id);
-            if (hasAllOptions == null)
-            {
-                return HttpNotFound();
-            }
-            return View(hasAllOptions);
+
+            var result = (title1, title2, title3);
+
+            return await Task.FromResult(result);
         }
 
-        // POST: Admins/HasAllOptions/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,ParentId,Description,Name,DateDeleted,DeletionReason")] HasAllOptions hasAllOptions)
+        protected override Func<IQueryable<HasAllOptions>, IOrderedQueryable<HasAllOptions>> GetOrderBy(int sortColumn, bool isDesc)
         {
-            if (ModelState.IsValid)
+            Func<IQueryable<HasAllOptions>, IOrderedQueryable<HasAllOptions>> orderBy = null;
+
+            var eSortColumn = (eHasAllOptions)sortColumn;
+
+            if (isDesc)
             {
-                db.Entry(hasAllOptions).State = EntityState.Modified;
-                await db.SaveChangesAsync();
-                return RedirectToAction("Index");
+                switch (eSortColumn)
+                {
+                    case eHasAllOptions.Name:
+
+                        orderBy = r => r.OrderByDescending(x => x.Name);
+                        break;
+
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+
+                return orderBy;
             }
-            return View(hasAllOptions);
+
+            switch (eSortColumn)
+            {
+                case eHasAllOptions.Name:
+
+                    orderBy = r => r.OrderBy(x => x.Name);
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            return orderBy;
         }
 
-        // GET: Admins/HasAllOptions/Delete/5
-        public async Task<ActionResult> Delete(int? id)
+        public override async Task<HasAllOptions> CreateNewItemWithParent(int parentId, string param)
         {
-            if (id == null)
+            var parent = await parentRepository.GetAsync(parentId);
+            var item = new HasAllOptions
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            HasAllOptions hasAllOptions = await db.HasAllOptions.FindAsync(id);
-            if (hasAllOptions == null)
-            {
-                return HttpNotFound();
-            }
-            return View(hasAllOptions);
+                //     OwnerDisplayName = parent.DisplayName,
+                //     OwnerId = parentId,
+                Employee = parent
+            };
+
+            return item;
         }
 
-        // POST: Admins/HasAllOptions/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> DeleteConfirmed(int id)
+        public override async Task BeforeCreateSave(HasAllOptions item)
         {
-            HasAllOptions hasAllOptions = await db.HasAllOptions.FindAsync(id);
-            db.HasAllOptions.Remove(hasAllOptions);
-            await db.SaveChangesAsync();
-            return RedirectToAction("Index");
+            parentRepository.SetUnchanged(item?.Employee);
+
+            if (item != null)
+            {
+                item.Employee = null;
+            }
+
+            await Task.Delay(1);
         }
 
-        protected override void Dispose(bool disposing)
+        public override async Task BeforeEditSave(HasAllOptions item)
         {
-            if (disposing)
+            parentRepository.SetUnchanged(item?.Employee);
+
+            if (item != null)
             {
-                db.Dispose();
+                item.Employee = null;
             }
-            base.Dispose(disposing);
+
+            await Task.Delay(1);
+        }
+
+        public override async Task<string> GetParentName(int parentId)
+        {
+            if (!HasParent(parentId)) return string.Empty;
+
+            var parent = await parentRepository.GetAsync(parentId);
+
+            return parent.DisplayName;
+        }
+
+        public override int GetParentId(HasAllOptions item)
+        {
+            return item.ParentId;
+        }
+
+        public override async Task<HasAllOptions> FindItemAsync(int id, eAction action)
+        {
+            var item = await repository.GetAsync(r => r.Include(s => s.Employee), r => r.Id == id);
+
+            return item.ToList().FirstOrDefault();
+        }
+
+        protected override HasAllOptionsLayoutContentsIndexViewModel GetLayoutContentsViewModelForIndex(IPagedList<HasAllOptions> pagedList, string title1, string title2, string title3, string search, string targetTableBody, int page, int parentId, string param)
+        {
+            var contentsVm = new HasAllOptionsLayoutContentsIndexViewModel(pagedList, title1, title2, title3, search, targetTableBody, page, parentId, param)
+            {
+                GetExpirationCountDown = GetExpirationCountDown
+            };
+
+            return contentsVm;
+        }
+
+        public int? GetExpirationCountDown(HasAllOptions item)
+        {
+            return null;
+        }
+        /// <summary>
+        /// Tip: override GenerateEditDetailsDeleteLinks and supply custom values for the 'param' parameter
+        /// </summary>
+        protected override HasAllOptionsLayoutContentsCreateEditViewModel GetLayoutContentsViewModelForCreateEdit(HasAllOptions item, string title1, string title2, string title3, int pageSize, int labelClassColumnCount, int parentId, string param)
+        {
+            var contentsVm = new HasAllOptionsLayoutContentsCreateEditViewModel(item, title1, title2, title3, pageSize, labelClassColumnCount, parentId, param)
+            {
+                GetCustomDropDown = GetCustomDropDown
+            };
+
+            return contentsVm;
+        }
+
+        private IEnumerable<SelectListItem> GetCustomDropDown()
+        {
+            var items = new List<string> { "CustomDropDown1", "CustomDropDown2" };
+
+            var selectLists = items.ConvertAll(r => new Eml.Extensions.SelectListItem { Value = r, Text = r });
+
+            return selectLists.ToMvcSelectListItem();
         }
     }
 }

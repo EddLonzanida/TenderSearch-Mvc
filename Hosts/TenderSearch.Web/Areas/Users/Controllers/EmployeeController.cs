@@ -60,8 +60,7 @@ namespace TenderSearch.Web.Areas.Users.Controllers
 
             Expression<Func<Employee, bool>> whereClause = r => search == "" || r.DisplayName.ToLower().Contains(search);
 
-            return await repository.GetAutoCompleteIntellisenseAsync(whereClause
-                , r => r.DisplayName);
+            return await repository.GetAutoCompleteIntellisenseAsync(whereClause , r => r.DisplayName);
         }
 
         protected override async Task<UiMessage> IsDuplicateAsync(Employee item, string routeAction)

@@ -1,0 +1,5 @@
+﻿@model LayoutViewModelBase<LayoutContentsCreateEditViewModel<int, HasParent>>
+
+@Html.HiddenFor(model => model.ContentViewModel.Item.Id)
+
+@Html.Partial("_LayoutCreateContents")

@@ -1,129 +1,168 @@
-﻿using System;
+﻿using Eml.ControllerBase.Mvc.Infrastructures;
+using Eml.ControllerBase.Mvc.ViewModels;
+using Eml.DataRepository.Contracts;
+using Eml.Extensions;
+using Eml.Logger;
+using Eml.Mediator.Contracts;
+using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
+using System.ComponentModel.Composition;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
-using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using TenderSearch.Business.Common.Entities;
-using TenderSearch.Data;
+using TenderSearch.Contracts.Infrastructure;
+using TenderSearch.Web.Controllers.BaseClasses;
+using X.PagedList;
 
 namespace TenderSearch.Web.Areas.Admins.Controllers
 {
-    public class IsSoftDeleteController : Controller
+    [RouteArea(MvcArea.Admins)]
+    [Authorize(Roles = Authorize.Admins)]
+    [Export]
+    [PartCreationPolicy(CreationPolicy.NonShared)]
+    public class IsSoftDeleteController : CrudController<IsSoftDelete>
     {
-        private TenderSearchDb db = new TenderSearchDb();
-
-        // GET: Admins/IsSoftDelete
-        public async Task<ActionResult> Index()
+        [ImportingConstructor]
+        public IsSoftDeleteController(IMediator mediator, IDataRepositorySoftDeleteInt<IsSoftDelete> repository, ILogger logger)
+            : base(mediator, repository, logger)
         {
-            return View(await db.IsSoftDeletes.ToListAsync());
         }
 
-        // GET: Admins/IsSoftDelete/Details/5
-        public async Task<ActionResult> Details(int? id)
+        protected override async Task<IPagedList<IsSoftDelete>> GetItemsAsync(int parentId, int page, bool isDesc, int sortColumn, string search, string param)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            IsSoftDelete isSoftDelete = await db.IsSoftDeletes.FindAsync(id);
-            if (isSoftDelete == null)
-            {
-                return HttpNotFound();
-            }
-            return View(isSoftDelete);
+            search = search.Trim().ToLower();
+
+            Expression<Func<IsSoftDelete, bool>> whereClause = r => search == "" || r.Name.ToLower().Contains(search);
+
+            var orderBy = GetOrderBy(sortColumn, isDesc);
+            var result = await repository.GetPagedListAsync(page, whereClause, orderBy);
+
+            return result;
         }
 
-        // GET: Admins/IsSoftDelete/Create
-        public ActionResult Create()
+        protected override async Task<List<string>> GetSuggestionsAsync(int parentId, string search, string param)
         {
-            return View();
+            search = search.Trim().ToLower();
+
+            Expression<Func<IsSoftDelete, bool>> whereClause = r => search == "" || r.Name.ToLower().Contains(search);
+
+            return await repository.GetAutoCompleteIntellisenseAsync(whereClause, r => r.Name);
         }
 
-        // POST: Admins/IsSoftDelete/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,Description,Name,DateDeleted,DeletionReason")] IsSoftDelete isSoftDelete)
+        protected override async Task<UiMessage> IsDuplicateAsync(IsSoftDelete item, string routeAction)
         {
-            if (ModelState.IsValid)
+            var newValue = item.Name;
+
+            Expression<Func<IsSoftDelete, bool>> whereClause = r => !string.IsNullOrWhiteSpace(r.Name) && r.Name == newValue;
+
+            if (routeAction != DuplicateNameAction.Create)
             {
-                db.IsSoftDeletes.Add(isSoftDelete);
-                await db.SaveChangesAsync();
-                return RedirectToAction("Index");
+                var itemId = item.Id;
+
+                whereClause = whereClause.And(r => r.Id != itemId);
             }
 
-            return View(isSoftDelete);
+            var hasDuplicates = await repository.HasDuplicatesAsync(whereClause);
+
+            if (!hasDuplicates) return await Task.FromResult(new UiMessage());
+
+            var cDuplicateMsg = $"Name: <strong>{item.Name}</strong>";
+
+            return await Task.FromResult(new UiMessage(new[] { cDuplicateMsg }));
         }
 
-        // GET: Admins/IsSoftDelete/Edit/5
-        public async Task<ActionResult> Edit(int? id)
+        protected override async Task<(string Title1, string Title2, string Title3)> GetTitle123Async(IsSoftDelete item, int parentId, eAction action)
         {
-            if (id == null)
+            var title1 = string.Empty;
+            var title2 = string.Empty;
+            var title3 = string.Empty;
+
+            switch (action)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                case eAction.Index:
+
+                    title1 = $"Setup {GetTypeName().ToSpaceDelimitedWords().Pluralize()}";
+
+                    break;
+
+                case eAction.GetCreate:
+                case eAction.PostCreate:
+
+                    title1 = action.ToString().Replace("Get", string.Empty).Replace("Post", string.Empty);
+                    title2 = GetTypeName().ToSpaceDelimitedWords();
+
+                    break;
+
+                case eAction.GetEdit:
+                case eAction.PostEdit:
+
+                    title1 = action.ToString().Replace("Get", string.Empty).Replace("Post", string.Empty);
+                    title2 = item.Name;
+
+                    break;
+
+                case eAction.GetDelete:
+                case eAction.PostDelete:
+
+                    title1 = action.ToString().Replace("Get", string.Empty).Replace("Post", string.Empty);
+                    title2 = item.Name;
+
+                    break;
+
+                case eAction.Details:
+
+                    title1 = action.ToString().Replace("Get", string.Empty).Replace("Post", string.Empty);
+                    title2 = item.Name;
+
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(action), action, null);
             }
-            IsSoftDelete isSoftDelete = await db.IsSoftDeletes.FindAsync(id);
-            if (isSoftDelete == null)
-            {
-                return HttpNotFound();
-            }
-            return View(isSoftDelete);
+
+            var result = (title1, title2, title3);
+
+            return await Task.FromResult(result);
         }
 
-        // POST: Admins/IsSoftDelete/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,Description,Name,DateDeleted,DeletionReason")] IsSoftDelete isSoftDelete)
+        protected override Func<IQueryable<IsSoftDelete>, IOrderedQueryable<IsSoftDelete>> GetOrderBy(int sortColumn, bool isDesc)
         {
-            if (ModelState.IsValid)
+            Func<IQueryable<IsSoftDelete>, IOrderedQueryable<IsSoftDelete>> orderBy = null;
+
+            var eSortColumn = (eIsSoftDelete)sortColumn;
+
+            if (isDesc)
             {
-                db.Entry(isSoftDelete).State = EntityState.Modified;
-                await db.SaveChangesAsync();
-                return RedirectToAction("Index");
+                switch (eSortColumn)
+                {
+                    case eIsSoftDelete.Name:
+
+                        orderBy = r => r.OrderByDescending(x => x.Name);
+                        break;
+
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+
+                return orderBy;
             }
-            return View(isSoftDelete);
+
+            switch (eSortColumn)
+            {
+                case eIsSoftDelete.Name:
+
+                    orderBy = r => r.OrderBy(x => x.Name);
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            return orderBy;
         }
 
-        // GET: Admins/IsSoftDelete/Delete/5
-        public async Task<ActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            IsSoftDelete isSoftDelete = await db.IsSoftDeletes.FindAsync(id);
-            if (isSoftDelete == null)
-            {
-                return HttpNotFound();
-            }
-            return View(isSoftDelete);
-        }
 
-        // POST: Admins/IsSoftDelete/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> DeleteConfirmed(int id)
-        {
-            IsSoftDelete isSoftDelete = await db.IsSoftDeletes.FindAsync(id);
-            db.IsSoftDeletes.Remove(isSoftDelete);
-            await db.SaveChangesAsync();
-            return RedirectToAction("Index");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
     }
 }

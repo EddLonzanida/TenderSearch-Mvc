@@ -24,13 +24,10 @@ namespace TenderSearch.Web.Areas.Admins.Controllers
     [PartCreationPolicy(CreationPolicy.NonShared)]
     public class LookupController : CrudController<Lookup>
     {
-        protected readonly IDataRepositoryInt<Lookup> lookupRepository;
-
         [ImportingConstructor]
-        public LookupController(IMediator mediator, IDataRepositorySoftDeleteInt<Lookup> repository, IDataRepositoryInt<Lookup> lookupRepository, ILogger logger)
+        public LookupController(IMediator mediator, IDataRepositorySoftDeleteInt<Lookup> repository, ILogger logger)
             : base(mediator, repository, logger)
         {
-            this.lookupRepository = lookupRepository;
         }
 
         protected override async Task<IPagedList<Lookup>> GetItemsAsync(int parentId, int page, bool isDesc, int sortColumn, string search, string param)
@@ -40,7 +37,7 @@ namespace TenderSearch.Web.Areas.Admins.Controllers
             Expression<Func<Lookup, bool>> whereClause = r => search == "" || r.Text.ToLower().Contains(search) || r.Group.ToLower().Contains(search);
 
             var orderBy = GetOrderBy(sortColumn, isDesc);
-            var result = await lookupRepository.GetPagedListAsync(page, whereClause, orderBy);
+            var result = await repository.GetPagedListAsync(page, whereClause, orderBy);
 
             return result;
         }
@@ -53,7 +50,7 @@ namespace TenderSearch.Web.Areas.Admins.Controllers
                                                               || r.Text.ToLower().Contains(search)
                                                               || r.Group.ToLower().Contains(search);
 
-            return await lookupRepository.GetAutoCompleteIntellisenseAsync(whereClause, r => r.Group);
+            return await repository.GetAutoCompleteIntellisenseAsync(whereClause, r => r.Group);
         }
 
         protected override async Task<UiMessage> IsDuplicateAsync(Lookup item, string routeAction)
@@ -197,23 +194,5 @@ namespace TenderSearch.Web.Areas.Admins.Controllers
 
             return orderBy;
         }
-
-        ///// <inheritdoc />
-        //protected override LayoutContentsIndexViewModelBase<int, Lookup> GetLayoutContentsViewModelForIndex(IPagedList<Lookup> pagedList, string title1, string title2, string title3, string search, string targetTableBody, int page, int parentId, string param)
-        //{
-        //    var contentsVm = base.GetLayoutContentsViewModelForIndex(pagedList, title1, title2, title3, search, targetTableBody, page, parentId, param);
-
-        //    contentsVm.AllowAjaxCreate = false;
-        //    contentsVm.AllowAjaxEdit = false;
-
-        //    return contentsVm;
-        //}
-
-        ///// <inheritdoc />
-        //protected override async Task<Lookup> FindItemAsync(int id, eAction action)
-        //{
-        //    return await lookupRepository.GetAsync(id);
-        //    // return base.FindItemAsync(id, action);
-        //}
     }
 }
