@@ -110,21 +110,57 @@
     <Compile Include="Seeders\StoreProcedureSeeder.cs" />
     <Compile Include="Seeders\UserRolesSeeder.cs" />
     <Compile Include="Seeders\UserSeeder.cs" />
-    <Compile Include="SqlServerMigrations\201812111353178_InitialCreate.cs" />
-    <Compile Include="SqlServerMigrations\201812111353178_InitialCreate.Designer.cs">
-      <DependentUpon>201812111353178_InitialCreate.cs</DependentUpon>
+    <Compile Include="SqlServerMigrations\201812191920019_InitialCreate.cs" />
+    <Compile Include="SqlServerMigrations\201812191920019_InitialCreate.Designer.cs">
+      <DependentUpon>201812191920019_InitialCreate.cs</DependentUpon>
     </Compile>
-    <Compile Include="SqlServerMigrations\201812111402522_SeedAspNetRoles.cs" />
-    <Compile Include="SqlServerMigrations\201812111402522_SeedAspNetRoles.Designer.cs">
-      <DependentUpon>201812111402522_SeedAspNetRoles.cs</DependentUpon>
+    <Compile Include="SqlServerMigrations\201812191921095_SeedAspNetRoles.cs" />
+    <Compile Include="SqlServerMigrations\201812191921095_SeedAspNetRoles.Designer.cs">
+      <DependentUpon>201812191921095_SeedAspNetRoles.cs</DependentUpon>
     </Compile>
-    <Compile Include="SqlServerMigrations\201812111405219_SeedAspNetUsers.cs" />
-    <Compile Include="SqlServerMigrations\201812111405219_SeedAspNetUsers.Designer.cs">
-      <DependentUpon>201812111405219_SeedAspNetUsers.cs</DependentUpon>
+    <Compile Include="SqlServerMigrations\201812191921345_SeedAspNetUsers.cs" />
+    <Compile Include="SqlServerMigrations\201812191921345_SeedAspNetUsers.Designer.cs">
+      <DependentUpon>201812191921345_SeedAspNetUsers.cs</DependentUpon>
     </Compile>
-    <Compile Include="SqlServerMigrations\201812111407225_SeedAspNetUserRoles.cs" />
-    <Compile Include="SqlServerMigrations\201812111407225_SeedAspNetUserRoles.Designer.cs">
-      <DependentUpon>201812111407225_SeedAspNetUserRoles.cs</DependentUpon>
+    <Compile Include="SqlServerMigrations\201812191921592_SeedAspNetUserRoles.cs" />
+    <Compile Include="SqlServerMigrations\201812191921592_SeedAspNetUserRoles.Designer.cs">
+      <DependentUpon>201812191921592_SeedAspNetUserRoles.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SqlServerMigrations\201812191922281_SeedLookups.cs" />
+    <Compile Include="SqlServerMigrations\201812191922281_SeedLookups.Designer.cs">
+      <DependentUpon>201812191922281_SeedLookups.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SqlServerMigrations\201812191922462_SeedRegions.cs" />
+    <Compile Include="SqlServerMigrations\201812191922462_SeedRegions.Designer.cs">
+      <DependentUpon>201812191922462_SeedRegions.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SqlServerMigrations\201812191923074_SeedProvinces.cs" />
+    <Compile Include="SqlServerMigrations\201812191923074_SeedProvinces.Designer.cs">
+      <DependentUpon>201812191923074_SeedProvinces.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SqlServerMigrations\201812191923256_SeedCityMunicipalities.cs" />
+    <Compile Include="SqlServerMigrations\201812191923256_SeedCityMunicipalities.Designer.cs">
+      <DependentUpon>201812191923256_SeedCityMunicipalities.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SqlServerMigrations\201812191923433_SeedBarangays.cs" />
+    <Compile Include="SqlServerMigrations\201812191923433_SeedBarangays.Designer.cs">
+      <DependentUpon>201812191923433_SeedBarangays.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SqlServerMigrations\201812191924024_SeedCompanies.cs" />
+    <Compile Include="SqlServerMigrations\201812191924024_SeedCompanies.Designer.cs">
+      <DependentUpon>201812191924024_SeedCompanies.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SqlServerMigrations\201812191924229_SeedEmployees.cs" />
+    <Compile Include="SqlServerMigrations\201812191924229_SeedEmployees.Designer.cs">
+      <DependentUpon>201812191924229_SeedEmployees.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SqlServerMigrations\201812191927122_SeedContracts.cs" />
+    <Compile Include="SqlServerMigrations\201812191927122_SeedContracts.Designer.cs">
+      <DependentUpon>201812191927122_SeedContracts.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SqlServerMigrations\201812191927562_SeedDependents.cs" />
+    <Compile Include="SqlServerMigrations\201812191927562_SeedDependents.Designer.cs">
+      <DependentUpon>201812191927562_SeedDependents.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -157,17 +193,44 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <EmbeddedResource Include="SqlServerMigrations\201812111353178_InitialCreate.resx">
-      <DependentUpon>201812111353178_InitialCreate.cs</DependentUpon>
+    <EmbeddedResource Include="SqlServerMigrations\201812191920019_InitialCreate.resx">
+      <DependentUpon>201812191920019_InitialCreate.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="SqlServerMigrations\201812111402522_SeedAspNetRoles.resx">
-      <DependentUpon>201812111402522_SeedAspNetRoles.cs</DependentUpon>
+    <EmbeddedResource Include="SqlServerMigrations\201812191921095_SeedAspNetRoles.resx">
+      <DependentUpon>201812191921095_SeedAspNetRoles.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="SqlServerMigrations\201812111405219_SeedAspNetUsers.resx">
-      <DependentUpon>201812111405219_SeedAspNetUsers.cs</DependentUpon>
+    <EmbeddedResource Include="SqlServerMigrations\201812191921345_SeedAspNetUsers.resx">
+      <DependentUpon>201812191921345_SeedAspNetUsers.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="SqlServerMigrations\201812111407225_SeedAspNetUserRoles.resx">
-      <DependentUpon>201812111407225_SeedAspNetUserRoles.cs</DependentUpon>
+    <EmbeddedResource Include="SqlServerMigrations\201812191921592_SeedAspNetUserRoles.resx">
+      <DependentUpon>201812191921592_SeedAspNetUserRoles.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SqlServerMigrations\201812191922281_SeedLookups.resx">
+      <DependentUpon>201812191922281_SeedLookups.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SqlServerMigrations\201812191922462_SeedRegions.resx">
+      <DependentUpon>201812191922462_SeedRegions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SqlServerMigrations\201812191923074_SeedProvinces.resx">
+      <DependentUpon>201812191923074_SeedProvinces.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SqlServerMigrations\201812191923256_SeedCityMunicipalities.resx">
+      <DependentUpon>201812191923256_SeedCityMunicipalities.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SqlServerMigrations\201812191923433_SeedBarangays.resx">
+      <DependentUpon>201812191923433_SeedBarangays.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SqlServerMigrations\201812191924024_SeedCompanies.resx">
+      <DependentUpon>201812191924024_SeedCompanies.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SqlServerMigrations\201812191924229_SeedEmployees.resx">
+      <DependentUpon>201812191924229_SeedEmployees.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SqlServerMigrations\201812191927122_SeedContracts.resx">
+      <DependentUpon>201812191927122_SeedContracts.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SqlServerMigrations\201812191927562_SeedDependents.resx">
+      <DependentUpon>201812191927562_SeedDependents.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

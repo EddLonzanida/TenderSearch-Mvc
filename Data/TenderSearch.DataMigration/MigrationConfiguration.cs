@@ -6,11 +6,6 @@ namespace TenderSearch.DataMigration
 {
     public sealed class MigrationConfiguration : DbMigrationsConfiguration<TenderSearchDb>
     {
-        ///// <summary>
-        ///// Set this to false before the project's first production deployment
-        ///// </summary>
-        //private const bool USE_PRODUCTION_MIGRATION = false; 
-
         public MigrationConfiguration()
         {
             var isEnabled = false; //Disable if running in Release Mode
@@ -26,21 +21,22 @@ namespace TenderSearch.DataMigration
 
         protected override void Seed(TenderSearchDb context)
         {
-            //// This approach will be useful only during the early phase of development 
-            //// This will reset all values (which is not applicable after go live.)
-            RegionSeeder.Seed(context);
-            ProvinceSeeder.Seed(context);
-            CityMunicipalitySeeder.Seed(context);
-            BarangaySeeder.Seed(context);
-            LookupSeeder.Seed(context);
-            CompanySeeder.Seed(context);
-            ContractSeeder.Seed(context);
-            EmployeeSeeder.Seed(context);
-            AddressSeeder.Seed(context);
-            DependentSeeder.Seed(context);
+            ////// This approach will be useful only during the early phase of development 
+            ////// This will reset all values (which is not applicable after go live.)
+            //RegionSeeder.Seed(context);
+            //ProvinceSeeder.Seed(context);
+            //CityMunicipalitySeeder.Seed(context);
+            //BarangaySeeder.Seed(context);
+            //LookupSeeder.Seed(context);
+            //CompanySeeder.Seed(context);
+            //ContractSeeder.Seed(context);
+            //EmployeeSeeder.Seed(context);
+            //AddressSeeder.Seed(context);
+            //DependentSeeder.Seed(context);
         }
     }
 }
+
 
 //Add-Migration InitialCreate
 //Update-Database -verbose
@@ -54,17 +50,29 @@ namespace TenderSearch.DataMigration
 //Add-Migration SeedAspNetUserRoles
 //Update-Database -verbose
 
-//Add-Migration SeedLookup
+//Add-Migration SeedLookups
+//Update-Database -verbose
+
+//Add-Migration SeedRegions
+//Update-Database -verbose
+
+//Add-Migration SeedProvinces
+//Update-Database -verbose
+
+//Add-Migration SeedCityMunicipalities
+//Update-Database -verbose
+
+//Add-Migration SeedBarangays
+//Update-Database -verbose
+
+//Add-Migration SeedCompanies
+//Update-Database -verbose
+
+//Add-Migration SeedEmployees
 //Update-Database -verbose
 
 //Add-Migration SeedContracts
 //Update-Database -verbose
 
-//Add-Migration Company
-//Update-Database -verbose
-
-//Add-Migration Contract
-//Update-Database -verbose
-
-//Add-Migration Employee
+//Add-Migration SeedDependents
 //Update-Database -verbose
