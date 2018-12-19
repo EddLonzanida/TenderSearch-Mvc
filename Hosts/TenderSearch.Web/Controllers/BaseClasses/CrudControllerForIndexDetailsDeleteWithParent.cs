@@ -7,11 +7,10 @@ using System.Threading.Tasks;
 
 namespace TenderSearch.Web.Controllers.BaseClasses
 {
-    /// <inheritdoc cref="CrudControllerForIndexDetailsDelete&lt;T, TRepository, TLayoutContentsIndexViewModel, TLayoutContentsDetailsDeleteViewModel&gt;" />
-    public abstract class CrudControllerForIndexDetailsDeleteWithParent<T, TRepository, TLayoutContentsIndexViewModel, TLayoutContentsDetailsDeleteViewModel>
-        : CrudControllerForIndexDetailsDelete<T, TRepository, TLayoutContentsIndexViewModel, TLayoutContentsDetailsDeleteViewModel>, IControllerWithParent<int, T>
+    /// <inheritdoc cref="CrudControllerForIndexDetailsDelete&lt;T, TLayoutContentsIndexViewModel, TLayoutContentsDetailsDeleteViewModel&gt;" />
+    public abstract class CrudControllerForIndexDetailsDeleteWithParent<T, TLayoutContentsIndexViewModel, TLayoutContentsDetailsDeleteViewModel>
+        : CrudControllerForIndexDetailsDelete<T, TLayoutContentsIndexViewModel, TLayoutContentsDetailsDeleteViewModel>, IControllerWithParent<int, T>
         where T : class, IEntityBase<int>, new()
-        where TRepository : class, IDataRepositoryBase<int, T>
         where TLayoutContentsIndexViewModel : class, ILayoutContentsIndexViewModel<int, T>
         where TLayoutContentsDetailsDeleteViewModel : class, ILayoutContentsDetailsDeleteViewModel<int, T>
     {
@@ -21,22 +20,6 @@ namespace TenderSearch.Web.Controllers.BaseClasses
         public abstract override Task<string> GetParentName(int parentId);
         public abstract override int GetParentId(T item);
 
-        protected CrudControllerForIndexDetailsDeleteWithParent(TRepository repository, ILogger logger) : base(repository, logger)
-        {
-        }
-
-        protected CrudControllerForIndexDetailsDeleteWithParent(IMediator mediator, TRepository repository, ILogger logger) : base(mediator, repository, logger)
-        {
-        }
-    }
-
-    /// <inheritdoc cref="CrudControllerForIndexDetailsDeleteWithParent&lt;T, TRepository, TLayoutContentsIndexViewModel, TLayoutContentsDetailsDeleteViewModel&gt;" />
-    public abstract class CrudControllerForIndexDetailsDeleteWithParent<T, TLayoutContentsIndexViewModel, TLayoutContentsDetailsDeleteViewModel>
-        : CrudControllerForIndexDetailsDeleteWithParent<T, IDataRepositoryBase<int, T>, TLayoutContentsIndexViewModel, TLayoutContentsDetailsDeleteViewModel>, IControllerWithParent<int, T>
-        where T : class, IEntityBase<int>, new()
-        where TLayoutContentsIndexViewModel : class, ILayoutContentsIndexViewModel<int, T>
-        where TLayoutContentsDetailsDeleteViewModel : class, ILayoutContentsDetailsDeleteViewModel<int, T>
-    {
         protected CrudControllerForIndexDetailsDeleteWithParent(IDataRepositoryBase<int, T> repository, ILogger logger) : base(repository, logger)
         {
         }

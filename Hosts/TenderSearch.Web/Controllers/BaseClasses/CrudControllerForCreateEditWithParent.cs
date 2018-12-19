@@ -7,11 +7,10 @@ using System.Threading.Tasks;
 
 namespace TenderSearch.Web.Controllers.BaseClasses
 {
-    /// <inheritdoc cref="CrudControllerForCreateEdit&lt;T, TRepository, TLayoutContentsCreateEditViewModel&gt;" />
-    public abstract class CrudControllerForCreateEditWithParent<T, TRepository, TLayoutContentsCreateEditViewModel>
-        : CrudControllerForCreateEdit<T, TRepository, TLayoutContentsCreateEditViewModel>, IControllerWithParent<int, T>
+    /// <inheritdoc cref="CrudControllerForCreateEdit&lt;T, TLayoutContentsCreateEditViewModel&gt;" />
+    public abstract class CrudControllerForCreateEditWithParent<T, TLayoutContentsCreateEditViewModel>
+        : CrudControllerForCreateEdit<T, TLayoutContentsCreateEditViewModel>, IControllerWithParent<int, T>
         where T : class, IEntityBase<int>, new()
-        where TRepository : class, IDataRepositoryBase<int, T>
         where TLayoutContentsCreateEditViewModel : class, ILayoutContentsCreateEditViewModel<int, T>
     {
         public abstract override Task<T> CreateNewItemWithParent(int parentId, string param);
@@ -20,21 +19,6 @@ namespace TenderSearch.Web.Controllers.BaseClasses
         public abstract override Task<string> GetParentName(int parentId);
         public abstract override int GetParentId(T item);
 
-        protected CrudControllerForCreateEditWithParent(TRepository repository, ILogger logger) : base(repository, logger)
-        {
-        }
-
-        protected CrudControllerForCreateEditWithParent(IMediator mediator, TRepository repository, ILogger logger) : base(mediator, repository, logger)
-        {
-        }
-    }
-
-    /// <inheritdoc />
-    public abstract class CrudControllerForCreateEditWithParent<T, TLayoutContentsCreateEditViewModel>
-        : CrudControllerForCreateEditWithParent<T, IDataRepositoryBase<int, T>, TLayoutContentsCreateEditViewModel>
-        where T : class, IEntityBase<int>, new()
-        where TLayoutContentsCreateEditViewModel : class, ILayoutContentsCreateEditViewModel<int, T>
-    {
         protected CrudControllerForCreateEditWithParent(IDataRepositoryBase<int, T> repository, ILogger logger) : base(repository, logger)
         {
         }

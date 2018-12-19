@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace TenderSearch.Web.Controllers.BaseClasses
 {
-    /// <inheritdoc cref="CrudController&lt;T, TRepository&gt;" />
-    public abstract class CrudControllerWithParent<T, TRepository>
-        : CrudController<T, TRepository>, IControllerWithParent<int, T>
+    /// <inheritdoc cref="CrudController&lt;T&gt;" />
+    public abstract class CrudControllerWithParent<T, TRepository> : CrudController<T>, IControllerWithParent<int, T>
         where T : class, IEntityBase<int>, new()
         where TRepository : class, IDataRepositoryBase<int, T>
     {
@@ -24,20 +23,6 @@ namespace TenderSearch.Web.Controllers.BaseClasses
         }
 
         protected CrudControllerWithParent(IMediator mediator, TRepository repository, ILogger logger) : base(mediator, repository, logger)
-        {
-        }
-    }
-
-    /// <inheritdoc cref="CrudControllerWithParent&lt;T, TRepository&gt;" />
-    public abstract class CrudControllerWithParent<T>
-        : CrudControllerWithParent<T, IDataRepositoryBase<int, T>>
-        where T : class, IEntityBase<int>, new()
-    {
-        protected CrudControllerWithParent(IDataRepositoryBase<int, T> repository, ILogger logger) : base(repository, logger)
-        {
-        }
-
-        protected CrudControllerWithParent(IMediator mediator, IDataRepositoryBase<int, T> repository, ILogger logger) : base(mediator, repository, logger)
         {
         }
     }

@@ -15,7 +15,7 @@ namespace TenderSearch.Tests.Integration.Repositories
 
             var items = repository.GetAll();
 
-            items.Count.ShouldBe(2);
+            items.Count.ShouldBe(20);
         }
 
         [Fact]

@@ -8,17 +8,16 @@ using Eml.Mediator.Contracts;
 namespace TenderSearch.Web.Controllers.BaseClasses
 {
     /// <inheritdoc />
-    public abstract class CrudControllerForIndex<T, TRepository, TLayoutContentsIndexViewModel>
-        : CrudControllerBaseInt<T, TRepository, LayoutContentsCreateEditViewModel<int, T>, TLayoutContentsIndexViewModel, LayoutContentsDetailsDeleteViewModel<int, T>>
+    public abstract class CrudControllerForIndex<T, TLayoutContentsIndexViewModel>
+        : CrudControllerBaseInt<T, IDataRepositoryBase<int, T>, LayoutContentsCreateEditViewModel<int, T>, TLayoutContentsIndexViewModel, LayoutContentsDetailsDeleteViewModel<int, T>>
         where T : class, IEntityBase<int>, new()
-        where TRepository : class, IDataRepositoryBase<int, T>
         where TLayoutContentsIndexViewModel : class, ILayoutContentsIndexViewModel<int, T>
     {
-        protected CrudControllerForIndex(TRepository repository, ILogger logger) : base(repository, logger)
+        protected CrudControllerForIndex(IDataRepositoryBase<int, T> repository, ILogger logger) : base(repository, logger)
         {
         }
 
-        protected CrudControllerForIndex(IMediator mediator, TRepository repository, ILogger logger) : base(mediator, repository, logger)
+        protected CrudControllerForIndex(IMediator mediator, IDataRepositoryBase<int, T> repository, ILogger logger) : base(mediator, repository, logger)
         {
         }
 
@@ -34,21 +33,6 @@ namespace TenderSearch.Web.Controllers.BaseClasses
             var contentsVm = new LayoutContentsDetailsDeleteViewModel<int, T>(item, title1, title2, title3);
 
             return contentsVm;
-        }
-    }
-
-    /// <inheritdoc />
-    public abstract class CrudControllerForIndex<T, TLayoutContentsIndexViewModel>
-        : CrudControllerForIndex<T, IDataRepositoryBase<int, T>, TLayoutContentsIndexViewModel>
-        where T : class, IEntityBase<int>, new()
-        where TLayoutContentsIndexViewModel : class, ILayoutContentsIndexViewModel<int, T>
-    {
-        protected CrudControllerForIndex(IDataRepositoryBase<int, T> repository, ILogger logger) : base(repository, logger)
-        {
-        }
-
-        protected CrudControllerForIndex(IMediator mediator, IDataRepositoryBase<int, T> repository, ILogger logger) : base(mediator, repository, logger)
-        {
         }
     }
 }

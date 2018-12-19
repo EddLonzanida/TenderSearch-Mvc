@@ -8,19 +8,18 @@ using Eml.Mediator.Contracts;
 namespace TenderSearch.Web.Controllers.BaseClasses
 {
     /// <inheritdoc />
-    public abstract class CrudControllerForIndexDetailsDelete<T, TRepository, TLayoutContentsIndexViewModel, TLayoutContentsDetailsDeleteViewModel>
-        : CrudControllerBaseInt<T, TRepository, LayoutContentsCreateEditViewModel<int, T>, TLayoutContentsIndexViewModel, TLayoutContentsDetailsDeleteViewModel>
+    public abstract class CrudControllerForIndexDetailsDelete<T, TLayoutContentsIndexViewModel, TLayoutContentsDetailsDeleteViewModel>
+        : CrudControllerBaseInt<T, IDataRepositoryBase<int, T>, LayoutContentsCreateEditViewModel<int, T>, TLayoutContentsIndexViewModel, TLayoutContentsDetailsDeleteViewModel>
         where T : class, IEntityBase<int>, new()
-        where TRepository : class, IDataRepositoryBase<int, T>
         where TLayoutContentsIndexViewModel : class, ILayoutContentsIndexViewModel<int, T>
         where TLayoutContentsDetailsDeleteViewModel : class, ILayoutContentsDetailsDeleteViewModel<int, T>
     {
-        protected CrudControllerForIndexDetailsDelete(TRepository repository, ILogger logger)
+        protected CrudControllerForIndexDetailsDelete(IDataRepositoryBase<int, T> repository, ILogger logger)
             : base(repository, logger)
         {
         }
 
-        protected CrudControllerForIndexDetailsDelete(IMediator mediator, TRepository repository, ILogger logger)
+        protected CrudControllerForIndexDetailsDelete(IMediator mediator, IDataRepositoryBase<int, T> repository, ILogger logger)
             : base(mediator, repository, logger)
         {
         }
@@ -30,22 +29,6 @@ namespace TenderSearch.Web.Controllers.BaseClasses
             var contentsVm = new LayoutContentsCreateEditViewModel<int, T>(item, title1, title2, title3, pageSize, parentId: parentId);
 
             return contentsVm;
-        }
-    }
-
-    /// <inheritdoc />
-    public abstract class CrudControllerForIndexDetailsDelete<T, TLayoutContentsIndexViewModel, TLayoutContentsDetailsDeleteViewModel>
-        : CrudControllerForIndexDetailsDelete<T, IDataRepositoryBase<int, T>, TLayoutContentsIndexViewModel, TLayoutContentsDetailsDeleteViewModel>
-        where T : class, IEntityBase<int>, new()
-        where TLayoutContentsIndexViewModel : class, ILayoutContentsIndexViewModel<int, T>
-        where TLayoutContentsDetailsDeleteViewModel : class, ILayoutContentsDetailsDeleteViewModel<int, T>
-    {
-        protected CrudControllerForIndexDetailsDelete(IDataRepositoryBase<int, T> repository, ILogger logger) : base(repository, logger)
-        {
-        }
-
-        protected CrudControllerForIndexDetailsDelete(IMediator mediator, IDataRepositoryBase<int, T> repository, ILogger logger) : base(mediator, repository, logger)
-        {
         }
     }
 }

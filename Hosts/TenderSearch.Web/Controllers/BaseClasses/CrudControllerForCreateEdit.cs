@@ -9,18 +9,17 @@ using X.PagedList;
 namespace TenderSearch.Web.Controllers.BaseClasses
 {
     /// <inheritdoc cref="CrudControllerBaseInt&lt;T, TRepository, TLayoutContentsCreateEditViewModel, TLayoutContentsIndexViewModel, TLayoutContentsDetailsDeleteViewModel&gt;" />
-    public abstract class CrudControllerForCreateEdit<T, TRepository, TLayoutContentsCreateEditViewModel>
-        : CrudControllerBaseInt<T, TRepository, TLayoutContentsCreateEditViewModel, LayoutContentsIndexViewModel<int, T>, LayoutContentsDetailsDeleteViewModel<int, T>>
+    public abstract class CrudControllerForCreateEdit<T, TLayoutContentsCreateEditViewModel>
+        : CrudControllerBaseInt<T, IDataRepositoryBase<int, T>, TLayoutContentsCreateEditViewModel, LayoutContentsIndexViewModel<int, T>, LayoutContentsDetailsDeleteViewModel<int, T>>
         where T : class, IEntityBase<int>, new()
-        where TRepository : class, IDataRepositoryBase<int, T>
         where TLayoutContentsCreateEditViewModel : class, ILayoutContentsCreateEditViewModel<int, T>, ILabelClassCount
     {
-        protected CrudControllerForCreateEdit(TRepository repository, ILogger logger)
-            : base(repository, logger)
+        protected CrudControllerForCreateEdit(IDataRepositoryBase<int, T> repository, ILogger logger)
+            : this(null, repository, logger)
         {
         }
 
-        protected CrudControllerForCreateEdit(IMediator mediator, TRepository repository, ILogger logger)
+        protected CrudControllerForCreateEdit(IMediator mediator, IDataRepositoryBase<int, T> repository, ILogger logger)
             : base(mediator, repository, logger)
         {
         }
@@ -40,21 +39,6 @@ namespace TenderSearch.Web.Controllers.BaseClasses
             var contentsVm = new LayoutContentsDetailsDeleteViewModel<int, T>(item, title1, title2, title3);
 
             return contentsVm;
-        }
-    }
-
-    /// <inheritdoc />
-    public abstract class CrudControllerForCreateEdit<T, TLayoutContentsCreateEditViewModel>
-        : CrudControllerForCreateEdit<T, IDataRepositoryBase<int, T>, TLayoutContentsCreateEditViewModel>
-        where T : class, IEntityBase<int>, new()
-        where TLayoutContentsCreateEditViewModel : class, ILayoutContentsCreateEditViewModel<int, T>, ILabelClassCount
-    {
-        protected CrudControllerForCreateEdit(IDataRepositoryBase<int, T> repository, ILogger logger) : base(repository, logger)
-        {
-        }
-
-        protected CrudControllerForCreateEdit(IMediator mediator, IDataRepositoryBase<int, T> repository, ILogger logger) : base(mediator, repository, logger)
-        {
         }
     }
 }

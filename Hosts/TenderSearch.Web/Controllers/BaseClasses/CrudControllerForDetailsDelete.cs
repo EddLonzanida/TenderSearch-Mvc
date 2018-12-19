@@ -9,17 +9,16 @@ using X.PagedList;
 namespace TenderSearch.Web.Controllers.BaseClasses
 {
     /// <inheritdoc />
-    public abstract class CrudControllerForDetailsDelete<T, TRepository, TLayoutContentsDetailsDeleteViewModel>
-        : CrudControllerBaseInt<T, TRepository, LayoutContentsCreateEditViewModel<int, T>, LayoutContentsIndexViewModel<int, T>, TLayoutContentsDetailsDeleteViewModel>
+    public abstract class CrudControllerForDetailsDelete<T, TLayoutContentsDetailsDeleteViewModel>
+        : CrudControllerBaseInt<T, IDataRepositoryBase<int, T>, LayoutContentsCreateEditViewModel<int, T>, LayoutContentsIndexViewModel<int, T>, TLayoutContentsDetailsDeleteViewModel>
         where T : class, IEntityBase<int>, new()
-        where TRepository : class, IDataRepositoryBase<int, T>
         where TLayoutContentsDetailsDeleteViewModel : class, ILayoutContentsDetailsDeleteViewModel<int, T>
     {
-        protected CrudControllerForDetailsDelete(TRepository repository, ILogger logger) : base(repository, logger)
+        protected CrudControllerForDetailsDelete(IDataRepositoryBase<int, T> repository, ILogger logger) : base(repository, logger)
         {
         }
 
-        protected CrudControllerForDetailsDelete(IMediator mediator, TRepository repository, ILogger logger) : base(mediator, repository, logger)
+        protected CrudControllerForDetailsDelete(IMediator mediator, IDataRepositoryBase<int, T> repository, ILogger logger) : base(mediator, repository, logger)
         {
         }
 
@@ -38,21 +37,6 @@ namespace TenderSearch.Web.Controllers.BaseClasses
             };
 
             return contentsVm;
-        }
-    }
-
-    /// <inheritdoc />
-    public abstract class CrudControllerForDetailsDelete<T, TLayoutContentsDetailsDeleteViewModel>
-        : CrudControllerForDetailsDelete<T, IDataRepositoryBase<int, T>, TLayoutContentsDetailsDeleteViewModel>
-        where T : class, IEntityBase<int>, new()
-        where TLayoutContentsDetailsDeleteViewModel : class, ILayoutContentsDetailsDeleteViewModel<int, T>
-    {
-        protected CrudControllerForDetailsDelete(IDataRepositoryBase<int, T> repository, ILogger logger) : base(repository, logger)
-        {
-        }
-
-        protected CrudControllerForDetailsDelete(IMediator mediator, IDataRepositoryBase<int, T> repository, ILogger logger) : base(mediator, repository, logger)
-        {
         }
     }
 }

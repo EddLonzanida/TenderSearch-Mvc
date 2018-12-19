@@ -8,16 +8,15 @@ using X.PagedList;
 namespace TenderSearch.Web.Controllers.BaseClasses
 {
     /// <inheritdoc cref="CrudControllerBaseInt&lt;T, TRepository, TLayoutContentsCreateEditViewModel, TLayoutContentsIndexViewModel, TLayoutContentsDetailsDeleteViewModel&gt;" />
-    public abstract class CrudController<T, TRepository>
-        : CrudControllerBaseInt<T, TRepository, LayoutContentsCreateEditViewModel<int, T>, LayoutContentsIndexViewModel<int, T>, LayoutContentsDetailsDeleteViewModel<int, T>>
+    public abstract class CrudController<T>
+        : CrudControllerBaseInt<T, IDataRepositoryBase<int, T>, LayoutContentsCreateEditViewModel<int, T>, LayoutContentsIndexViewModel<int, T>, LayoutContentsDetailsDeleteViewModel<int, T>>
         where T : class, IEntityBase<int>, new()
-        where TRepository : class, IDataRepositoryBase<int, T>
     {
-        protected CrudController(TRepository repository, ILogger logger) : base(repository, logger)
+        protected CrudController(IDataRepositoryBase<int, T> repository, ILogger logger) : base(repository, logger)
         {
         }
 
-        protected CrudController(IMediator mediator, TRepository repository, ILogger logger) : base(mediator, repository, logger)
+        protected CrudController(IMediator mediator, IDataRepositoryBase<int, T> repository, ILogger logger) : base(mediator, repository, logger)
         {
         }
 
@@ -43,21 +42,6 @@ namespace TenderSearch.Web.Controllers.BaseClasses
             var contentsVm = new LayoutContentsDetailsDeleteViewModel<int, T>(item, title1, title2, title3);
 
             return contentsVm;
-        }
-    }
-
-    /// <inheritdoc />
-    public abstract class CrudController<T> : CrudController<T, IDataRepositoryBase<int, T>>
-        where T : class, IEntityBase<int>, new()
-    {
-        protected CrudController(IDataRepositoryBase<int, T> repository, ILogger logger) 
-            : base(repository, logger)
-        {
-        }
-
-        protected CrudController(IMediator mediator, IDataRepositoryBase<int, T> repository, ILogger logger) 
-            : base(mediator, repository, logger)
-        {
         }
     }
 }
