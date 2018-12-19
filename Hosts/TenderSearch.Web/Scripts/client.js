@@ -30,8 +30,7 @@ var CLIENT = $(function () {
 
             if (currentModal) {
 
-                $(currentModal).modal("hide");
-                $(currentModal).find("#modalbody").html(""); // clear contents
+                resetModalBody(modalId);
 
             }
 
@@ -85,10 +84,10 @@ var CLIENT = $(function () {
 
     var selectRow = function (td) {
 
-        var selectioncolor = "warning";
+        var selectionColor = "warning";
 
-        td.closest("tbody").find("tr").removeClass(selectioncolor);
-        td.closest("tr").addClass(selectioncolor);
+        td.closest("tbody").find("tr").removeClass(selectionColor);
+        td.closest("tr").addClass(selectionColor);
 
         var $sortButtons = td.parents(targetTableSelector).parent("td").siblings().find(sortDirectionSelector);
 
@@ -104,12 +103,12 @@ var CLIENT = $(function () {
 
     var setBusyIndicatorBig = function (modalId, targetElement) {
 
-        if (!targetElement) targetElement = "#modalbody";
+        if (!targetElement) targetElement = modalBodyId;
 
         var $busyIndicator = $("#busyIndicator");
-        var $modalbody = $(modalId).find(targetElement);
+        var $modalBody = $(modalId).find(targetElement);
 
-        $modalbody.html($busyIndicator.html());
+        $modalBody.html($busyIndicator.html());
     }
 
     var updateRowDeleteCounter = function (item) {
@@ -133,8 +132,41 @@ var CLIENT = $(function () {
 
         } else console.warn("=====$rowCounter not updated... ");
     }
-    //#endregion // utility methods
 
+    var isKnockoutLoaded = function () {
+
+        try {
+
+            if (ko) return true;
+
+            return false;
+
+        } catch (e) {
+
+            return false;
+
+        }
+    }
+
+    var resetModalBody = function (modalId) {
+
+        if (isKnockoutLoaded()) {
+
+            var $layoutCreateEditContent = $("#LayoutCreateEditContent");
+
+            if ($layoutCreateEditContent.length > 0) {
+
+                ko.cleanNode($layoutCreateEditContent);
+
+            }
+        }
+
+        $(modalId).modal("hide");
+        $(modalId).find(modalBodyId).html("");
+
+    }
+
+    //#endregion // utility methods
 
     //#region Copy
     var ajaxCopy = function () {
@@ -198,7 +230,7 @@ var CLIENT = $(function () {
 
         $.ajax(options).done(function (data) {
 
-            var $target = $(modalId).find("#modalbody");
+            var $target = $(modalId).find(modalBodyId);
             var $newHtml = $(data);
 
             $newHtml.find(".form-group").addClass("animated fadeIn");
@@ -222,6 +254,7 @@ var CLIENT = $(function () {
     //#region Edit
     var ajaxEdit = function () {
 
+        var modalId = editItemModalId;
         var $form = $(this);
 
         if (!$form.valid()) return false;
@@ -235,8 +268,6 @@ var CLIENT = $(function () {
 
         $("#busyindicatorEdit").show();
 
-        var modalId = "#editItemModal";
-
         var $submitButton = $form.find(submitButtonSelector);
 
         $submitButton.addClass("disabled");
@@ -245,8 +276,7 @@ var CLIENT = $(function () {
         $.ajax(options)
             .done(function (data) {
 
-                $(modalId).modal("hide");
-                $(modalId).find("#modalbody").html("");
+                // resetModalBody(modalId);
                 window.location = data;
                 $(ajaxEditHandlerSelector).click(editLinkHandler);
                 $submitButton.removeClass("disabled");
@@ -264,7 +294,7 @@ var CLIENT = $(function () {
 
     var editLinkHandler = function () {
 
-        var modalId = "#editItemModal";
+        var modalId = editItemModalId;
 
         $(modalId).draggable({
             handle: ".modal-header"
@@ -292,7 +322,7 @@ var CLIENT = $(function () {
         $.ajax(options)
             .done(function (data) {
 
-                var $target = $(modalId).find("#modalbody");
+                var $target = $(modalId).find(modalBodyId);
                 var $newHtml = $(data);
                 //animated fadeInDown
 
@@ -313,10 +343,12 @@ var CLIENT = $(function () {
     }
     //#endregion // Edit
 
+    //TODO Refactor EditCreate
+
     //#region Create
     var ajaxCreate = function () {
 
-        var modalId = "#createItemModal";
+        var modalId = createItemModalId;
         var $form = $(this);
 
         if (!$form.valid()) return false;
@@ -330,18 +362,24 @@ var CLIENT = $(function () {
 
         $("#busyindicatorCreate").show();
 
+        var $submitButton = $form.find(submitButtonSelector);
+
+        $submitButton.addClass("disabled");
+        //TODO: prevent from closing if still busy
+
         $.ajax(options)
             .done(function (data) {
 
-                $(modalId).modal("hide");
-                $(modalId).find("#modalbody").html(""); // clear contents
+                //resetModalBody(modalId);
                 window.location = data;
                 $(ajaxCreateHandlerSelector).click(createLinkHandler);
+                $submitButton.removeClass("disabled");
 
             })
             .fail(function (err, status) {
 
                 showErrorMessage(modalId, err.responseText);
+                $submitButton.removeClass("disabled");
 
             });
 
@@ -350,7 +388,7 @@ var CLIENT = $(function () {
 
     var createLinkHandler = function () {
 
-        var modalId = "#createItemModal";
+        var modalId = createItemModalId;
 
         $(modalId).draggable({
             handle: ".modal-header"
@@ -377,14 +415,13 @@ var CLIENT = $(function () {
         $.ajax(options)
             .done(function (data) {
 
-                var $target = $(modalId).find("#modalbody");
+                var $target = $(modalId).find(modalBodyId);
                 var $newHtml = $(data);
 
                 $newHtml.find(".form-horizontal").addClass("animated fadeIn");
                 $target.html($newHtml);
                 $.validator.unobtrusive.parse(createConfirmationSelector); //refresh jqueryval
                 $(createConfirmationSelector).submit(ajaxCreate); //refresh event hook-up
-
                 setDatePickerHandler();
 
             })
@@ -589,7 +626,7 @@ var CLIENT = $(function () {
             .done(function (data) {
 
                 $(modalId).modal("hide");
-                $(modalId).find("#modalbody").html(""); // clear contents
+                $(modalId).find(modalBodyId).html(""); // clear contents
                 // window.location = data;
                 $(emailLinkHandlerSelector).click(emailLinkHandler);
 
@@ -627,7 +664,7 @@ var CLIENT = $(function () {
         $.ajax(options)
             .done(function (data) {
 
-                var $target = $(modalId).find("#modalbody");
+                var $target = $(modalId).find(modalBodyId);
                 var $newHtml = $(data);
 
                 $newHtml.find(".form-horizontal").addClass("animated fadeIn");
@@ -648,9 +685,9 @@ var CLIENT = $(function () {
 
     //#region Search
 
-    var ajaxSearch = function (url, targettablebody) { ///Will return the pager html
+    var ajaxSearch = function (url, targetTableBody) { ///Will return the pager html
 
-        var $form = $("form[data-eml-ajax='true']").filter(`[data-eml-targettablebody='${targettablebody}']`);
+        var $form = $("form[data-eml-ajax='true']").filter(`[data-eml-targettablebody='${targetTableBody}']`);
 
         if ($form.length === 0) {
 
@@ -673,7 +710,7 @@ var CLIENT = $(function () {
 
                 pagerHtml = getPager(newHtml);
 
-                var $target = $(targettablebody);
+                var $target = $(targetTableBody);
                 var $newPagerHtmlJQuery = $(pagerHtml);
                 var noPagerTableHtml = removePager(newHtml);
                 var rowCountId = $newPagerHtmlJQuery.attr("data-eml-rowcount");
@@ -687,7 +724,7 @@ var CLIENT = $(function () {
                 $target.find(unlockLinkHandlerSelector).click(unlockLinkHandler);
                 $target.effect("highlight");
 
-                var $pagedList = $target.parents().find("div .pagedList").filter(`[data-eml-targettablebody='${targettablebody}']`);
+                var $pagedList = $target.parents().find("div .pagedList").filter(`[data-eml-targettablebody='${targetTableBody}']`);
                 var $newRowCount = $newPagerHtmlJQuery.find(rowCountId);
                 var $oldRowCount = $(rowCountId);
                 var $tmpOldRowCount = $oldRowCount.prevAll("i.animated.rubberBand.bounce:first");
@@ -758,9 +795,9 @@ var CLIENT = $(function () {
 
         var $form = $(this);
         var url = $form.attr("action");
-        var targettablebody = $form.attr(targetTableBodySelector);
+        var targetTableBody = $form.attr(targetTableBodySelector);
 
-        ajaxSearch(url, targettablebody);
+        ajaxSearch(url, targetTableBody);
 
         return false;
     };
@@ -851,13 +888,13 @@ var CLIENT = $(function () {
 
         var $a = $(this);
         var url = $a.attr("href");
-        var busyindicatorPaging = $("#busyindicatorPaging");
+        var busyIndicatorPaging = $("#busyindicatorPaging");
 
-        if (busyindicatorPaging) $a.prepend(busyindicatorPaging.html());
+        if (busyIndicatorPaging) $a.prepend(busyIndicatorPaging.html());
 
-        var targettablebody = $a.parents(".pagedList").first().attr(targetTableBodySelector);
+        var targetTableBody = $a.parents(".pagedList").first().attr(targetTableBodySelector);
 
-        ajaxSearch(url, targettablebody);
+        ajaxSearch(url, targetTableBody);
 
         return false;
     };
@@ -869,7 +906,7 @@ var CLIENT = $(function () {
         var $sortButton = $(this);
         var targetTableBody = $sortButton.attr("data-eml-sorttarget");
         var sortDirection = $sortButton.attr("data-eml-sortdirection");
-        var pageNumber = $(targetTableBody).attr("data-eml-pagenumber");
+        //var pageNumber = $(targetTableBody).attr("data-eml-pagenumber");
         var $selectedRow = $(targetTableBody).find("tr").filter(".warning"); //get selected row
         var fromPosition = $selectedRow.attr("data-eml-positionfrom");
         var toPositon = $selectedRow.attr("data-eml-positionto");
@@ -1120,6 +1157,9 @@ var CLIENT = $(function () {
     var emailConfirmationSelector = "form[data-eml-emailconfirmation='true']";
     var searchButtonSelector = "i[data-eml-searchbutton='true']";
     var targetTableBodySelector = "data-eml-targettablebody";
+    var editItemModalId = "#editItemModal";
+    var createItemModalId = "#createItemModal";
+    var modalBodyId = "#modalbody";
 
     $(pageClickHandlerSelector).filter("[href]").click(pageClickHandler);
     $(ajaxDeleteHandlerSelector).click(deleteLinkHandler);
@@ -1136,10 +1176,18 @@ var CLIENT = $(function () {
     $(downloadReportSelector).submit(downloadReport);
     $(menuClickHandlerSelector).click(menucClickHandler);
 
+    $(editItemModalId).on("hidden.bs.modal", function (e) {
+        resetModalBody(editItemModalId);
+    });
+
+    $(createItemModalId).on("hidden.bs.modal", function (e) {
+        resetModalBody(createItemModalId);
+    });
+
     //#endregion // EVENT HANDLERS 
 
     //#region public methods
 
-   // this.LayoutDeleteSubmitButtonAjaxOnLoadHandler = layoutDeleteSubmitButtonAjaxOnLoadHandler;
+    // this.LayoutDeleteSubmitButtonAjaxOnLoadHandler = layoutDeleteSubmitButtonAjaxOnLoadHandler;
     //#endregion // public methods
 })[0];
