@@ -34,11 +34,9 @@ namespace TenderSearch.Web.Areas.Users.Controllers
     [Export]
     [PartCreationPolicy(CreationPolicy.NonShared)]
     public class ContractController 
-        : CrudControllerForCreateEditIndexWithParent<Contract, ContractLayoutContentsCreateEditViewModel, ContractLayoutContentsIndexViewModel>
+        : CrudControllerForCreateEditIndexWithParent<Contract, Company, ContractLayoutContentsCreateEditViewModel, ContractLayoutContentsIndexViewModel>
     {
         private readonly int contractExpiresSoonCountDown;
-
-        private readonly IDataRepositorySoftDeleteInt<Company> parentRepository;
 
         private readonly IDataRepositorySoftDeleteInt<Lookup> lookupRepository;
 
@@ -47,10 +45,10 @@ namespace TenderSearch.Web.Areas.Users.Controllers
             , IDataRepositorySoftDeleteInt<Company> parentRepository
             , IDataRepositorySoftDeleteInt<Lookup> lookupRepository
             , IConfigBase<int, ContractExpiresSoonCountDownConfig> contractExpiresSoonCountDownConfig)
-            : base(mediator, repository, logger)
+            : base(mediator, repository, parentRepository, logger)
         {
             contractExpiresSoonCountDown = contractExpiresSoonCountDownConfig.Value;
-            this.parentRepository = parentRepository;
+
             this.lookupRepository = lookupRepository;
         }
 

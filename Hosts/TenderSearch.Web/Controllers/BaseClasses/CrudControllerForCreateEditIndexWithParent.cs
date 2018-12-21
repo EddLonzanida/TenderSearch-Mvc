@@ -8,24 +8,39 @@ using System.Threading.Tasks;
 namespace TenderSearch.Web.Controllers.BaseClasses
 {
     /// <inheritdoc cref="CrudControllerForCreateEditIndex&lt;T, TLayoutContentsCreateEditViewModel, TLayoutContentsIndexViewModel&gt;" />
-    public abstract class CrudControllerForCreateEditIndexWithParent<T, TLayoutContentsCreateEditViewModel, TLayoutContentsIndexViewModel>
+    public abstract class CrudControllerForCreateEditIndexWithParent<T, TParent, TLayoutContentsCreateEditViewModel, TLayoutContentsIndexViewModel>
         : CrudControllerForCreateEditIndex<T, TLayoutContentsCreateEditViewModel, TLayoutContentsIndexViewModel>, IControllerWithParent<int, T>
         where T : class, IEntityBase<int>, new()
+        where TParent : class, IEntityBase<int>, IEntitySoftdeletableBase, new()
         where TLayoutContentsCreateEditViewModel : class, ILayoutContentsCreateEditViewModel<int, T>
         where TLayoutContentsIndexViewModel : class, ILayoutContentsIndexViewModel<int, T>
     {
         public abstract override Task<T> CreateNewItemWithParent(int parentId, string param);
+
         public abstract override Task BeforeCreateSave(T item);
+
         public abstract override Task BeforeEditSave(T item);
+
         public abstract override Task<string> GetParentName(int parentId);
+
         public abstract override int GetParentId(T item);
 
-        protected CrudControllerForCreateEditIndexWithParent(IDataRepositoryBase<int, T> repository, ILogger logger) : base(repository, logger)
+        protected readonly IDataRepositorySoftDeleteInt<TParent> parentRepository;
+
+        protected CrudControllerForCreateEditIndexWithParent(IDataRepositoryBase<int, T> repository
+            , IDataRepositorySoftDeleteInt<TParent> parentRepository
+            , ILogger logger)
+            : this(null, repository, parentRepository, logger)
         {
         }
 
-        protected CrudControllerForCreateEditIndexWithParent(IMediator mediator, IDataRepositoryBase<int, T> repository, ILogger logger) : base(mediator, repository, logger)
+        protected CrudControllerForCreateEditIndexWithParent(IMediator mediator
+            , IDataRepositoryBase<int, T> repository
+            , IDataRepositorySoftDeleteInt<TParent> parentRepository
+            , ILogger logger)
+            : base(mediator, repository, logger)
         {
+            this.parentRepository = parentRepository;
         }
     }
 }

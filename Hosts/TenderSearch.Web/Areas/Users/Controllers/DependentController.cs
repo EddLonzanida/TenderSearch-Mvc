@@ -32,15 +32,13 @@ namespace TenderSearch.Web.Areas.Users.Controllers
     [Authorize(Roles = Authorize.Users)]
     [Export]
     [PartCreationPolicy(CreationPolicy.NonShared)]
-    public class DependentController : PersonControllerBase<Dependent, DependentLayoutContentsCreateEditViewModel>
+    public class DependentController : PersonControllerBase<Dependent, Employee, DependentLayoutContentsCreateEditViewModel>
     {
-        private readonly IDataRepositorySoftDeleteInt<Employee> parentRepository;
-
         [ImportingConstructor]
-        public DependentController(IMediator mediator, IDataRepositorySoftDeleteInt<Dependent> repository, ILogger logger, IDataRepositorySoftDeleteInt<Employee> parentRepository, IDataRepositorySoftDeleteInt<Lookup> lookupRepository)
-            : base(mediator, repository, logger, lookupRepository)
+        public DependentController(IMediator mediator, IDataRepositorySoftDeleteInt<Dependent> repository, ILogger logger
+            , IDataRepositorySoftDeleteInt<Employee> parentRepository, IDataRepositorySoftDeleteInt<Lookup> lookupRepository)
+            : base(mediator, repository, parentRepository, logger, lookupRepository)
         {
-            this.parentRepository = parentRepository;
         }
 
         protected override async Task<IPagedList<Dependent>> GetItemsAsync(int parentId, int page, bool isDesc, int sortColumn, string search, string param)

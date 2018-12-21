@@ -31,7 +31,7 @@ namespace TenderSearch.Web.Areas.Users.Controllers
     [Authorize(Roles = Authorize.Users)]
     [Export]
     [PartCreationPolicy(CreationPolicy.NonShared)]
-    public class AddressController : CrudControllerForCreateEditWithParent<Address, AddressLayoutContentsCreateEditViewModel>, IPersonSuggestion, IBarangaySuggestion
+    public class AddressController : CrudControllerForCreateEdit<Address, AddressLayoutContentsCreateEditViewModel>, IPersonSuggestion, IBarangaySuggestion
     {
         protected readonly IDataRepositorySoftDeleteInt<Employee> employeeRepository;
         protected readonly IDataRepositorySoftDeleteInt<Dependent> dependentRepository;

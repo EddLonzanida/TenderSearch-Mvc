@@ -16,14 +16,20 @@ using TenderSearch.Web.Controllers.BaseClasses;
 
 namespace TenderSearch.Web.Areas.Users.Controllers.BaseClasses
 {
-    public abstract class PersonControllerBase<T, TLayoutContentsCreateEditViewModel> : CrudControllerForCreateEditWithParent<T, TLayoutContentsCreateEditViewModel>, IPersonSuggestion
+    public abstract class PersonControllerBase<T, TParent, TLayoutContentsCreateEditViewModel> 
+        : CrudControllerForCreateEditWithParent<T, TParent, TLayoutContentsCreateEditViewModel>, IPersonSuggestion
         where T : class, IEntityBase<int>, new()
+        where TParent : class, IEntityBase<int>, IEntitySoftdeletableBase, new()
         where TLayoutContentsCreateEditViewModel : class, ILayoutContentsCreateEditViewModel<int, T>
     {
         protected readonly IDataRepositorySoftDeleteInt<Lookup> lookupRepository;
 
-        protected PersonControllerBase(IMediator mediator, IDataRepositoryBase<int, T> repository, ILogger logger, IDataRepositorySoftDeleteInt<Lookup> lookupRepository)
-            : base(mediator, repository, logger)
+        protected PersonControllerBase(IMediator mediator
+            , IDataRepositoryBase<int, T> repository
+            , IDataRepositorySoftDeleteInt<TParent> parentRepository
+            , ILogger logger
+            , IDataRepositorySoftDeleteInt<Lookup> lookupRepository)
+            : base(mediator, repository, parentRepository, logger)
         {
             this.lookupRepository = lookupRepository;
         }
