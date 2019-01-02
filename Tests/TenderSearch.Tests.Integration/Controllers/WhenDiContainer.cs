@@ -4,6 +4,7 @@ using Eml.MefExtensions;
 using Shouldly;
 using System;
 using System.ComponentModel.Composition;
+using TenderSearch.Tests.Integration.ClassData;
 using Xunit;
 
 namespace TenderSearch.Tests.Integration.Controllers

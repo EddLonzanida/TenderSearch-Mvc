@@ -3,8 +3,7 @@
 <#@ assembly name="System.ComponentModel.DataAnnotations" #>
 <#@ assembly name="$(SolutionDir)Business\$(ProjectName)\bin\$(ConfigurationName)\Eml.Contracts.dll" #>
 <#@ assembly name="$(SolutionDir)Business\$(ProjectName)\bin\$(ConfigurationName)\$(ProjectName).dll" #>
-
-    <#@ assembly name="EnvDTE" #>
+<#@ assembly name="EnvDTE" #>
 <#@ import namespace="EnvDTE" #>
 <#@ import namespace="System" #>
 <#@ import namespace="System.IO" #>
@@ -22,6 +21,8 @@
 //  Template:  <#= Path.GetFileName(Host.TemplateFile) #>
 //  * Enum members are arranged from top to bottom, the same order it was declared.
 //  * Or use SortOrder attribute into your property.
+//  How to trigger: Goto Properties -> Custom Tool -> rename from TextTemplatingFileGeneratorr to TextTemplatingFileGenerator
+//  How to disable: Rename from TextTemplatingFileGenerator back to TextTemplatingFileGeneratorr
 // </auto-generated>
 //------------------------------------------------------------------------------
 <#= GenerateOutput() #><#+ 
