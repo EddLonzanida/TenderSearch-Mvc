@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using Eml.ConfigParser;
+using Eml.DataRepository;
+using Eml.Mediator.Contracts;
+using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Data;
 using System.Data.SqlClient;
@@ -9,14 +12,11 @@ using TenderSearch.Business.Extensions;
 using TenderSearch.Business.Requests;
 using TenderSearch.Business.Responses;
 using TenderSearch.Contracts.Infrastructure;
-using Eml.ConfigParser;
-using Eml.DataRepository;
-using Eml.DataRepository.Contracts;
-using Eml.Mediator.Contracts;
+using TenderSearch.Data.Contracts;
 
 namespace TenderSearch.Business.RequestEngines
 {
-	[PartCreationPolicy(CreationPolicy.NonShared)]
+    [PartCreationPolicy(CreationPolicy.NonShared)]
     public class DuplicateContractAsyncEngine : IRequestAsyncEngine<DuplicateContractAsyncRequest, DuplicateContractResponse>
     {
         private readonly IDataRepositorySoftDeleteInt<Contract> dataRepository;

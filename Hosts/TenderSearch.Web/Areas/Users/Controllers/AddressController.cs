@@ -1,13 +1,7 @@
-﻿using TenderSearch.Business.Common.Dto;
-using TenderSearch.Business.Common.Entities;
-using TenderSearch.Contracts.Infrastructure;
-using TenderSearch.Web.Areas.Users.ViewModels;
-using TenderSearch.Web.Infrastructure;
-using TenderSearch.Web.Infrastructure.Contracts;
-using Eml.ControllerBase.Mvc.Extensions;
+﻿using Eml.ControllerBase.Mvc.Extensions;
 using Eml.ControllerBase.Mvc.Infrastructures;
 using Eml.ControllerBase.Mvc.ViewModels;
-using Eml.DataRepository.Contracts;
+using Eml.ControllerBase.Mvc.ViewModels.LayoutContents;
 using Eml.Extensions;
 using Eml.Logger;
 using Eml.Mediator.Contracts;
@@ -20,8 +14,15 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using Eml.ControllerBase.Mvc.ViewModels.LayoutContents;
+using TenderSearch.Business.Common.Dto;
+using TenderSearch.Business.Common.Entities;
+using TenderSearch.Contracts.Infrastructure;
+using TenderSearch.Data;
+using TenderSearch.Data.Contracts;
+using TenderSearch.Web.Areas.Users.ViewModels;
 using TenderSearch.Web.Controllers.BaseClasses;
+using TenderSearch.Web.Infrastructure;
+using TenderSearch.Web.Infrastructure.Contracts;
 using X.PagedList;
 using SelectListItem = System.Web.Mvc.SelectListItem;
 
@@ -39,9 +40,9 @@ namespace TenderSearch.Web.Areas.Users.Controllers
         protected readonly IDataRepositorySoftDeleteInt<Lookup> lookupRepository;
 
         [ImportingConstructor]
-        public AddressController(IMediator mediator , IDataRepositorySoftDeleteInt<Address> repository
-            , ILogger logger , IDataRepositorySoftDeleteInt<Employee> employeeRepository , IDataRepositorySoftDeleteInt<Dependent> dependentRepository
-            , IDataRepositorySoftDeleteInt<Barangay> barangayRepository , IDataRepositorySoftDeleteInt<Lookup> lookupRepository)
+        public AddressController(IMediator mediator, IDataRepositorySoftDeleteInt<Address> repository
+            , ILogger logger, IDataRepositorySoftDeleteInt<Employee> employeeRepository, IDataRepositorySoftDeleteInt<Dependent> dependentRepository
+            , IDataRepositorySoftDeleteInt<Barangay> barangayRepository, IDataRepositorySoftDeleteInt<Lookup> lookupRepository)
             : base(mediator, repository, logger)
         {
             this.employeeRepository = employeeRepository;
@@ -249,7 +250,7 @@ namespace TenderSearch.Web.Areas.Users.Controllers
 
         protected override Func<IQueryable<Address>, IOrderedQueryable<Address>> GetOrderBy(int sortColumn, bool isDesc)
         {
-            Func<IQueryable<Address>, IOrderedQueryable < Address>> orderBy = null;
+            Func<IQueryable<Address>, IOrderedQueryable<Address>> orderBy = null;
 
             var eSortColumn = (eAddress)sortColumn;
 
@@ -443,9 +444,9 @@ namespace TenderSearch.Web.Areas.Users.Controllers
             return item;
         }
 
-        public override async Task BeforeCreateSave(Address item)
+        public override async Task BeforeCreateSave(TenderSearchDb db, Address item)
         {
-            barangayRepository.SetUnchanged(item?.Barangay);
+            barangayRepository.SetUnchanged(db, item?.Barangay);
 
             if (item != null)
             {
@@ -465,9 +466,9 @@ namespace TenderSearch.Web.Areas.Users.Controllers
             await Task.Delay(1);
         }
 
-        public override async Task BeforeEditSave(Address item)
+        public override async Task BeforeEditSave(TenderSearchDb db, Address item)
         {
-            barangayRepository.SetUnchanged(item?.Barangay);
+            barangayRepository.SetUnchanged(db, item?.Barangay);
 
             if (item != null)
             {
@@ -516,9 +517,9 @@ namespace TenderSearch.Web.Areas.Users.Controllers
             return ownerId;
         }
 
-        public override async Task<Address> FindItemAsync(int id, eAction action)
+        public override async Task<Address> FindItemAsync(TenderSearchDb db, int id, eAction action)
         {
-            var item = await base.FindItemAsync(id, action);
+            var item = await base.FindItemAsync(db, id, action);
             var param = item.OwnerType;
 
             if (action == eAction.GetEdit)

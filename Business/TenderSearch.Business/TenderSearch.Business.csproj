@@ -40,8 +40,8 @@
     <Reference Include="Eml.Contracts, Version=2.2.0.2, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Eml.Contracts.2.2.0.2\lib\net472\Eml.Contracts.dll</HintPath>
     </Reference>
-    <Reference Include="Eml.DataRepository, Version=2.2.0.2, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Eml.DataRepository.2.2.0.2\lib\net472\Eml.DataRepository.dll</HintPath>
+    <Reference Include="Eml.DataRepository, Version=2.2.0.6, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Eml.DataRepository.2.2.0.6\lib\net472\Eml.DataRepository.dll</HintPath>
     </Reference>
     <Reference Include="Eml.EntityBaseClasses, Version=2.2.0.2, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Eml.EntityBaseClasses.2.2.0.2\lib\net472\Eml.EntityBaseClasses.dll</HintPath>
@@ -92,6 +92,10 @@
     <Compile Include="Responses\DuplicateContractResponse.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Data\TenderSearch.Data\TenderSearch.Data.csproj">
+      <Project>{58109f1c-97d2-456d-bbca-84c48299f406}</Project>
+      <Name>TenderSearch.Data</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Infrastructure\TenderSearch.Contracts\TenderSearch.Contracts.csproj">
       <Project>{d485e1e3-c757-4b40-bd78-d4dd63f7f892}</Project>
       <Name>TenderSearch.Contracts</Name>

@@ -14,6 +14,7 @@ using System.Web;
 using System.Web.Mvc;
 using Eml.ControllerBase.Mvc.ViewModels.LayoutContents;
 using TenderSearch.Contracts.Infrastructure;
+using TenderSearch.Data;
 using TenderSearch.Web.IdentityConfig;
 using TenderSearch.Web.Utils;
 using X.PagedList;
@@ -25,7 +26,7 @@ namespace TenderSearch.Web.Controllers.BaseClasses
     /// Uses Generic TKey id. Implementation of CrudControllerMvcBase WITHOUT repository
     /// </summary>
     public abstract class CrudControllerNoRepositoryBase<TKey, T, TLayoutContentsCreateEditViewModel, TLayoutContentsIndexViewModel, TLayoutContentsDetailsDeleteViewModel>
-        : CrudControllerMvcBase<TKey, T, TLayoutContentsCreateEditViewModel, TLayoutContentsIndexViewModel, TLayoutContentsDetailsDeleteViewModel>
+        : CrudControllerMvcBase<TKey, T, TenderSearchDb, TLayoutContentsCreateEditViewModel, TLayoutContentsIndexViewModel, TLayoutContentsDetailsDeleteViewModel>
         where T : class, IEntityBase<TKey>, new()
         where TLayoutContentsCreateEditViewModel : class, ILayoutContentsCreateEditViewModel<TKey, T>
         where TLayoutContentsIndexViewModel : class, ILayoutContentsIndexViewModel<TKey, T>

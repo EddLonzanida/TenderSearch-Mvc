@@ -4,22 +4,23 @@ using Eml.ControllerBase.Mvc.ViewModels.LayoutContents;
 using Eml.DataRepository.Contracts;
 using Eml.Logger;
 using Eml.Mediator.Contracts;
+using TenderSearch.Data;
 
 namespace TenderSearch.Web.Controllers.BaseClasses
 {
     /// <inheritdoc cref="CrudControllerBaseInt&lt;T, TRepository, TLayoutContentsCreateEditViewModel, TLayoutContentsIndexViewModel, TLayoutContentsDetailsDeleteViewModel&gt;" />
     public abstract class CrudControllerForCreateEditIndex<T, TLayoutContentsCreateEditViewModel, TLayoutContentsIndexViewModel>
-        : CrudControllerBaseInt<T, IDataRepositoryBase<int, T>, TLayoutContentsCreateEditViewModel, TLayoutContentsIndexViewModel, LayoutContentsDetailsDeleteViewModel<int, T>>
+        : CrudControllerBaseInt<T, IDataRepositoryBase<int, T, TenderSearchDb>, TLayoutContentsCreateEditViewModel, TLayoutContentsIndexViewModel, LayoutContentsDetailsDeleteViewModel<int, T>>
         where T : class, IEntityBase<int>, new()
         where TLayoutContentsCreateEditViewModel : class, ILayoutContentsCreateEditViewModel<int, T>, ILabelClassCount
         where TLayoutContentsIndexViewModel : class, ILayoutContentsIndexViewModel<int, T>
     {
-        protected CrudControllerForCreateEditIndex(IDataRepositoryBase<int, T> repository, ILogger logger)
+        protected CrudControllerForCreateEditIndex(IDataRepositoryBase<int, T, TenderSearchDb> repository, ILogger logger)
             : base(repository, logger)
         {
         }
 
-        protected CrudControllerForCreateEditIndex(IMediator mediator, IDataRepositoryBase<int, T> repository, ILogger logger)
+        protected CrudControllerForCreateEditIndex(IMediator mediator, IDataRepositoryBase<int, T, TenderSearchDb> repository, ILogger logger)
             : base(mediator, repository, logger)
         {
         }

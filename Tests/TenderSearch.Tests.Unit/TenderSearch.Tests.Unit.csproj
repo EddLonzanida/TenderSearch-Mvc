@@ -48,8 +48,8 @@
     <Reference Include="Eml.Contracts, Version=2.2.0.2, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Eml.Contracts.2.2.0.2\lib\net472\Eml.Contracts.dll</HintPath>
     </Reference>
-    <Reference Include="Eml.DataRepository, Version=2.2.0.2, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Eml.DataRepository.2.2.0.2\lib\net472\Eml.DataRepository.dll</HintPath>
+    <Reference Include="Eml.DataRepository, Version=2.2.0.6, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Eml.DataRepository.2.2.0.6\lib\net472\Eml.DataRepository.dll</HintPath>
     </Reference>
     <Reference Include="Eml.EntityBaseClasses, Version=2.2.0.2, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Eml.EntityBaseClasses.2.2.0.2\lib\net472\Eml.EntityBaseClasses.dll</HintPath>
@@ -139,6 +139,10 @@
     <ProjectReference Include="..\..\Business\TenderSearch.Business\TenderSearch.Business.csproj">
       <Project>{9ff776d3-5c33-4c74-988e-ca7f6bb0add5}</Project>
       <Name>TenderSearch.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Data\TenderSearch.Data\TenderSearch.Data.csproj">
+      <Project>{58109f1c-97d2-456d-bbca-84c48299f406}</Project>
+      <Name>TenderSearch.Data</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

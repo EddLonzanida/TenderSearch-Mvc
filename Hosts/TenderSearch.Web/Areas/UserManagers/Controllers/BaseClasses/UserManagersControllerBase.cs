@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using TenderSearch.Web.Controllers.BaseClasses;
+﻿using TenderSearch.Web.Controllers.BaseClasses;
 using Eml.Contracts.Entities;
 using Eml.ControllerBase.Mvc.Contracts;
 using Eml.Logger;

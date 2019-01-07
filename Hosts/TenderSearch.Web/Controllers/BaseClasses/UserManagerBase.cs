@@ -6,6 +6,7 @@ using Eml.ControllerBase.Mvc.Infrastructures;
 using Eml.DataRepository;
 using Eml.Mediator.Contracts;
 using System.Threading.Tasks;
+using TenderSearch.Data;
 using ILogger = Eml.Logger.ILogger;
 
 namespace TenderSearch.Web.Controllers.BaseClasses
@@ -27,19 +28,19 @@ namespace TenderSearch.Web.Controllers.BaseClasses
         {
         }
 
-        protected abstract override Task FinalizeDelete(T itemFromDb, string newDeletionReason, DateTime timeStamp, string returnUrl);
+        protected abstract override Task FinalizeDelete(TenderSearchDb db, T itemFromDb, string newDeletionReason, DateTime timeStamp, string returnUrl);
 
         #region NOT NEEDED
-        protected sealed override void SetModified(T item)
+        protected sealed override void SetModified(TenderSearchDb db, T item)
         {
         }
 
-        protected sealed override async Task SaveChangesAsync()
+        protected sealed override async Task SaveChangesAsync(TenderSearchDb db)
         {
             await Task.Delay(1);
         }
 
-        protected sealed override void SetUnchanged(T item)
+        protected sealed override void SetUnchanged(TenderSearchDb db, T item)
         {
         }
 
@@ -68,7 +69,7 @@ namespace TenderSearch.Web.Controllers.BaseClasses
         {
         }
 
-        protected abstract override Task FinalizeDelete(T itemFromDb, string newDeletionReason, DateTime timeStamp, string returnUrl);
+        protected abstract override Task FinalizeDelete(TenderSearchDb db, T itemFromDb, string newDeletionReason, DateTime timeStamp, string returnUrl);
 
         protected abstract TLayoutContentsCreateEditViewModel GetLayoutContentsViewModelForCreateEdit(T item, string title1, string title2, string title3, int pageSize, int labelClassColumnCount = 4, string parentId = default);
 
@@ -88,22 +89,7 @@ namespace TenderSearch.Web.Controllers.BaseClasses
         }
 
         #region NOT NEEDED
-        protected sealed override void SetModified(T item)
-        {
-        }
-
-        protected sealed override async Task SaveChangesAsync()
-        {
-            await Task.Delay(1);
-        }
-
-        protected sealed override void SetUnchanged(T item)
-        {
-        }
-
-        protected sealed override void DiscardChanges()
-        {
-        }
+        
         #endregion // NOT NEEDED
     }
 }

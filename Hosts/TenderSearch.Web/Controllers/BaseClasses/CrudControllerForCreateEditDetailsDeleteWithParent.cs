@@ -4,12 +4,14 @@ using Eml.DataRepository.Contracts;
 using Eml.Logger;
 using Eml.Mediator.Contracts;
 using System.Threading.Tasks;
+using TenderSearch.Data;
+using TenderSearch.Data.Contracts;
 
 namespace TenderSearch.Web.Controllers.BaseClasses
 {
     /// <inheritdoc cref="CrudControllerForCreateEditDetailsDelete&lt;T, TLayoutContentsCreateEditViewModel, TLayoutContentsDetailsDeleteViewModel&gt;" />
     public abstract class CrudControllerForCreateEditDetailsDeleteWithParent<T, TParent, TLayoutContentsCreateEditViewModel, TLayoutContentsDetailsDeleteViewModel>
-        : CrudControllerForCreateEditDetailsDelete<T,  TLayoutContentsCreateEditViewModel, TLayoutContentsDetailsDeleteViewModel>, IControllerWithParent<int, T>
+        : CrudControllerForCreateEditDetailsDelete<T,  TLayoutContentsCreateEditViewModel, TLayoutContentsDetailsDeleteViewModel>, IControllerWithParent<int, T, TenderSearchDb>
         where T : class, IEntityBase<int>, new()
         where TParent : class, IEntityBase<int>, IEntitySoftdeletableBase, new()
         where TLayoutContentsCreateEditViewModel : class, ILayoutContentsCreateEditViewModel<int, T>
@@ -17,9 +19,9 @@ namespace TenderSearch.Web.Controllers.BaseClasses
     {
         public abstract override Task<T> CreateNewItemWithParent(int parentId, string param);
 
-        public abstract override Task BeforeCreateSave(T item);
+        public abstract override Task BeforeCreateSave(TenderSearchDb db, T item);
 
-        public abstract override Task BeforeEditSave(T item);
+        public abstract override Task BeforeEditSave(TenderSearchDb db, T item);
 
         public abstract override Task<string> GetParentName(int parentId);
 
@@ -27,7 +29,7 @@ namespace TenderSearch.Web.Controllers.BaseClasses
 
         protected readonly IDataRepositorySoftDeleteInt<TParent> parentRepository;
 
-        protected CrudControllerForCreateEditDetailsDeleteWithParent(IDataRepositoryBase<int, T> repository
+        protected CrudControllerForCreateEditDetailsDeleteWithParent(IDataRepositoryBase<int, T, TenderSearchDb> repository
             , IDataRepositorySoftDeleteInt<TParent> parentRepository
             , ILogger logger)
             : this(null, repository, parentRepository, logger)
@@ -35,7 +37,7 @@ namespace TenderSearch.Web.Controllers.BaseClasses
         }
 
         protected CrudControllerForCreateEditDetailsDeleteWithParent(IMediator mediator
-            , IDataRepositoryBase<int, T> repository
+            , IDataRepositoryBase<int, T, TenderSearchDb> repository
             , IDataRepositorySoftDeleteInt<TParent> parentRepository
             , ILogger logger)
             : base(mediator, repository, logger)

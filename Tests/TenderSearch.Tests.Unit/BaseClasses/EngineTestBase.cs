@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq.Expressions;
 using TenderSearch.Business.Common.Entities;
-using Eml.DataRepository.Contracts;
 using Eml.Mediator.Contracts;
 using NSubstitute;
+using TenderSearch.Data.Contracts;
 
 namespace TenderSearch.Tests.Unit.BaseClasses
 {

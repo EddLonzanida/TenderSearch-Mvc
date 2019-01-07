@@ -4,19 +4,21 @@ using Eml.DataRepository.Contracts;
 using Eml.Logger;
 using Eml.Mediator.Contracts;
 using System.Threading.Tasks;
+using TenderSearch.Data;
+using TenderSearch.Data.Contracts;
 
 namespace TenderSearch.Web.Controllers.BaseClasses
 {
     /// <inheritdoc cref="CrudController&lt;T&gt;" />
-    public abstract class CrudControllerWithParent<T, TParent> : CrudController<T>, IControllerWithParent<int, T>
+    public abstract class CrudControllerWithParent<T, TParent> : CrudController<T>, IControllerWithParent<int, T, TenderSearchDb>
         where T : class, IEntityBase<int>, new()
         where TParent : class, IEntityBase<int>, IEntitySoftdeletableBase, new()
     {
         public abstract override Task<T> CreateNewItemWithParent(int parentId, string param);
 
-        public abstract override Task BeforeCreateSave(T item);
+        public abstract override Task BeforeCreateSave(TenderSearchDb db, T item);
 
-        public abstract override Task BeforeEditSave(T item);
+        public abstract override Task BeforeEditSave(TenderSearchDb db, T item);
 
         public abstract override Task<string> GetParentName(int parentId);
 
@@ -24,7 +26,7 @@ namespace TenderSearch.Web.Controllers.BaseClasses
 
         protected readonly IDataRepositorySoftDeleteInt<TParent> parentRepository;
 
-        protected CrudControllerWithParent(IDataRepositoryBase<int, T> repository
+        protected CrudControllerWithParent(IDataRepositoryBase<int, T, TenderSearchDb> repository
             , IDataRepositorySoftDeleteInt<TParent> parentRepository
             , ILogger logger)
             : this(null, repository, parentRepository, logger)
@@ -32,7 +34,7 @@ namespace TenderSearch.Web.Controllers.BaseClasses
         }
 
         protected CrudControllerWithParent(IMediator mediator
-            , IDataRepositoryBase<int, T> repository
+            , IDataRepositoryBase<int, T, TenderSearchDb> repository
             , IDataRepositorySoftDeleteInt<TParent> parentRepository
             , ILogger logger)
             : base(mediator, repository, logger)

@@ -1,5 +1,4 @@
-﻿using Eml.EntityBaseClasses;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using TenderSearch.Business.Common.Entities.BaseClasses;
 
 namespace TenderSearch.Data.Security

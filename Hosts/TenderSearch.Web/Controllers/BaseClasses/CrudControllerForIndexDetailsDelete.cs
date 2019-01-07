@@ -4,22 +4,23 @@ using Eml.ControllerBase.Mvc.ViewModels.LayoutContents;
 using Eml.DataRepository.Contracts;
 using Eml.Logger;
 using Eml.Mediator.Contracts;
+using TenderSearch.Data;
 
 namespace TenderSearch.Web.Controllers.BaseClasses
 {
     /// <inheritdoc />
     public abstract class CrudControllerForIndexDetailsDelete<T, TLayoutContentsIndexViewModel, TLayoutContentsDetailsDeleteViewModel>
-        : CrudControllerBaseInt<T, IDataRepositoryBase<int, T>, LayoutContentsCreateEditViewModel<int, T>, TLayoutContentsIndexViewModel, TLayoutContentsDetailsDeleteViewModel>
+        : CrudControllerBaseInt<T, IDataRepositoryBase<int, T, TenderSearchDb>, LayoutContentsCreateEditViewModel<int, T>, TLayoutContentsIndexViewModel, TLayoutContentsDetailsDeleteViewModel>
         where T : class, IEntityBase<int>, new()
         where TLayoutContentsIndexViewModel : class, ILayoutContentsIndexViewModel<int, T>
         where TLayoutContentsDetailsDeleteViewModel : class, ILayoutContentsDetailsDeleteViewModel<int, T>
     {
-        protected CrudControllerForIndexDetailsDelete(IDataRepositoryBase<int, T> repository, ILogger logger)
+        protected CrudControllerForIndexDetailsDelete(IDataRepositoryBase<int, T, TenderSearchDb> repository, ILogger logger)
             : base(repository, logger)
         {
         }
 
-        protected CrudControllerForIndexDetailsDelete(IMediator mediator, IDataRepositoryBase<int, T> repository, ILogger logger)
+        protected CrudControllerForIndexDetailsDelete(IMediator mediator, IDataRepositoryBase<int, T, TenderSearchDb> repository, ILogger logger)
             : base(mediator, repository, logger)
         {
         }

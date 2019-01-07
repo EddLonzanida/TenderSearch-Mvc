@@ -1,9 +1,6 @@
 ﻿using Eml.ConfigParser;
-using Eml.ControllerBase.Mvc.BaseClasses;
-using Eml.ControllerBase.Mvc.Contracts;
 using Eml.ControllerBase.Mvc.Infrastructures;
 using Eml.ControllerBase.Mvc.ViewModels;
-using Eml.DataRepository.Contracts;
 using Eml.Extensions;
 using Eml.Logger;
 using Eml.Mediator.Contracts;
@@ -19,7 +16,8 @@ using Eml.ControllerBase.Mvc.Extensions;
 using TenderSearch.Business.Common.Entities;
 using TenderSearch.Business.Requests;
 using TenderSearch.Contracts.Infrastructure;
-using TenderSearch.Web.Areas.Users.Controllers.BaseClasses;
+using TenderSearch.Data;
+using TenderSearch.Data.Contracts;
 using TenderSearch.Web.Areas.Users.ViewModels;
 using TenderSearch.Web.Configurations;
 using TenderSearch.Web.Controllers.BaseClasses;
@@ -121,9 +119,9 @@ namespace TenderSearch.Web.Areas.Users.Controllers
             return item;
         }
 
-        public override async Task BeforeCreateSave(Contract item)
+        public override async Task BeforeCreateSave(TenderSearchDb db, Contract item)
         {
-            parentRepository.SetUnchanged(item?.Company);
+            parentRepository.SetUnchanged(db, item?.Company);
 
             if (item != null)
             {
@@ -133,9 +131,9 @@ namespace TenderSearch.Web.Areas.Users.Controllers
             await Task.Delay(1);
         }
 
-        public override async Task BeforeEditSave(Contract item)
+        public override async Task BeforeEditSave(TenderSearchDb db, Contract item)
         {
-            parentRepository.SetUnchanged(item?.Company);
+            parentRepository.SetUnchanged(db, item?.Company);
 
             await Task.Delay(1);
         }
@@ -361,9 +359,8 @@ namespace TenderSearch.Web.Areas.Users.Controllers
         protected IEnumerable<SelectListItem> GetCompanies()
         {
             var results = parentRepository.GetAll();
-            var selectLists = results.ToSelectListItems(r => r.Id, r => r.Name);
 
-            return selectLists.ToMvcSelectListItem();
+            return results.ToMvcSelectListItem(r => r.Id, r => r.Name);
         }
 
         protected IEnumerable<SelectListItem> GetContractTypes()

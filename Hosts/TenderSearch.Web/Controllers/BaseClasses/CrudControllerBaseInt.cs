@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using TenderSearch.Contracts.Infrastructure;
+using TenderSearch.Data;
 using TenderSearch.Web.IdentityConfig;
 using TenderSearch.Web.Utils;
 
@@ -26,21 +27,21 @@ namespace TenderSearch.Web.Controllers.BaseClasses
     /// Add Attribute: [PartCreationPolicy(CreationPolicy.NonShared)].
     /// </summary>
     public abstract class CrudControllerBaseInt<T, TRepository, TLayoutContentsCreateEditViewModel, TLayoutContentsIndexViewModel, TLayoutContentsDetailsDeleteViewModel>
-        : CrudControllerMvcBase<int, T, TRepository, TLayoutContentsCreateEditViewModel, TLayoutContentsIndexViewModel, TLayoutContentsDetailsDeleteViewModel>
+        : CrudControllerMvcBase<int, T, TenderSearchDb, TRepository, TLayoutContentsCreateEditViewModel, TLayoutContentsIndexViewModel, TLayoutContentsDetailsDeleteViewModel>
         where T : class, IEntityBase<int>, new()
-        where TRepository : class, IDataRepositoryBase<int, T>
+        where TRepository : class, IDataRepositoryBase<int, T, TenderSearchDb>
         where TLayoutContentsCreateEditViewModel : class, ILayoutContentsCreateEditViewModel<int, T>
         where TLayoutContentsIndexViewModel : class, ILayoutContentsIndexViewModel<int, T>
         where TLayoutContentsDetailsDeleteViewModel : class, ILayoutContentsDetailsDeleteViewModel<int, T>
     {
         private ApplicationUserManager _userManager;
 
-        protected CrudControllerBaseInt(TRepository repository, ILogger logger)
+        protected CrudControllerBaseInt(TRepository repository, ILogger logger) 
             : base(repository, logger)
         {
         }
 
-        protected CrudControllerBaseInt(IMediator mediator, TRepository repository, ILogger logger)
+        protected CrudControllerBaseInt(IMediator mediator, TRepository repository, ILogger logger) 
             : base(mediator, repository, logger)
         {
         }

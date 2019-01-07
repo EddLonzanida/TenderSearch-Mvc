@@ -4,20 +4,21 @@ using Eml.ControllerBase.Mvc.ViewModels.LayoutContents;
 using Eml.DataRepository.Contracts;
 using Eml.Logger;
 using Eml.Mediator.Contracts;
+using TenderSearch.Data;
 
 namespace TenderSearch.Web.Controllers.BaseClasses
 {
     /// <inheritdoc />
     public abstract class CrudControllerForIndex<T, TLayoutContentsIndexViewModel>
-        : CrudControllerBaseInt<T, IDataRepositoryBase<int, T>, LayoutContentsCreateEditViewModel<int, T>, TLayoutContentsIndexViewModel, LayoutContentsDetailsDeleteViewModel<int, T>>
+        : CrudControllerBaseInt<T, IDataRepositoryBase<int, T, TenderSearchDb>, LayoutContentsCreateEditViewModel<int, T>, TLayoutContentsIndexViewModel, LayoutContentsDetailsDeleteViewModel<int, T>>
         where T : class, IEntityBase<int>, new()
         where TLayoutContentsIndexViewModel : class, ILayoutContentsIndexViewModel<int, T>
     {
-        protected CrudControllerForIndex(IDataRepositoryBase<int, T> repository, ILogger logger) : base(repository, logger)
+        protected CrudControllerForIndex(IDataRepositoryBase<int, T, TenderSearchDb> repository, ILogger logger) : base(repository, logger)
         {
         }
 
-        protected CrudControllerForIndex(IMediator mediator, IDataRepositoryBase<int, T> repository, ILogger logger) : base(mediator, repository, logger)
+        protected CrudControllerForIndex(IMediator mediator, IDataRepositoryBase<int, T, TenderSearchDb> repository, ILogger logger) : base(mediator, repository, logger)
         {
         }
 

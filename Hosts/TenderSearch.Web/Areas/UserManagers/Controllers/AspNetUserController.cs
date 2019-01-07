@@ -1,8 +1,4 @@
-﻿using TenderSearch.Contracts.Infrastructure;
-using TenderSearch.Data;
-using TenderSearch.Data.Security;
-using TenderSearch.Web.Areas.UserManagers.Controllers.BaseClasses;
-using Eml.ControllerBase.Mvc.Contracts;
+﻿using Eml.ControllerBase.Mvc.Contracts;
 using Eml.ControllerBase.Mvc.Infrastructures;
 using Eml.ControllerBase.Mvc.ViewModels;
 using Eml.DataRepository;
@@ -18,6 +14,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
+using TenderSearch.Contracts.Infrastructure;
+using TenderSearch.Data;
+using TenderSearch.Data.Security;
+using TenderSearch.Web.Areas.UserManagers.Controllers.BaseClasses;
 using X.PagedList;
 
 namespace TenderSearch.Web.Areas.UserManagers.Controllers
@@ -33,8 +33,6 @@ namespace TenderSearch.Web.Areas.UserManagers.Controllers
             : base(mediator, logger)
         {
         }
-
-
 
         protected override async Task<IPagedList<AspNetUser>> GetItemsAsync(string parentId, int page, bool desc, int sortColumn, string search, string param)
         {
@@ -154,43 +152,40 @@ namespace TenderSearch.Web.Areas.UserManagers.Controllers
             throw new NotImplementedException();
         }
 
-        public override async Task<AspNetUser> FindItemAsync(string id, eAction action)
+        public override async Task<AspNetUser> FindItemAsync(TenderSearchDb db, string id, eAction action)
         {
-            using (var db = new TenderSearchDb())
+            var user = await UserManager.FindByIdAsync(id);
+            var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(db));
+            var roles = roleManager.Roles;
+
+            var result = new AspNetUser
             {
-                var user = await UserManager.FindByIdAsync(id);
-                var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(db));
-                var roles = roleManager.Roles;
+                Id = id,
+                UserName = user.UserName,
+                Email = user.Email,
+                AspNetUserRoles = user.Roles.ToList()
+                    .ConvertAll(r => new AspNetUserRole
+                    {
+                        Id = r.RoleId,
+                        AspNetUserId = user.Id,
+                        RoleName = roles.First(x => x.Id == r.RoleId).Name
+                    })
+            };
 
-                var result = new AspNetUser
-                {
-                    Id = id,
-                    UserName = user.UserName,
-                    Email = user.Email,
-                    AspNetUserRoles = user.Roles.ToList()
-                        .ConvertAll(r => new AspNetUserRole
-                        {
-                            Id = r.RoleId,
-                            AspNetUserId = user.Id,
-                            RoleName = roles.First(x => x.Id == r.RoleId).Name
-                        })
-                };
-
-                return result;
-            }
+            return result;
         }
 
-        protected override async Task AddAsync(AspNetUser item)
+        protected override async Task AddAsync(TenderSearchDb db, AspNetUser item)
         {
             await Task.Delay(1);
         }
 
-        protected override async Task FinalizeDelete(AspNetUser itemFromDb, string newDeletionReason, DateTime timeStamp, string returnUrl)
+        protected override async Task FinalizeDelete(TenderSearchDb db, AspNetUser itemFromDb, string newDeletionReason, DateTime timeStamp, string returnUrl)
         {
             await Task.Delay(1);
         }
 
-        protected override EditDetailsDeleteViewModel GenerateEditDetailsDeleteLinks(HtmlHelper htmlHelper, string targetName, string id,  ILayoutContentsIndexViewModel<string, AspNetUser> vm, string returnUrl, string separator = " | ", bool allowDetails = false)
+        protected override EditDetailsDeleteViewModel GenerateEditDetailsDeleteLinks(HtmlHelper htmlHelper, string targetName, string id, ILayoutContentsIndexViewModel<string, AspNetUser> vm, string returnUrl, string separator = " | ", bool allowDetails = false)
         {
             var mvcHtmlStrings = new List<MvcHtmlString>();
             var editRoleMvcHtml = GetAspNetUserRoleMvcHtml(htmlHelper, id, targetName, returnUrl, vm.ControllerName, caption: "Edit Role");

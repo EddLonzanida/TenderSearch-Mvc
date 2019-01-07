@@ -3,20 +3,21 @@ using Eml.ControllerBase.Mvc.ViewModels.LayoutContents;
 using Eml.DataRepository.Contracts;
 using Eml.Logger;
 using Eml.Mediator.Contracts;
+using TenderSearch.Data;
 using X.PagedList;
 
 namespace TenderSearch.Web.Controllers.BaseClasses
 {
     /// <inheritdoc cref="CrudControllerBaseInt&lt;T, TRepository, TLayoutContentsCreateEditViewModel, TLayoutContentsIndexViewModel, TLayoutContentsDetailsDeleteViewModel&gt;" />
     public abstract class CrudController<T>
-        : CrudControllerBaseInt<T, IDataRepositoryBase<int, T>, LayoutContentsCreateEditViewModel<int, T>, LayoutContentsIndexViewModel<int, T>, LayoutContentsDetailsDeleteViewModel<int, T>>
+        : CrudControllerBaseInt<T, IDataRepositoryBase<int, T, TenderSearchDb>, LayoutContentsCreateEditViewModel<int, T>, LayoutContentsIndexViewModel<int, T>, LayoutContentsDetailsDeleteViewModel<int, T>>
         where T : class, IEntityBase<int>, new()
     {
-        protected CrudController(IDataRepositoryBase<int, T> repository, ILogger logger) : base(repository, logger)
+        protected CrudController(IDataRepositoryBase<int, T, TenderSearchDb> repository, ILogger logger) : base(repository, logger)
         {
         }
 
-        protected CrudController(IMediator mediator, IDataRepositoryBase<int, T> repository, ILogger logger) : base(mediator, repository, logger)
+        protected CrudController(IMediator mediator, IDataRepositoryBase<int, T, TenderSearchDb> repository, ILogger logger) : base(mediator, repository, logger)
         {
         }
 

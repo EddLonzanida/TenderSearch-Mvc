@@ -2,7 +2,6 @@
 using Eml.ControllerBase.Mvc.Extensions;
 using Eml.ControllerBase.Mvc.Infrastructures;
 using Eml.ControllerBase.Mvc.ViewModels;
-using Eml.DataRepository.Contracts;
 using Eml.Extensions;
 using Eml.Logger;
 using Eml.Mediator.Contracts;
@@ -19,6 +18,8 @@ using Eml.ControllerBase.Mvc.ViewModels.LayoutContents;
 using TenderSearch.Business.Common.Dto;
 using TenderSearch.Business.Common.Entities;
 using TenderSearch.Contracts.Infrastructure;
+using TenderSearch.Data;
+using TenderSearch.Data.Contracts;
 using TenderSearch.Web.Areas.Users.Controllers.BaseClasses;
 using TenderSearch.Web.Areas.Users.ViewModels;
 using TenderSearch.Web.Infrastructure;
@@ -261,9 +262,9 @@ namespace TenderSearch.Web.Areas.Users.Controllers
             return await Task.FromResult(item);
         }
 
-        public override async Task BeforeCreateSave(Dependent item)
+        public override async Task BeforeCreateSave(TenderSearchDb db, Dependent item)
         {
-            parentRepository.SetUnchanged(item?.Employee);
+            parentRepository.SetUnchanged(db, item?.Employee);
 
             if (item != null)
             {
@@ -274,9 +275,9 @@ namespace TenderSearch.Web.Areas.Users.Controllers
             await Task.Delay(1);
         }
 
-        public override async Task BeforeEditSave(Dependent item)
+        public override async Task BeforeEditSave(TenderSearchDb db, Dependent item)
         {
-            parentRepository.SetUnchanged(item?.Employee);
+            parentRepository.SetUnchanged(db, item?.Employee);
 
             if (item != null)
             {
@@ -301,7 +302,7 @@ namespace TenderSearch.Web.Areas.Users.Controllers
             return item.EmployeeId ?? 0;
         }
 
-        public override async Task<Dependent> FindItemAsync(int id, eAction action)
+        public override async Task<Dependent> FindItemAsync(TenderSearchDb db, int id, eAction action)
         {
             var item = await repository.GetAsync(r => r.Include(s => s.Employee), r => r.Id == id);
 

@@ -13,6 +13,11 @@ namespace TenderSearch.Data
 {
     public class TenderSearchDb : ApplicationDbContext
     {
+        public TenderSearchDb()
+        {
+            Configuration.ProxyCreationEnabled = false;
+        }
+
         public DbSet<Address> Addresses { get; set; }
 
         public DbSet<Barangay> Barangays { get; set; }

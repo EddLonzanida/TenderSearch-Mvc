@@ -1,5 +1,4 @@
 using TenderSearch.Data;
-using TenderSearch.DataMigration.Seeders;
 using System.Data.Entity.Migrations;
 
 namespace TenderSearch.DataMigration

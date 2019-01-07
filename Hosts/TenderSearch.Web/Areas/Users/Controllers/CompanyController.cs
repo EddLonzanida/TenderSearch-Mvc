@@ -3,7 +3,6 @@ using TenderSearch.Contracts.Infrastructure;
 using Eml.ControllerBase.Mvc.Contracts;
 using Eml.ControllerBase.Mvc.Infrastructures;
 using Eml.ControllerBase.Mvc.ViewModels;
-using Eml.DataRepository.Contracts;
 using Eml.Extensions;
 using Eml.Logger;
 using Eml.Mediator.Contracts;
@@ -15,6 +14,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
+using TenderSearch.Data.Contracts;
 using TenderSearch.Web.Controllers.BaseClasses;
 using X.PagedList;
 

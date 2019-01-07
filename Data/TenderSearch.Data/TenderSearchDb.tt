@@ -44,6 +44,10 @@ namespace <#= fileNamespace #>
 {
     public class <#= templateNameWithoutExtension #> : ApplicationDbContext
     {
+        public <#= templateNameWithoutExtension #>()
+        {
+            Configuration.ProxyCreationEnabled = false;
+        }
 <# 
         var entitiesToEnumerate = GetEntities((EnvDTE80.DTE2)dte, dteProject, PROJECT_NAME_THAT_CONTAINS_ENTITY); //GetEntitiesToEnumerate(assembly, $"{PROJECT_NAME_THAT_CONTAINS_ENTITY}.Entities");
         var i = 0;

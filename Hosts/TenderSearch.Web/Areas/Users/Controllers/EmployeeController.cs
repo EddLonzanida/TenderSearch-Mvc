@@ -3,7 +3,6 @@ using Eml.ControllerBase.Mvc.Extensions;
 using Eml.ControllerBase.Mvc.Infrastructures;
 using Eml.ControllerBase.Mvc.ViewModels;
 using Eml.ControllerBase.Mvc.ViewModels.LayoutContents;
-using Eml.DataRepository.Contracts;
 using Eml.Extensions;
 using Eml.Logger;
 using Eml.Mediator.Contracts;
@@ -18,6 +17,8 @@ using System.Web.Mvc.Html;
 using TenderSearch.Business.Common.Dto;
 using TenderSearch.Business.Common.Entities;
 using TenderSearch.Contracts.Infrastructure;
+using TenderSearch.Data;
+using TenderSearch.Data.Contracts;
 using TenderSearch.Web.Areas.Users.Controllers.BaseClasses;
 using TenderSearch.Web.Areas.Users.ViewModels;
 using TenderSearch.Web.Infrastructure;
@@ -366,7 +367,7 @@ namespace TenderSearch.Web.Areas.Users.Controllers
             };
         }
 
-        public override async Task BeforeCreateSave(Employee item)
+        public override async Task BeforeCreateSave(TenderSearchDb db, Employee item)
         {
             if (item != null)
             {
@@ -376,7 +377,7 @@ namespace TenderSearch.Web.Areas.Users.Controllers
             await Task.Delay(1);
         }
 
-        public override async Task BeforeEditSave(Employee item)
+        public override async Task BeforeEditSave(TenderSearchDb db, Employee item)
         {
             if (item != null)
             {
@@ -384,6 +385,7 @@ namespace TenderSearch.Web.Areas.Users.Controllers
             }
 
             await Task.Delay(1);
+
         }
 
         public override async Task<string> GetParentName(int parentId)

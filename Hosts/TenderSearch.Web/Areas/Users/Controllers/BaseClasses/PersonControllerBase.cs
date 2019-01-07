@@ -12,6 +12,8 @@ using Eml.ControllerBase.Mvc.Extensions;
 using Eml.DataRepository.Contracts;
 using Eml.Logger;
 using Eml.Mediator.Contracts;
+using TenderSearch.Data;
+using TenderSearch.Data.Contracts;
 using TenderSearch.Web.Controllers.BaseClasses;
 
 namespace TenderSearch.Web.Areas.Users.Controllers.BaseClasses
@@ -25,7 +27,7 @@ namespace TenderSearch.Web.Areas.Users.Controllers.BaseClasses
         protected readonly IDataRepositorySoftDeleteInt<Lookup> lookupRepository;
 
         protected PersonControllerBase(IMediator mediator
-            , IDataRepositoryBase<int, T> repository
+            , IDataRepositoryBase<int, T, TenderSearchDb> repository
             , IDataRepositorySoftDeleteInt<TParent> parentRepository
             , ILogger logger
             , IDataRepositorySoftDeleteInt<Lookup> lookupRepository)

@@ -1,7 +1,7 @@
 ﻿using TenderSearch.Business.Common.Entities;
 using TenderSearch.Tests.Integration.BaseClasses;
-using Eml.DataRepository.Contracts;
 using Shouldly;
+using TenderSearch.Data.Contracts;
 using Xunit;
 
 namespace TenderSearch.Tests.Integration.Repositories

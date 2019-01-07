@@ -1,9 +1,7 @@
 ﻿using Eml.ControllerBase.Mvc.Contracts;
-using Eml.ControllerBase.Mvc.Extensions;
 using Eml.ControllerBase.Mvc.Infrastructures;
 using Eml.ControllerBase.Mvc.ViewModels;
 using Eml.DataRepository;
-using Eml.Extensions;
 using Eml.Logger;
 using Eml.Mediator.Contracts;
 using Microsoft.AspNet.Identity;
@@ -14,6 +12,8 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using Eml.ControllerBase.Mvc.Extensions;
+using Eml.Extensions;
 using TenderSearch.Contracts.Infrastructure;
 using TenderSearch.Data;
 using TenderSearch.Data.Security;
@@ -69,7 +69,7 @@ namespace TenderSearch.Web.Areas.UserManagers.Controllers
                 .ToList();
         }
 
-        protected override EditDetailsDeleteViewModel GenerateEditDetailsDeleteLinks(HtmlHelper htmlHelper, string targetName, string id, ILayoutContentsIndexViewModel<string, AspNetUserRole> vm, string returnUrl, string separator = " | ",  bool allowDetails = false)
+        protected override EditDetailsDeleteViewModel GenerateEditDetailsDeleteLinks(HtmlHelper htmlHelper, string targetName, string id, ILayoutContentsIndexViewModel<string, AspNetUserRole> vm, string returnUrl, string separator = " | ", bool allowDetails = false)
         {
             var mvcHtmlStrings = new List<MvcHtmlString>();
             var deleteMvcHtml = GetDeleteMvcHtml(htmlHelper, vm, id, targetName, vm.DeleteActionName, returnUrl, vm.ControllerName);
@@ -163,33 +163,45 @@ namespace TenderSearch.Web.Areas.UserManagers.Controllers
             throw new NotImplementedException();
         }
 
-        public override async Task<AspNetUserRole> FindItemAsync(string id, eAction action)
+        public override async Task<AspNetUserRole> FindItemAsync(TenderSearchDb db, string id, eAction action)
         {
             var aId = id.Split('|');
             var parentId = aId[0];
             var entityId = aId[1];
             var user = await UserManager.FindByIdAsync(parentId);
 
-            using (var db = new TenderSearchDb())
+            var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(db));
+            var item = roleManager.Roles.First(r => r.Name == entityId);
+            var result = new AspNetUserRole
             {
-                var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(db));
-                var item = roleManager.Roles.First(r => r.Name == entityId);
-                var result = new AspNetUserRole
-                {
-                    AspNetUserId = parentId,
-                    Id = item.Id,
-                    RoleName = item.Name,
-                    UserName = user.UserName,
-                    Email = user.Email
-                };
+                AspNetUserId = parentId,
+                Id = item.Id,
+                RoleName = item.Name,
+                UserName = user.UserName,
+                Email = user.Email
+            };
 
-                return await Task.FromResult(result);
-            }
+            return await Task.FromResult(result);
         }
 
-        protected override async Task AddAsync(AspNetUserRole item)
+        protected override async Task AddAsync(TenderSearchDb db, AspNetUserRole item)
         {
             await UserManager.AddToRoleAsync(item.AspNetUserId, item.RoleName);
+        }
+
+        protected override void SetUnchanged(TenderSearchDb db, AspNetUserRole item)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void SetModified(TenderSearchDb db, AspNetUserRole item)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override Task SaveChangesAsync(TenderSearchDb db)
+        {
+            throw new NotImplementedException();
         }
 
         private IEnumerable<SelectListItem> GetRoles(string parentId)
@@ -204,13 +216,18 @@ namespace TenderSearch.Web.Areas.UserManagers.Controllers
                     .Where(x => !exceptedItems.Contains(x.Name))
                     .ToList();
 
-                return results.ToSelectListItems(r => r.Name, r => r.Name).ToMvcSelectListItem();
+                return results.ToMvcSelectListItem(r => r.Name, r => r.Name);
             }
         }
 
-        protected override async Task FinalizeDelete(AspNetUserRole itemFromDb, string newDeletionReason, DateTime timeStamp, string returnUrl)
+        protected override async Task FinalizeDelete(TenderSearchDb db, AspNetUserRole itemFromDb, string newDeletionReason, DateTime timeStamp, string returnUrl)
         {
             var result = await UserManager.RemoveFromRoleAsync(itemFromDb.AspNetUserId, itemFromDb.RoleName);
+        }
+
+        protected override void DiscardChanges()
+        {
+            throw new NotImplementedException();
         }
 
         protected override AspNetUserRoleLayoutContentsCreateEditViewModel GetLayoutContentsViewModelForCreateEdit(AspNetUserRole item,
