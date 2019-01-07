@@ -1,5 +1,5 @@
 # TenderSearch
-* Sample MVC App for CRUD operations. Featuring Ef6, KnockoutJs,Ioc/Di (MEF) , UnitTests, and more
+* Sample MVC App for CRUD operations. Featuring EF6, IoC/Di (MEF) , Automated Tests, T4 Templates, KnockoutJs, Bootstrap, etc..
 * Demo app using [Eml*](https://www.nuget.org/packages?q=EddLonzanida) NuGets.
 * Check out [EmlExtensions.vsix](https://marketplace.visualstudio.com/items?itemName=eDuDeTification.EmlExtensions) to automate the creation of controllers, views, seeders, and more!.
 
@@ -16,16 +16,16 @@ update-database -verbose
 1. Press F5 to run
 
 ## Quick View
-### Landing Page
+#### Landing Page
 ![](https://github.com/EddLonzanida/TenderSearch-Mvc/blob/master/Docs/Art/LandingPage.png)
 
-### Login
+#### Login
 ![](https://github.com/EddLonzanida/TenderSearch-Mvc/blob/master/Docs/Art/LandingPage.png)
 
-### Simple Dashboard
+#### Simple Dashboard
 ![](https://github.com/EddLonzanida/TenderSearch-Mvc/blob/master/Docs/Art/Dashboard.png)
 
-### CRUD Operations
+#### CRUD Operations
 ![](https://github.com/EddLonzanida/TenderSearch-Mvc/blob/master/Docs/Art/CrudPage.png)
 
 ## That's it.
