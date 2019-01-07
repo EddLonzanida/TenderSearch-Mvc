@@ -20,7 +20,7 @@ update-database -verbose
 ![](https://github.com/EddLonzanida/TenderSearch-Mvc/blob/master/Docs/Art/LandingPage.png)
 
 #### Login
-![](https://github.com/EddLonzanida/TenderSearch-Mvc/blob/master/Docs/Art/LandingPage.png)
+![](https://github.com/EddLonzanida/TenderSearch-Mvc/blob/master/Docs/Art/Login.png)
 
 #### Simple Dashboard
 ![](https://github.com/EddLonzanida/TenderSearch-Mvc/blob/master/Docs/Art/Dashboard.png)
