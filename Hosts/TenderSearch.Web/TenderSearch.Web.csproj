@@ -62,11 +62,11 @@
     <Reference Include="Eml.Contracts, Version=2.2.0.2, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Eml.Contracts.2.2.0.2\lib\net472\Eml.Contracts.dll</HintPath>
     </Reference>
-    <Reference Include="Eml.ControllerBase.Mvc, Version=1.2.0.4, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Eml.ControllerBase.Mvc.1.2.0.4\lib\net472\Eml.ControllerBase.Mvc.dll</HintPath>
+    <Reference Include="Eml.ControllerBase.Mvc, Version=1.2.0.7, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Eml.ControllerBase.Mvc.1.2.0.7\lib\net472\Eml.ControllerBase.Mvc.dll</HintPath>
     </Reference>
-    <Reference Include="Eml.DataRepository, Version=2.2.0.6, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Eml.DataRepository.2.2.0.6\lib\net472\Eml.DataRepository.dll</HintPath>
+    <Reference Include="Eml.DataRepository, Version=2.2.0.8, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Eml.DataRepository.2.2.0.8\lib\net472\Eml.DataRepository.dll</HintPath>
     </Reference>
     <Reference Include="Eml.EntityBaseClasses, Version=2.2.0.2, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Eml.EntityBaseClasses.2.2.0.2\lib\net472\Eml.EntityBaseClasses.dll</HintPath>
@@ -74,8 +74,8 @@
     <Reference Include="Eml.ExplicitDispose.Mvc, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Eml.ExplicitDispose.Mvc.1.2.0\lib\net472\Eml.ExplicitDispose.Mvc.dll</HintPath>
     </Reference>
-    <Reference Include="Eml.Extensions, Version=2.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Eml.Extensions.2.2.0\lib\net472\Eml.Extensions.dll</HintPath>
+    <Reference Include="Eml.Extensions, Version=2.2.0.19, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Eml.Extensions.2.2.0.19\lib\net472\Eml.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="Eml.HtmlHelpers, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Eml.HtmlHelpers.1.2.0\lib\net472\Eml.HtmlHelpers.dll</HintPath>
@@ -83,14 +83,14 @@
     <Reference Include="Eml.Logger, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Eml.Logger.1.2.0\lib\net472\Eml.Logger.dll</HintPath>
     </Reference>
-    <Reference Include="Eml.Mediator, Version=2.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Eml.Mediator.2.2.0\lib\net472\Eml.Mediator.dll</HintPath>
+    <Reference Include="Eml.Mediator, Version=2.2.0.2, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Eml.Mediator.2.2.0.2\lib\net472\Eml.Mediator.dll</HintPath>
     </Reference>
-    <Reference Include="Eml.MefBootstrapper, Version=2.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Eml.MefBootstrapper.2.2.0\lib\net472\Eml.MefBootstrapper.dll</HintPath>
+    <Reference Include="Eml.MefBootstrapper, Version=2.2.0.4, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Eml.MefBootstrapper.2.2.0.4\lib\net472\Eml.MefBootstrapper.dll</HintPath>
     </Reference>
-    <Reference Include="Eml.MefDependencyResolver.Mvc, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Eml.MefDependencyResolver.Mvc.1.2.0\lib\net472\Eml.MefDependencyResolver.Mvc.dll</HintPath>
+    <Reference Include="Eml.MefDependencyResolver.Mvc, Version=1.2.0.2, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Eml.MefDependencyResolver.Mvc.1.2.0.2\lib\net472\Eml.MefDependencyResolver.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="Eml.MefExtensions, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Eml.MefExtensions.1.2.0\lib\net472\Eml.MefExtensions.dll</HintPath>
@@ -277,6 +277,7 @@
     <Compile Include="Areas\UserManagers\Controllers\AspNetUserRoleController.cs" />
     <Compile Include="Areas\UserManagers\Controllers\BaseClasses\UserManagersControllerBase.cs" />
     <Compile Include="Areas\UserManagers\Controllers\BaseClasses\UserManagersHomeControllerBase.cs" />
+    <Compile Include="Areas\UserManagers\Controllers\BaseClasses\UserManagersWithContentControllerBase.cs" />
     <Compile Include="Areas\UserManagers\Controllers\HomeController.cs" />
     <Compile Include="Areas\UserManagers\UserManagersAreaRegistration.cs" />
     <Compile Include="Areas\UserManagers\ViewModels\AspNetUserRoleLayoutContentsCreateEditViewModel.cs" />
@@ -306,8 +307,10 @@
     <Compile Include="Controllers\BaseClasses\CrudControllerForIndexDetailsDelete.cs" />
     <Compile Include="Controllers\BaseClasses\CrudControllerForIndexDetailsDeleteWithParent.cs" />
     <Compile Include="Controllers\BaseClasses\CrudControllerForIndexWithParent.cs" />
+    <Compile Include="Controllers\BaseClasses\CrudControllerNoRepositoryWithContentBase.cs" />
     <Compile Include="Controllers\BaseClasses\CrudControllerWithParent.cs" />
     <Compile Include="Controllers\BaseClasses\UserManagerBase.cs" />
+    <Compile Include="Controllers\BaseClasses\UserManagerWithContentBase.cs" />
     <Compile Include="Infrastructure\Contracts\IBarangaySuggestion.cs" />
     <Compile Include="Infrastructure\Contracts\IPersonSuggestion.cs" />
     <Compile Include="Utils\Extensions.cs" />

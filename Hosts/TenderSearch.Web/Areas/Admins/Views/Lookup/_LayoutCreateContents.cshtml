@@ -1,4 +1,4 @@
-﻿@model LayoutViewModelBase<LayoutContentsCreateEditViewModel<int, Lookup>>
+﻿@model LayoutWithContentViewModelBase<LayoutContentsCreateEditViewModel<int, Lookup>>
 
 <div class="form-group">
     @Html.LabelFor(model => model.ContentViewModel.Item.Group, htmlAttributes: new { @class = "control-label " + Model.ContentViewModel.LabelCss })
@@ -29,13 +29,5 @@
     <div class="@Model.ContentViewModel.FieldCss">
         @Html.EditorFor(model => model.ContentViewModel.Item.Text, new { htmlAttributes = new { @class = "form-control" } })
         @Html.ValidationMessageFor(model => model.ContentViewModel.Item.Text, "", new { @class = "text-danger" })
-    </div>
-</div>
-
-<div class="form-group">
-    @Html.LabelFor(model => model.ContentViewModel.Item.DeletionReason, htmlAttributes: new { @class = "control-label " + Model.ContentViewModel.LabelCss })
-    <div class="@Model.ContentViewModel.FieldCss">
-        @Html.EditorFor(model => model.ContentViewModel.Item.DeletionReason, new { htmlAttributes = new { @class = "form-control" } })
-        @Html.ValidationMessageFor(model => model.ContentViewModel.Item.DeletionReason, "", new { @class = "text-danger" })
     </div>
 </div>

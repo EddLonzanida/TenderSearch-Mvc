@@ -31,14 +31,6 @@ namespace TenderSearch.Web.Controllers
         {
         }
 
-        //protected async Task<List<string>> GetRolesForUserAsync(string userName)
-        //{
-        //    var user = await UserManager.FindByNameAsync(userName);
-        //    var rolesForUser = await UserManager.GetRolesAsync(user.Id);
-
-        //    return rolesForUser.ToList();
-        //}
-
         private async Task<IndexViewModel> GetIndexViewModel(string statusMessage)
         {
             const string title1 = "Manage Account";

@@ -19,28 +19,6 @@ namespace TenderSearch.Web.Controllers
         {
         }
 
-        //protected virtual async Task<HomeIndexViewModel> GetHomeIndexViewModelAsync()
-        //{
-        //    const string title1 = "Home";
-
-        //    var applicationName = GetApplicationName();
-        //    var applicationVersion = GetApplicationVersion();
-        //    var area = GetAreaName();
-        //    var mvcActionName = GetActionName();
-        //    var vm = new HomeIndexViewModel(applicationName, applicationVersion, mvcActionName, title1, area);
-
-        //    return await Task.FromResult(vm);
-        //}
-
-        //[HttpGet]
-        //[Route("")]
-        //public async Task<ActionResult> Index()
-        //{
-        //    var vm = await GetHomeIndexViewModelAsync();
-
-        //    return View(vm);
-        //}
-
         [HttpGet]
         [Route("About")]
         public ActionResult About()

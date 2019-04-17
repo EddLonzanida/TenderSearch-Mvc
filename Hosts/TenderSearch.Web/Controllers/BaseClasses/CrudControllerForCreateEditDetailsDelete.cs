@@ -13,8 +13,8 @@ namespace TenderSearch.Web.Controllers.BaseClasses
     public abstract class CrudControllerForCreateEditDetailsDelete<T, TLayoutContentsCreateEditViewModel, TLayoutContentsDetailsDeleteViewModel>
         : CrudControllerBaseInt<T, IDataRepositoryBase<int, T, TenderSearchDb>, TLayoutContentsCreateEditViewModel, LayoutContentsIndexViewModel<int, T>, TLayoutContentsDetailsDeleteViewModel>
         where T : class, IEntityBase<int>, new()
-        where TLayoutContentsCreateEditViewModel : class, ILayoutContentsCreateEditViewModel<int, T>, ILabelClassCount
-        where TLayoutContentsDetailsDeleteViewModel : class, ILayoutContentsDetailsDeleteViewModel<int, T>
+        where TLayoutContentsCreateEditViewModel : class, ILayoutContentsCreateEditWithEntityViewModel<int, T>, ILabelClassCount
+        where TLayoutContentsDetailsDeleteViewModel : class, ILayoutContentsDetailsDeleteWithEntityViewModel<int, T>
     {
         protected CrudControllerForCreateEditDetailsDelete(IDataRepositoryBase<int, T, TenderSearchDb> repository, ILogger logger)
             : this(null, repository, logger)
@@ -25,7 +25,6 @@ namespace TenderSearch.Web.Controllers.BaseClasses
             : base(mediator, repository, logger)
         {
         }
-
 
         protected override LayoutContentsIndexViewModel<int, T> GetLayoutContentsViewModelForIndex(IPagedList<T> pagedList, string title1, string title2, string title3, string search, string targetTableBody, int page, int parentId, string param)
         {

@@ -22,7 +22,7 @@ namespace TenderSearch.Web.Areas.Users.Controllers.BaseClasses
         : CrudControllerForCreateEditWithParent<T, TParent, TLayoutContentsCreateEditViewModel>, IPersonSuggestion
         where T : class, IEntityBase<int>, new()
         where TParent : class, IEntityBase<int>, IEntitySoftdeletableBase, new()
-        where TLayoutContentsCreateEditViewModel : class, ILayoutContentsCreateEditViewModel<int, T>
+        where TLayoutContentsCreateEditViewModel : class, ILayoutContentsCreateEditWithEntityViewModel<int, T>
     {
         protected readonly IDataRepositorySoftDeleteInt<Lookup> lookupRepository;
 

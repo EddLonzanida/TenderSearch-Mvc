@@ -12,12 +12,10 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using Eml.ControllerBase.Mvc.ViewModels.LayoutContents;
 using TenderSearch.Contracts.Infrastructure;
 using TenderSearch.Data;
 using TenderSearch.Web.IdentityConfig;
 using TenderSearch.Web.Utils;
-using X.PagedList;
 
 namespace TenderSearch.Web.Controllers.BaseClasses
 {
@@ -28,9 +26,9 @@ namespace TenderSearch.Web.Controllers.BaseClasses
     public abstract class CrudControllerNoRepositoryBase<TKey, T, TLayoutContentsCreateEditViewModel, TLayoutContentsIndexViewModel, TLayoutContentsDetailsDeleteViewModel>
         : CrudControllerMvcBase<TKey, T, TenderSearchDb, TLayoutContentsCreateEditViewModel, TLayoutContentsIndexViewModel, TLayoutContentsDetailsDeleteViewModel>
         where T : class, IEntityBase<TKey>, new()
-        where TLayoutContentsCreateEditViewModel : class, ILayoutContentsCreateEditViewModel<TKey, T>
+        where TLayoutContentsCreateEditViewModel : class, ILayoutContentsCreateEditWithEntityViewModel<TKey, T>
         where TLayoutContentsIndexViewModel : class, ILayoutContentsIndexViewModel<TKey, T>
-        where TLayoutContentsDetailsDeleteViewModel : class, ILayoutContentsDetailsDeleteViewModel<TKey, T>
+        where TLayoutContentsDetailsDeleteViewModel : class, ILayoutContentsDetailsDeleteWithEntityViewModel<TKey, T>
     {
         protected CrudControllerNoRepositoryBase(ILogger logger)
             : base(logger)
@@ -103,7 +101,7 @@ namespace TenderSearch.Web.Controllers.BaseClasses
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route(ActionNames.Edit)]
-        public override async Task<ActionResult> Edit(LayoutViewModelBase<TLayoutContentsCreateEditViewModel> vm, string returnUrl = null, string param = null)
+        public override async Task<ActionResult> Edit(LayoutWithContentViewModelBase<TLayoutContentsCreateEditViewModel> vm, string returnUrl = null, string param = null)
         {
             var item = vm.ContentViewModel.Item;
 
@@ -128,8 +126,7 @@ namespace TenderSearch.Web.Controllers.BaseClasses
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route(ActionNames.Create)]
-        public override async Task<ActionResult> Create(LayoutViewModelBase<TLayoutContentsCreateEditViewModel> vm,
-            string returnUrl = null, string param = null)
+        public override async Task<ActionResult> Create(LayoutWithContentViewModelBase<TLayoutContentsCreateEditViewModel> vm, string returnUrl = null, string param = null)
         {
             var item = vm.ContentViewModel.Item;
 
@@ -139,8 +136,7 @@ namespace TenderSearch.Web.Controllers.BaseClasses
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("{parentId}/" + ActionNames.CreateWithParent)]
-        public override async Task<ActionResult> CreateWithParent(
-            LayoutViewModelBase<TLayoutContentsCreateEditViewModel> vm, string returnUrl = null, string param = null)
+        public override async Task<ActionResult> CreateWithParent(LayoutWithContentViewModelBase<TLayoutContentsCreateEditViewModel> vm, string returnUrl = null, string param = null)
         {
             var item = vm.ContentViewModel.Item;
 
@@ -253,50 +249,5 @@ namespace TenderSearch.Web.Controllers.BaseClasses
         {
             // UserManager?.Dispose();
         }
-    }
-
-    public abstract class CrudControllerNoRepositoryBase<TKey, T>
-        : CrudControllerNoRepositoryBase<TKey, T, LayoutContentsCreateEditViewModel<TKey, T>,  LayoutContentsIndexViewModel<TKey, T>, LayoutContentsDetailsDeleteViewModel<TKey, T>>
-        where T : class, IEntityBase<TKey>, new()
-    {
-        protected CrudControllerNoRepositoryBase(ILogger logger) : base(logger)
-        {
-        }
-
-        protected CrudControllerNoRepositoryBase(IMediator mediator, ILogger logger) : base(mediator, logger)
-        {
-        }
-
-        protected override LayoutContentsCreateEditViewModel<TKey, T> GetLayoutContentsViewModelForCreateEdit(T item, string title1, string title2, string title3, int pageSize, int labelClassColumnCount, TKey parentId, string param)
-        {
-            var contentsVm = new LayoutContentsCreateEditViewModel<TKey, T>(item, title1, title2, title3, pageSize, parentId: parentId);
-
-            return contentsVm;
-        }
-
-        protected override LayoutContentsIndexViewModel<TKey, T> GetLayoutContentsViewModelForIndex(IPagedList<T> pagedList, string title1, string title2, string title3, string search, string targetTableBody, int page, TKey parentId, string param)
-        {
-            var contentsVm = new LayoutContentsIndexViewModel<TKey, T>(pagedList, title1, title2, title3, search, targetTableBody, page, parentId)
-            {
-                Param = param
-            };
-
-            return contentsVm;
-        }
-
-        protected override LayoutContentsDetailsDeleteViewModel<TKey, T> GetLayoutContentsViewModelForDetailsDelete(T item, string title1, string title2, string title3)
-        {
-            var contentsVm = new LayoutContentsDetailsDeleteViewModel<TKey, T>(item, title1, title2, title3);
-
-            return contentsVm;
-        }
-
-        //protected override LayoutContentsIndexViewModel<int, T> GetLayoutContentsViewModelForIndex(IPagedList<T> pagedList, string title1, string title2, string title3, string search, string targetTableBody, int page, int parentId, string param)
-        //{
-        //}
-
-        //protected override LayoutContentsDetailsDeleteViewModel<int, T> GetLayoutContentsViewModelForDetailsDelete(T item, string title1, string title2, string title3)
-        //{
-        //}
     }
 }

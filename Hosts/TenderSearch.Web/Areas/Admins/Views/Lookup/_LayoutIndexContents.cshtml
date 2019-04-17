@@ -1,4 +1,4 @@
-﻿@model LayoutViewModelBase<LayoutContentsIndexViewModel<int, Lookup>>
+﻿@model LayoutWithContentViewModelBase<LayoutContentsIndexViewModel<int, Lookup>>
 
 <thead>
     <tr>
@@ -13,12 +13,6 @@
         </th>
         <th>
             @Html.DisplayNameFor(model => model.ContentViewModel.PagedListViewModel.PagedList.First().Text)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ContentViewModel.PagedListViewModel.PagedList.First().DateDeleted)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ContentViewModel.PagedListViewModel.PagedList.First().DeletionReason)
         </th>
         <th>
             @Html.Partial("_CreateItemButtonAjax", Model.ContentViewModel.CreateItemButtonViewModel)
@@ -40,12 +34,6 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Text)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateDeleted)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DeletionReason)
             </td>
             <td>
                 @Html.Partial("_EditDetailsDelete", Model.ContentViewModel.GenerateEditDetailsDeleteLinks(Html, item.Text, item.Id, Model.ContentViewModel, Model.ReturnUrl, " | "))

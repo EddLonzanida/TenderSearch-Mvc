@@ -54,7 +54,9 @@
             <td>
                 <div data-eml-tablecontainer="@Model.ContentViewModel.PagedListViewModel.IsTableContainer.ToString().ToLower()">
                     <table class="table table-striped table-hover table-bordered tableRowHover">
-                        @Html.Partial(Model.ContentViewModel.LayoutIndexContentName as string)
+                      @*  @Html.Partial(Model.ContentViewModel.LayoutIndexContentName as string)*@
+                        @Html.Partial("_LayoutIndexContents")
+                        
                     </table>
                 </div>
             </td>

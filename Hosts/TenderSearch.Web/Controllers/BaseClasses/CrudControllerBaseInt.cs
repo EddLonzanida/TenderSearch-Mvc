@@ -27,12 +27,12 @@ namespace TenderSearch.Web.Controllers.BaseClasses
     /// Add Attribute: [PartCreationPolicy(CreationPolicy.NonShared)].
     /// </summary>
     public abstract class CrudControllerBaseInt<T, TRepository, TLayoutContentsCreateEditViewModel, TLayoutContentsIndexViewModel, TLayoutContentsDetailsDeleteViewModel>
-        : CrudControllerMvcBase<int, T, TenderSearchDb, TRepository, TLayoutContentsCreateEditViewModel, TLayoutContentsIndexViewModel, TLayoutContentsDetailsDeleteViewModel>
+        : CrudControllerWithRepositoryMvcBase<int, T, TenderSearchDb, TRepository, TLayoutContentsCreateEditViewModel, TLayoutContentsIndexViewModel, TLayoutContentsDetailsDeleteViewModel>
         where T : class, IEntityBase<int>, new()
         where TRepository : class, IDataRepositoryBase<int, T, TenderSearchDb>
-        where TLayoutContentsCreateEditViewModel : class, ILayoutContentsCreateEditViewModel<int, T>
+        where TLayoutContentsCreateEditViewModel : class, ILayoutContentsCreateEditWithEntityViewModel<int, T>
         where TLayoutContentsIndexViewModel : class, ILayoutContentsIndexViewModel<int, T>
-        where TLayoutContentsDetailsDeleteViewModel : class, ILayoutContentsDetailsDeleteViewModel<int, T>
+        where TLayoutContentsDetailsDeleteViewModel : class, ILayoutContentsDetailsDeleteWithEntityViewModel<int, T>
     {
         private ApplicationUserManager _userManager;
 
@@ -105,8 +105,7 @@ namespace TenderSearch.Web.Controllers.BaseClasses
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route(ActionNames.Edit)]
-        public override async Task<ActionResult> Edit(LayoutViewModelBase<TLayoutContentsCreateEditViewModel> vm,
-            string returnUrl = null, string param = null)
+        public override async Task<ActionResult> Edit(LayoutWithContentViewModelBase<TLayoutContentsCreateEditViewModel> vm, string returnUrl = null, string param = null)
         {
             var item = vm.ContentViewModel.Item;
 
@@ -130,18 +129,17 @@ namespace TenderSearch.Web.Controllers.BaseClasses
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route(ActionNames.Create)]
-        public override async Task<ActionResult> Create(LayoutViewModelBase<TLayoutContentsCreateEditViewModel> vm, string returnUrl = null, string param = null)
+        public override async Task<ActionResult> Create(LayoutWithContentViewModelBase<TLayoutContentsCreateEditViewModel> vm, string returnUrl = null, string param = null)
         {
             var item = vm.ContentViewModel.Item;
 
             return await DoPostCreateAsync(item, returnUrl);
         }
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("{parentId}/" + ActionNames.CreateWithParent)]
-        public override async Task<ActionResult> CreateWithParent(LayoutViewModelBase<TLayoutContentsCreateEditViewModel> vm, string returnUrl = null, string param = null)
+        public override async Task<ActionResult> CreateWithParent(LayoutWithContentViewModelBase<TLayoutContentsCreateEditViewModel> vm, string returnUrl = null, string param = null)
         {
             var item = vm.ContentViewModel.Item;
 

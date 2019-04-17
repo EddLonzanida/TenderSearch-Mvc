@@ -17,10 +17,15 @@ namespace TenderSearch.Web.Controllers.BaseClasses
         where TLayoutContentsIndexViewModel : class, ILayoutContentsIndexViewModel<int, T>
     {
         public abstract override Task<T> CreateNewItemWithParent(int parentId, string param);
+
         public abstract override Task BeforeCreateSave(TenderSearchDb db, T item);
+
         public abstract override Task BeforeEditSave(TenderSearchDb db, T item);
+
         public abstract override Task<string> GetParentName(int parentId);
+
         public abstract override int GetParentId(T item);
+
         protected readonly IDataRepositorySoftDeleteInt<TParent> parentRepository;
 
         protected CrudControllerForIndexWithParent(IDataRepositoryBase<int, T, TenderSearchDb> repository

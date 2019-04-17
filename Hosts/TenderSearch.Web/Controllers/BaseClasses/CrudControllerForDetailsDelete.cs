@@ -13,7 +13,7 @@ namespace TenderSearch.Web.Controllers.BaseClasses
     public abstract class CrudControllerForDetailsDelete<T, TLayoutContentsDetailsDeleteViewModel>
         : CrudControllerBaseInt<T, IDataRepositoryBase<int, T, TenderSearchDb>, LayoutContentsCreateEditViewModel<int, T>, LayoutContentsIndexViewModel<int, T>, TLayoutContentsDetailsDeleteViewModel>
         where T : class, IEntityBase<int>, new()
-        where TLayoutContentsDetailsDeleteViewModel : class, ILayoutContentsDetailsDeleteViewModel<int, T>
+        where TLayoutContentsDetailsDeleteViewModel : class, ILayoutContentsDetailsDeleteWithEntityViewModel<int, T>
     {
         protected CrudControllerForDetailsDelete(IDataRepositoryBase<int, T, TenderSearchDb> repository, ILogger logger) : base(repository, logger)
         {

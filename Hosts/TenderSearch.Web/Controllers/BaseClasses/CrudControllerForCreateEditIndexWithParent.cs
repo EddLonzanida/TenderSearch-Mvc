@@ -14,7 +14,7 @@ namespace TenderSearch.Web.Controllers.BaseClasses
         : CrudControllerForCreateEditIndex<T, TLayoutContentsCreateEditViewModel, TLayoutContentsIndexViewModel>, IControllerWithParent<int, T, TenderSearchDb>
         where T : class, IEntityBase<int>, new()
         where TParent : class, IEntityBase<int>, IEntitySoftdeletableBase, new()
-        where TLayoutContentsCreateEditViewModel : class, ILayoutContentsCreateEditViewModel<int, T>
+        where TLayoutContentsCreateEditViewModel : class, ILayoutContentsCreateEditWithEntityViewModel<int, T>
         where TLayoutContentsIndexViewModel : class, ILayoutContentsIndexViewModel<int, T>
     {
         public abstract override Task<T> CreateNewItemWithParent(int parentId, string param);

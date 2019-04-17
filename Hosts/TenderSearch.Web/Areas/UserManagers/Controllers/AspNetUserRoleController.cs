@@ -28,7 +28,7 @@ namespace TenderSearch.Web.Areas.UserManagers.Controllers
     [RouteArea(MvcArea.Users)]
     [Export]
     [PartCreationPolicy(CreationPolicy.NonShared)]
-    public class AspNetUserRoleController : UserManagersControllerBase<AspNetUserRole, AspNetUserRoleLayoutContentsCreateEditViewModel>
+    public class AspNetUserRoleController : UserManagersWithContentControllerBase<AspNetUserRole, AspNetUserRoleLayoutContentsCreateEditViewModel>
     {
         [ImportingConstructor]
         public AspNetUserRoleController(IMediator mediator, ILogger logger)

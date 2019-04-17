@@ -12,7 +12,7 @@ namespace TenderSearch.Web.Controllers.BaseClasses
     public abstract class CrudControllerForCreateEditIndex<T, TLayoutContentsCreateEditViewModel, TLayoutContentsIndexViewModel>
         : CrudControllerBaseInt<T, IDataRepositoryBase<int, T, TenderSearchDb>, TLayoutContentsCreateEditViewModel, TLayoutContentsIndexViewModel, LayoutContentsDetailsDeleteViewModel<int, T>>
         where T : class, IEntityBase<int>, new()
-        where TLayoutContentsCreateEditViewModel : class, ILayoutContentsCreateEditViewModel<int, T>, ILabelClassCount
+        where TLayoutContentsCreateEditViewModel : class, ILayoutContentsCreateEditWithEntityViewModel<int, T>, ILabelClassCount
         where TLayoutContentsIndexViewModel : class, ILayoutContentsIndexViewModel<int, T>
     {
         protected CrudControllerForCreateEditIndex(IDataRepositoryBase<int, T, TenderSearchDb> repository, ILogger logger)
